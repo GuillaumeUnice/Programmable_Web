@@ -23,6 +23,8 @@
     "morgan": "~1.6.1",
     "mysql": "~2.9.0",
     "serve-favicon": "~2.3.0",
-    "twitter": "~1.2.5"
+    "twitter": "~1.2.5",
+    "express-mongo-db": "^2.0.3",
+    "mongodb": "https://github.com/mongodb/node-mongodb-native/archive/gridfs-specification.tar.gz"
   }
 }
