@@ -42,8 +42,8 @@ router.get('/', function(req, res, next) {
 /**********************************************************************************
  *                Route for auth API
  **********************************************************************************/
-
-router.route('/auth/logout')
+// TODO delete session
+router.route('/logout')
     .get(function(req, res) {
       console.log(req.session.emailUser);
       res.json({ status: constants.JSON_STATUS_SUCCESS,
@@ -51,9 +51,9 @@ router.route('/auth/logout')
         message: 'Vous êtes déconnecté!'});  
     });
 
-router.route('/auth/login')
+router.route('/login')
     .post(function(req, res) {
-      //console.log(req.session);
+      console.log(req.body);
       usersRepository.findUserByPseudo(req.db, req.body.email, function(err, result) {
         if(err) {
           console.log(err);
