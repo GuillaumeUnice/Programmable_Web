@@ -10,6 +10,26 @@ var users = require('./routes/users');
 
 var app = express();
 
+var constants = require('./constants');
+
+var expressMongoDb = require('express-mongo-db');
+
+app.use(expressMongoDb(constants.MONGO_URL_TEST_DB));
+
+/*
+//TODO : ADD
+var mongo = require('./repositories/connect.js');
+
+//setup express...
+
+//initialize the db connection
+mongo.init(function (error) {
+    if (error)
+        throw error;
+
+    app.listen(80); //database is initialized, ready to listen for connections
+});*/
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
