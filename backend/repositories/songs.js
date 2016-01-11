@@ -3,18 +3,19 @@ var fs = require('fs');
 
 function SongsRepository () {
 
-  this.insertDocument = function(db, callback) {
+//{'secteur':'amy','name':'guitare','songname':'meistersinger.mp3'}
+  this.insertDocument = function(db, input, callback) {
     console.log('insertDocument');
-    db.collection('songs').insertOne({'secteur':'amy','name':'guitare','songname':'meistersinger.mp3'},
+    db.collection('songs').insertOne(input,
         function(err, result) {
             //assert.equal(err, null);
             console.log("Inserted a document into the songs collection.");
             callback(null, result);
         });
-    }; 
+    };
 
-  this.findRestaurants_by_field = function(db, callback) {
-    var cursor = db.collection('songs').find( { a: 2 } );
+  this.findRestaurants_by_field = function(db, domaine, content, callback) {
+    var cursor = db.collection('songs').find( { domaine : content } );
     cursor.each(function(err, doc) {
        //assert.equal(err, null);
        if (doc !== null) {
@@ -41,7 +42,7 @@ function SongsRepository () {
   };
 
   this.downloadSong = function(db, song_name, callback) {
-    var bucket = new mongodb.GridFSBucket(db); 
+    var bucket = new mongodb.GridFSBucket(db);
 
     bucket.openDownloadStreamByName(song_name).
     pipe(fs.createWriteStream('./output.mp3')).
