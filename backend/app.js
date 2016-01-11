@@ -1,3 +1,4 @@
+
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
@@ -33,7 +34,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 /** TODO ADD **/
-app.use(session({ 
+app.use(session({
   secret: 'ceciestunsercretesfefefeffe',  // session secret
   duration: 30 * 60 * 1000,
   activeDuration: 5 * 60 * 1000,
