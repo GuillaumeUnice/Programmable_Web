@@ -5,30 +5,20 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
+
+/** TODO ADD **/
+var session = require('express-session');
+
 var routes = require('./routes/index');
 var users = require('./routes/users');
 
 var app = express();
 
-var constants = require('./constants');
+var constants = require('./config/constants');
 
 var expressMongoDb = require('express-mongo-db');
 
-app.use(expressMongoDb(constants.MONGO_URL_TEST_DB));
-
-/*
-//TODO : ADD
-var mongo = require('./repositories/connect.js');
-
-//setup express...
-
-//initialize the db connection
-mongo.init(function (error) {
-    if (error)
-        throw error;
-
-    app.listen(80); //database is initialized, ready to listen for connections
-});*/
+app.use(expressMongoDb(constants.MONGO_URL_TEST_DB)); // DB connection
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -38,9 +28,17 @@ app.set('view engine', 'jade');
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: true })); // TODO change tot true
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+/** TODO ADD **/
+app.use(session({ 
+  secret: 'ceciestunsercretesfefefeffe',  // session secret
+  duration: 30 * 60 * 1000,
+  activeDuration: 5 * 60 * 1000,
+}));
+
 
 app.use('/', routes);
 app.use('/users', users);
