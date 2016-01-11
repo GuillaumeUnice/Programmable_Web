@@ -21,11 +21,11 @@ router.use(function(req, res, next) {
 /* GET home page. */
 router.get('/', function(req, res, next) {
 	//console.log(songsRepository.insertDocument.toString());
-	songsRepository.downloadSong(req.db,'basse.mp3', function(err, result) {
+	//songsRepository.downloadSong(req.db,'basse.mp3', function(err, result) {
 	//songsRepository.uploadSong(req.db,'./basse.mp3', function(err, result) {
 
 		console.log("OKKKK");
-	});
+	//});
   /*req.db.collection('songs').insertOne({'secteur':'kkk','name':'guitarekk','songname':'meistersinger.mp3'},
         function(err, result) {
             //assert.equal(err, null);
