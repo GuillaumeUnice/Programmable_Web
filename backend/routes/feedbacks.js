@@ -7,7 +7,7 @@ var MongoClient = require('mongodb').MongoClient;
 var assert = require('assert');
 
 /* GET marks listing. */
-router.get('/marks', function(req, res, next) {
+router.get('/feedback', function(req, res, next) {
     res.send('Bonjour');
 });
 
