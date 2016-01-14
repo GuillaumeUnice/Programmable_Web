@@ -6,10 +6,12 @@ var router = express.Router();
 
 /* GET marks listing. */
 router.get('/', function(req, res, next) {
-    var mixes = req.db.collection('mixes').find();
-    res.writeHead(200, { 'Content-Type': 'application/json' });
+    //var mixes = req.db.collection('mixes').find();
+    //var mixes = {john: 2};
+   /* res.writeHead(200, { 'Content-Type': 'application/json' });
     res.write(JSON.stringify(mixes));
-    res.send();
+    res.send();*/
+    res.send('Bonjour');
 });
 
 router.post('/:newMixes', function(req, res, next) {
