@@ -11,6 +11,7 @@ var usersRepositoryModule = require('../repositories/users');
 var usersRepository = new usersRepositoryModule.UsersRepository();
 
 // module authentification
+var jwt = require('jsonwebtoken');
 var bcrypt = require('bcryptjs');
 var salt = bcrypt.genSaltSync(10); // salage
 
@@ -81,13 +82,16 @@ router.route('/login')
             }
           
             if(resCompare) {
+              var token = jwt.sign(result, constants.JWT_SECRET, { expiresInMinutes: 10/*60*5*/ });
               req.session.idUser = result._id;
               req.session.emailUser = result.email;
               //console.log(req.session);
               res.status(201);
               res.json({ status: constants.JSON_STATUS_SUCCESS,
                 title: 'Connexion',
-                message: 'Vous êtes à présent connecté!'});
+                message: 'Vous êtes à présent connecté!',
+                token: token
+              });
             } else {
               res.status(201);
               res.json({ status : constants.JSON_STATUS_ERROR,
