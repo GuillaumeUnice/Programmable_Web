@@ -29,7 +29,8 @@ angular
     JSON_STATUS_ERROR: -2,
 
   })
-  .config(function ($routeProvider) {
+  .config(function ($routeProvider, $httpProvider) {
+    $httpProvider.interceptors.push('TokenInterceptor');
     $routeProvider
 
       .when('/', {
