@@ -16,6 +16,7 @@ angular
     'ngRoute',
     'ngSanitize',
     'ngTouch',
+    'rzModule',
     'notifications'
   ])
   .constant('CONFIG', {
@@ -31,16 +32,17 @@ angular
   .config(function ($routeProvider, $httpProvider) {
     $httpProvider.interceptors.push('TokenInterceptor');
     $routeProvider
+
       .when('/', {
         templateUrl: 'views/main.html',
         controller: 'MainCtrl',
         controllerAs: 'main',
         access: { requiredLogin: false }
       })
-      .when('/about', {
-        templateUrl: 'views/about.html',
-        controller: 'AboutCtrl',
-        controllerAs: 'about',
+      .when('/', {
+        templateUrl: 'views/mix.html',
+        controller: 'MixCtrl',
+        controllerAs: 'mix',
         access: { requiredLogin: false }
       })
       .when('/login', {

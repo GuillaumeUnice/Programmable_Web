@@ -19,22 +19,21 @@ var salt = bcrypt.genSaltSync(10); // salage
  * 					  Middleware ➜ to use for all requests
  **********************************************************************************/
 router.use(function(req, res, next) {
-    console.log('Middleware called.');
-    // allows requests fromt angularJS frontend applications
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-  	res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-    next(); // go to the next route
+  console.log('Middleware called.');
+  // allows requests fromt angularJS frontend applications
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next(); // go to the next route
 });
 
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
 
-	songsRepository.uploadSong(req.db,'./meistersinger.mp3', function(err, result) {
-		console.log("OKKKK");
-	});
-
+  songsRepository.uploadSong(req.db,'./meistersinger.mp3', function(err, result) {
+    console.log("OKKKK");
+  });
   res.render('index', { title: 'Express' });
 
 });
@@ -45,14 +44,15 @@ router.get('/', function(req, res, next) {
  **********************************************************************************/
 // TODO delete session
 router.route('/logout')
-    .get(function(req, res) {
-      console.log(req.session.emailUser);
-      res.json({ status: constants.JSON_STATUS_SUCCESS,
-        title: 'Connexion',
-        message: 'Vous êtes déconnecté!'});  
-    });
+  .get(function(req, res) {
+    console.log(req.session.emailUser);
+    res.json({ status: constants.JSON_STATUS_SUCCESS,
+      title: 'Connexion',
+      message: 'Vous êtes déconnecté!'});
+  });
 
 router.route('/login')
+
     .post(function(req, res) {
       console.log(req.body);
       usersRepository.findUserByPseudo(req.db, req.body.email, function(err, result) {
@@ -103,44 +103,43 @@ router.route('/login')
         }
       });
     });
-
 router.route('/auth/register')
-    .post(function(req, res) {
-      usersRepository.findUserByPseudo(req.db, req.body.email, function(err, result) { 
-        if(err) {
-          console.log(err);
-          res.status(404);
-          res.json({ status: constants.JSON_STATUS_ERROR,
-            title: 'Erreur Système',
-            message: 'Une erreur inattendu c\'est produit! Veuillez contacter l\'administrateur'});  
-          return;
-        }
-        console.log(result);
-        if(utils.isEmpty(result)) {
-          req.body.password = bcrypt.hashSync(req.body.password, salt);
-          usersRepository.addUser(req.db, req.body, function(err, result) {
-            if(err) {
-              console.log(err);
-              res.status(404);
-              res.json({ status: constants.JSON_STATUS_ERROR,
-                title: 'Erreur Système',
-                message: 'Une erreur inattendu c\'est produit! Veuillez contacter l\'administrateur'});  
-              return;
-            }
-            res.status(201);
-            res.json({ status: constants.JSON_STATUS_SUCCESS,
-              title: 'Connexion',
-              message: 'Vous êtes à présent inscris!'});  
-          });
-        } else {
+  .post(function(req, res) {
+    usersRepository.findUserByPseudo(req.db, req.body.email, function(err, result) {
+      if(err) {
+        console.log(err);
+        res.status(404);
+        res.json({ status: constants.JSON_STATUS_ERROR,
+          title: 'Erreur Système',
+          message: 'Une erreur inattendu c\'est produit! Veuillez contacter l\'administrateur'});
+        return;
+      }
+      console.log(result);
+      if(utils.isEmpty(result)) {
+        req.body.password = bcrypt.hashSync(req.body.password, salt);
+        usersRepository.addUser(req.db, req.body, function(err, result) {
+          if(err) {
+            console.log(err);
+            res.status(404);
+            res.json({ status: constants.JSON_STATUS_ERROR,
+              title: 'Erreur Système',
+              message: 'Une erreur inattendu c\'est produit! Veuillez contacter l\'administrateur'});
+            return;
+          }
           res.status(201);
           res.json({ status: constants.JSON_STATUS_SUCCESS,
-              title: 'Connexion',
-              message: 'Un compte avec cette email existe déjà!'});  
-        }
-      });
-        
+            title: 'Connexion',
+            message: 'Vous êtes à présent inscris!'});
+        });
+      } else {
+        res.status(201);
+        res.json({ status: constants.JSON_STATUS_SUCCESS,
+          title: 'Connexion',
+          message: 'Un compte avec cette email existe déjà!'});
+      }
     });
+
+  });
 
 
 module.exports = router;

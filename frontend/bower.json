@@ -10,6 +10,7 @@
     "angular-route": "^1.4.0",
     "angular-sanitize": "^1.4.0",
     "angular-touch": "^1.4.0",
+    "angularjs-slider": "~2.4.0",
     "ngnotification": "~0.0.8"
   },
   "devDependencies": {

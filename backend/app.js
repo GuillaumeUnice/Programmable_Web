@@ -1,3 +1,4 @@
+
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
@@ -11,6 +12,7 @@ var session = require('express-session');
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
+var feedbacks = require('./routes/feedbacks');
 
 var app = express();
 
@@ -33,7 +35,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 /** TODO ADD **/
-app.use(session({ 
+app.use(session({
   secret: 'ceciestunsercretesfefefeffe',  // session secret
   duration: 30 * 60 * 1000,
   activeDuration: 5 * 60 * 1000,
@@ -42,6 +44,7 @@ app.use(session({
 
 app.use('/', routes);
 app.use('/users', users);
+app.use('/feedbacks', feedbacks);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
