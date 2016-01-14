@@ -33,7 +33,6 @@ router.get('/', function(req, res, next) {
   songsRepository.uploadSong(req.db,'./meistersinger.mp3', function(err, result) {
     console.log("OKKKK");
   });
-
   res.render('index', { title: 'Express' });
 
 });
