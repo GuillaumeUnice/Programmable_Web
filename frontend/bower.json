@@ -27,5 +27,9 @@
         "dist/js/bootstrap.js"
       ]
     }
+  },
+  "resolutions": {
+    "angular": "1.4.8",
+    "angular-file-upload": "1.1.5"
   }
 }
