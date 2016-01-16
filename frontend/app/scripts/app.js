@@ -17,7 +17,8 @@ angular
     'ngSanitize',
     'ngTouch',
     'rzModule',
-    'notifications'
+    'notifications',
+    'angularFileUpload'
   ])
   .constant('CONFIG', {
     baseUrl: 'http://localhost:3000',
