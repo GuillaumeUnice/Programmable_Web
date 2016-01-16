@@ -17,11 +17,14 @@ angular
     'ngSanitize',
     'ngTouch',
     'rzModule',
-    'notifications'
+    'notifications',
+    'angularFileUpload'
   ])
   .constant('CONFIG', {
     baseUrl: 'http://localhost:3000',
     baseUrlApi: 'http://localhost:3000',
+
+    MIX_DEFAULT_SOUND : 50,
 
     JSON_STATUS_SUCCESS: 1,
     JSON_STATUS_WARNING: -1,
@@ -30,8 +33,8 @@ angular
 
   })
   .config(function ($routeProvider, $httpProvider) {
-    $httpProvider.interceptors.push('tokenInterceptor');
 
+    $httpProvider.interceptors.push('tokenInterceptor');
     $routeProvider
       .when('/', {
         templateUrl: 'views/main.html',
@@ -39,7 +42,7 @@ angular
         controllerAs: 'main',
         access: { requiredLogin: false }
       })
-      .when('/', {
+      .when('/mix', {
         templateUrl: 'views/mix.html',
         controller: 'MixCtrl',
         controllerAs: 'mix',

@@ -24,9 +24,32 @@ angular.module('frontendApp')
 	        return deferred.promise;
 
         },
-    
+
         logOut: function() {
- 
-        }
-    };
+
+        },
+
+         saveInfo: function(str) {
+           var deferred = $q.defer();
+           $http.post(CONFIG.baseUrlApi + '/save', {name: str})
+             .success(function(data) {
+               notification.writeNotification(data);
+               deferred.resolve(data);
+             }).error(function(data) {
+               notification.writeNotification(data);
+               deferred.reject(false);
+             });
+           return deferred.promise;
+         },
+
+         upload: function(uri) {
+
+         },
+         download: function(uri) {
+
+         }
+
+
+        };
   });
+

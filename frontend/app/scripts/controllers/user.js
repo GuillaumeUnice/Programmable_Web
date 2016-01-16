@@ -12,7 +12,7 @@ angular.module('frontendApp')
     $scope.logIn = function logIn(username, password) {
         if (username !== undefined && password !== undefined) {
 
-     
+
             user.logIn(username, password)
                 .then(function(data){
                     auth.isLogged = true;
@@ -31,10 +31,14 @@ angular.module('frontendApp')
             $location.path("/");
         }
     };
+
   });
 
 /*
 'use strict';
+=======
+
+>>>>>>> d657e671284c9ea58588f24ae5d48becf9d32171
 
 /**
  * @ngdoc function
@@ -46,11 +50,11 @@ angular.module('frontendApp')
 angular.module('frontendApp')
   .controller('UserCtrl', ['$scope', '$location', '$window', 'user',
     function UserCtrl($scope, $location, $window, user) {
- 
+
     $scope.logIn = function logIn(username, password) {
         if (username !== undefined && password !== undefined) {
 
-     
+
             user.logIn(username, password)
                 .then(function(data){
                     //auth.isLogged = true;

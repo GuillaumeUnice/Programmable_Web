@@ -4,17 +4,26 @@
 var express = require('express');
 var router = express.Router();
 
-/* GET marks listing. */
-router.get('/', function(req, res, next) {
-    var mixes = req.db.collection('mixes').find();
-    res.writeHead(200, { 'Content-Type': 'application/json' });
-    res.write(JSON.stringify(mixes));
-    res.send();
+/* GET feedbacks listing for a particular mix. */
+router.get('/:idMix', function(req, res) {
+    var idMix = +req.params.idMix;
+    var cursor = req.db.collection('mixes').find({"id" : idMix });
+    cursor.each(function(err, doc) {
+        if (doc != null) {
+            res.json(doc.feedbacks);
+        }
+        else res.send("No feedback found for this mix");
+    });
 });
 
-router.post('/:newMixes', function(req, res, next) {
-    var newMixes = req.params.newMixes;
-    res.send('Bonjour');
+/* POST feedback for a particular mix. */
+router.post('/:idMix', function(req, res) {
+    var newFeedback = { user: req.body.user, mark: +req.body.mark, comment: req.body.comment};
+    var idMix = +req.params.idMix;
+    req.db.collection('mixes').updateOne({"id" : idMix },{ $push: { "feedbacks": newFeedback } });
+    res.send('Feedback added!');
 });
+
+
 
 module.exports = router;
