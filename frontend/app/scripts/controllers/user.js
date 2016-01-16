@@ -33,7 +33,7 @@ angular.module('frontendApp')
     };
   });
 
-
+/*
 'use strict';
 
 /**

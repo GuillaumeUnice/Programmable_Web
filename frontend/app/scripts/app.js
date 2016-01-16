@@ -30,9 +30,9 @@ angular
 
   })
   .config(function ($routeProvider, $httpProvider) {
-    $httpProvider.interceptors.push('TokenInterceptor');
-    $routeProvider
+    $httpProvider.interceptors.push('tokenInterceptor');
 
+    $routeProvider
       .when('/', {
         templateUrl: 'views/main.html',
         controller: 'MainCtrl',
@@ -44,6 +44,12 @@ angular
         controller: 'MixCtrl',
         controllerAs: 'mix',
         access: { requiredLogin: false }
+      })
+      .when('/lol', {
+        templateUrl: 'views/mix.html',
+        controller: 'MixCtrl',
+        controllerAs: 'mix',
+        access: { requiredLogin: true }
       })
       .when('/login', {
         templateUrl: 'views/login.html',

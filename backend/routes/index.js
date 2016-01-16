@@ -82,7 +82,7 @@ router.route('/login')
             }
           
             if(resCompare) {
-              var token = jwt.sign(result, constants.JWT_SECRET, { expiresInMinutes: 10/*60*5*/ });
+              var token = jwt.sign(result, constants.JWT_SECRET, { expiresInMinutes: 1/*60*5*/ });
               req.session.idUser = result._id;
               req.session.emailUser = result.email;
               //console.log(req.session);
