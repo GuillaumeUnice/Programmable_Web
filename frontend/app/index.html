@@ -8,7 +8,6 @@
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
     <!-- build:css(.) styles/vendor.css -->
     <!-- bower:css -->
-    <link rel="stylesheet" href="bower_components/angularjs-slider/dist/rzslider.css" />
     <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.css" />
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
     <!-- endbower -->
@@ -51,8 +50,6 @@
             <ul class="nav navbar-nav">
               <li class="active"><a href="#/">Home</a></li>
               <li><a ng-href="#/mix">Mix</a></li>
-              <li><a ng-href="#/coucou">Coucou</a></li>
-
             </ul>
           </div>
         </div>
@@ -95,9 +92,12 @@
 
         <!-- build:js({.tmp,app}) scripts/scripts.js -->
         <script src="scripts/app.js"></script>
+
         <script src="scripts/controllers/mix.js"></script>
-        <script src="scripts/services/auth.js"></script>
         <script src="scripts/controllers/user.js"></script>
+        <script src="scripts/controllers/home.js"></script>
+
+        <script src="scripts/services/auth.js"></script>
         <script src="scripts/services/user.js"></script>
         <script src="scripts/services/notification.js"></script>
         <script src="scripts/services/tokeninterceptor.js"></script>

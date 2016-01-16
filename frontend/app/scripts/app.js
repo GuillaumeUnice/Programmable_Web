@@ -37,9 +37,9 @@ angular
     $httpProvider.interceptors.push('tokenInterceptor');
     $routeProvider
       .when('/', {
-        templateUrl: 'views/main.html',
-        controller: 'MainCtrl',
-        controllerAs: 'main',
+        templateUrl: 'views/home.html',
+        controller: 'HomeCtrl',
+        controllerAs: 'home',
         access: { requiredLogin: false }
       })
       .when('/mix', {
@@ -47,12 +47,6 @@ angular
         controller: 'MixCtrl',
         controllerAs: 'mix',
         access: { requiredLogin: false }
-      })
-      .when('/lol', {
-        templateUrl: 'views/mix.html',
-        controller: 'MixCtrl',
-        controllerAs: 'mix',
-        access: { requiredLogin: true }
       })
       .when('/login', {
         templateUrl: 'views/login.html',
