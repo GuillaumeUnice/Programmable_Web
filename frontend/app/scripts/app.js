@@ -23,6 +23,8 @@ angular
     baseUrl: 'http://localhost:3000',
     baseUrlApi: 'http://localhost:3000',
 
+    MIX_DEFAULT_SOUND : 50,
+
     JSON_STATUS_SUCCESS: 1,
     JSON_STATUS_WARNING: -1,
     JSON_STATUS_NOTICE: 0,
@@ -30,7 +32,7 @@ angular
 
   })
   .config(function ($routeProvider, $httpProvider) {
-    $httpProvider.interceptors.push('TokenInterceptor');
+    //$httpProvider.interceptors.push('TokenInterceptor');
     $routeProvider
 
       .when('/', {
@@ -39,7 +41,7 @@ angular
         controllerAs: 'main',
         access: { requiredLogin: false }
       })
-      .when('/', {
+      .when('/mix', {
         templateUrl: 'views/mix.html',
         controller: 'MixCtrl',
         controllerAs: 'mix',
