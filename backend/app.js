@@ -16,7 +16,7 @@ var feedbacks = require('./routes/feedbacks');
 
 var app = express();app.use(busboy());
 
-var constants = require(' ./config/constants');
+var constants = require('./config/constants');
 
 var expressMongoDb = require('express-mongo-db');
 
