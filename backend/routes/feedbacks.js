@@ -12,20 +12,18 @@ router.get('/:idMix', function(req, res) {
         if (doc != null) {
             res.json(doc.feedbacks);
         }
+        else res.send("No feedback found for this mix");
     });
 });
 
+/* POST feedback for a particular mix. */
 router.post('/:idMix', function(req, res) {
-    console.log(req.body.mark);
-    if(!isNaN(parseFloat(req.body.mark)) && isFinite(req.body.mark)){
-        var newFeedback = { mark: +req.body.mark, comment: req.body.comment};
-        var idMix = +req.params.idMix;
-        req.db.collection('mixes').updateOne({"id" : idMix },{ $push: { "feedbacks": newFeedback } });
-        res.send('Feedback added!');
-    }
-    else{
-        res.send('Error!');
-    }
+    var newFeedback = { user: req.body.user, mark: +req.body.mark, comment: req.body.comment};
+    var idMix = +req.params.idMix;
+    req.db.collection('mixes').updateOne({"id" : idMix },{ $push: { "feedbacks": newFeedback } });
+    res.send('Feedback added!');
 });
+
+
 
 module.exports = router;
