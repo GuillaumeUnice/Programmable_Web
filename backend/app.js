@@ -6,7 +6,7 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
-
+var busboy = require('connect-busboy');
 /** TODO ADD **/
 var session = require('express-session');
 
@@ -14,9 +14,9 @@ var routes = require('./routes/index');
 var users = require('./routes/users');
 var feedbacks = require('./routes/feedbacks');
 
-var app = express();
+var app = express();app.use(busboy());
 
-var constants = require('./config/constants');
+var constants = require(' ./config/constants');
 
 var expressMongoDb = require('express-mongo-db');
 
@@ -35,11 +35,11 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 /** TODO ADD **/
-/*app.use(session({
+app.use(session({
   secret: 'ceciestunsercretesfefefeffe',  // session secret
   duration: 30 * 60 * 1000,
   activeDuration: 5 * 60 * 1000,
-}));*/
+}));
 
 
 app.use('/', routes);

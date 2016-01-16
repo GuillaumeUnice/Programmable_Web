@@ -31,8 +31,29 @@ router.use(function(req, res, next) {
 /* GET home page. */
 router.get('/', function(req, res, next) {
 
-  songsRepository.uploadSong(req.db,'./meistersinger.mp3', function(err, result) {
+  /*songsRepository.downloadSong(req.db, 'meistersinger2.mp3', function(err, result) {
     console.log("OKKKK");
+  });*/
+  songsRepository.insertDocument(req.db, {name :req.body.name}, function(err, result) {
+    if(err) {
+      console.log(err);
+      res.status(404);
+      res.json({ status: constants.JSON_STATUS_ERROR,
+        title: 'Erreur Système',
+        message: 'Une erreur inattendu c\'est produit! Veuillez contacter l\'administrateur'});
+      return;
+    }
+
+    // verify if correct password thank to BCrypt Hash
+    // resCompare = true if same password else false
+    if(utils.isEmpty(result)) {
+      res.status(201);
+      res.json({ status: constants.JSON_STATUS_ERROR,
+        title: 'Erreur connexion',
+        message: 'L\'utilisateur n\'existe pas! Email incorrect!'});
+    } else {
+
+    }
   });
   res.render('index', { title: 'Express' });
 
@@ -65,7 +86,7 @@ router.route('/login')
           return;
         }
         
-        // verify if correct password thank to BCrypt Hash
+        // verify if correct password thanks to BCrypt Hash
         // resCompare = true if same password else false
         if(utils.isEmpty(result)) {
           res.status(201);
@@ -141,5 +162,90 @@ router.route('/auth/register')
 
   });
 
+router.route('/save')
+  .post(function(req, res) {
+    songsRepository.insertDocument(req.db, {name :req.body.name}, function(err, result) {
+      if(err) {
+        console.log(err);
+        res.status(404);
+        res.json({ status: constants.JSON_STATUS_ERROR,
+          title: 'Erreur Système',
+          message: 'Une erreur inattendu c\'est produit! Veuillez contacter l\'administrateur'});
+        return;
+      }
+
+      // verify if correct password thank to BCrypt Hash
+      // resCompare = true if same password else false
+      if(utils.isEmpty(result)) {
+        res.status(201);
+        res.json({ status: constants.JSON_STATUS_ERROR,
+          title: 'Erreur connexion',
+          message: 'L\'utilisateur n\'existe pas! Email incorrect!'});
+      } else {
+        res.status(201);
+        res.json({ status: constants.JSON_STATUS_SUCCESS,
+          title: 'Connexion',
+          message: 'Un compte avec cette email existe déjà!'});
+      }
+    });
+  });
+//app.post('/upload',songsRepository.uploadSong);
+router.route('/upload')
+  .post(function(req, res) {
+    //console.log( req.files.file.name);
+    songsRepository.uploadSong(req,res, function(err, result) {
+      if(err) {
+        console.log(err);
+        res.status(404);
+        res.json({ status: constants.JSON_STATUS_ERROR,
+          title: 'Erreur Système',
+          message: 'Une erreur inattendu c\'est produit! Veuillez contacter l\'administrateur'});
+        return;
+      }
+
+      // verify if correct password thank to BCrypt Hash
+      // resCompare = true if same password else false
+      if(utils.isEmpty(result)) {
+        res.status(201);
+        res.json({ status: constants.JSON_STATUS_ERROR,
+          title: 'Erreur connexion',
+          message: 'L\'utilisateur n\'existe pas! Email incorrect!'});
+      } else {
+        res.status(201);
+        res.json({ status: constants.JSON_STATUS_SUCCESS,
+          title: 'Connexion',
+          message: 'Un compte avec cette email existe déjà!'});
+      }
+    });
+  });
+
+router.route('/download')
+  .post(function(req, res) {
+
+    songsRepository.downloadSong(req.db, req.body.name, function(err, result) {
+      if(err) {
+        console.log(err);
+        res.status(404);
+        res.json({ status: constants.JSON_STATUS_ERROR,
+          title: 'Erreur Système',
+          message: 'Une erreur inattendu c\'est produit! Veuillez contacter l\'administrateur'});
+        return;
+      }
+
+      // verify if correct password thank to BCrypt Hash
+      // resCompare = true if same password else false
+      if(utils.isEmpty(result)) {
+        res.status(201);
+        res.json({ status: constants.JSON_STATUS_ERROR,
+          title: 'Erreur connexion',
+          message: 'L\'utilisateur n\'existe pas! Email incorrect!'});
+      } else {
+        res.status(201);
+        res.json({ status: constants.JSON_STATUS_SUCCESS,
+          title: 'Connexion',
+          message: 'Un compte avec cette email existe déjà!'});
+      }
+    });
+  });
 
 module.exports = router;
