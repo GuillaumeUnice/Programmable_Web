@@ -1,21 +1,20 @@
-<div style="width: 100%; height: 690px; margin : 0;">
-
-  <div class="row">
+<div class="row">
 
     <!-- LEFT part -->
     <div class="col-md-2">
 
       <!-- PISTES -->
       <div class="row">
-        <div style="margin-left: 20px; margin-bottom: 20px; width: 100%; height: 400px" class="panel panel-default">
-
+        <div id="pistes" class="panel panel-default">
+          <!-- insert something -->
         </div>
       </div>
 
       <!-- JESAISPAS -->
       <div class="row">
-        <div style="margin-left: 20px; width: 100%; height: 200px" class="panel panel-default">
-          </div>
+        <div id="dunno" class="panel panel-default">
+          <!-- insert something -->
+        </div>
       </div>
 
     </div>
@@ -23,26 +22,24 @@
 
 
     <!-- CENTER part -->
-    <div class="col-md-10">
+    <div class="col-md-9">
 
       <!-- TOP part -->
       <div class="row">
 
         <!-- CONSOLE -->
         <div class="col-md-6">
-            <div style="float: none; margin: 0 auto; width: 80%; height: 125px" class="panel panel-default">
+            <div id="console" class="panel panel-default">
               <div class="panel-body">
-                <p>Console 1</p>
-                <p>Console 2</p>
-                <p>Console 3</p>
+                <!-- insert something -->
               </div>
             </div>
         </div>
 
         <!-- WAVE -->
         <div class="col-md-6">
-          <div style="float: none; margin: 0 auto; width: 80%; height: 125px" class="panel panel-default">
-
+          <div id="wave" class="panel panel-default">
+            <!-- insert something -->
           </div>
         </div>
 
@@ -50,41 +47,37 @@
 
 
       <!-- MIDDLE part -->
-      <div class="row">
+      <div class="row" style="padding-top: 40px; padding-left: 50px">
 
-        <div style="width: 85%; float: none; margin: 0 auto; margin-top: 30px">
-
-          <div class="col-md-2" style="margin: 0 auto; height: 350px">
-            <rzslider rz-slider-model="priceSlider1.value" rz-slider-options="priceSlider1.options" ></rzslider>
-            <button>zefze</button>
+        <!-- MIX part -->
+        <div class="col-md-9">
+          <div class="row">
+            <div class="col-md-2" style="height : 40vh;" ng-repeat="slider in priceSliders">
+              <rzslider class="fader" rz-slider-model="slider.value" rz-slider-options="slider.options" ></rzslider>
+            </div>
           </div>
-
-          <div class="col-md-2" style="margin: 0 auto; height: 350px">
-            <rzslider rz-slider-model="priceSlider2.value" rz-slider-options="priceSlider2.options"></rzslider>
-          </div>
-
-          <div class="col-md-2" style="margin: 0 auto; height: 350px">
-            <rzslider rz-slider-model="priceSlider3.value" rz-slider-options="priceSlider3.options" ></rzslider>
-          </div>
-
-          <div class="col-md-2" style="margin: 0 auto; height: 350px">
-            <rzslider rz-slider-model="priceSlider4.value" rz-slider-options="priceSlider4.options" ></rzslider>
-          </div>
-
-          <div class="col-md-2" style="margin: 0 auto; height: 350px">
-            <rzslider rz-slider-model="priceSlider5.value" rz-slider-options="priceSlider5.options" ></rzslider>
-          </div>
-
-          <div class="col-md-2" style="margin: 0 auto; height: 350px">
-            <rzslider rz-slider-model="priceSlider6.value" rz-slider-options="priceSlider6.options" ></rzslider>
-          </div>
-
         </div>
+
+        <!-- Right part -->
+        <div class="col-md-2">
+          <div class="row">
+            <button ng-click="default()">Default</button>
+          </div>
+          <div class="row">
+
+          </div>
+          <div class="row">
+
+          </div>
+        </div>
+
 
       </div>
 
+
       <!-- Bottom element -->
       <div class="row">
+
           <div style="margin-left: 20px; width: 100%; height: 200px" class="panel panel-default">
           <input type="text" class="form-control" id="url_update" placeholder="url" ng-model="send.msg">
             <button type="submit" class="btn btn-default" ng-click="save(send.msg)">save</button>
@@ -157,8 +150,5 @@
       </div>
 
     </div>
-
-  </div>
-
 
 </div>

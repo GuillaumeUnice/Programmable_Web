@@ -9,62 +9,62 @@
  * Controller of the frontendApp
  */
 angular.module('frontendApp')
+
   .controller('MixCtrl', function ($scope, user,CONFIG,FileUploader) {
 
-    $scope.priceSlider1 = {
-      value: 50,
-      options: {
-        floor: 0,
-        ceil: 100,
-        vertical: true
-      }
-    };
 
-    $scope.priceSlider2 = {
-      value: 50,
-      options: {
-        floor: 0,
-        ceil: 100,
-        vertical: true
-      }
-    };
+    $scope.priceSliders = [
+      {
+        value: 50,
+        options: {
+          floor: 0,
+          ceil: 100,
+          vertical: true
+        }
+      }, {
+        value: 50,
+        options: {
+          floor: 0,
+          ceil: 100,
+          vertical: true
+        }
+      }, {
+        value: 50,
+        options: {
+          floor: 0,
+          ceil: 100,
+          vertical: true
+        }
+      }, {
+        value: 50,
+        options: {
+          floor: 0,
+          ceil: 100,
+          vertical: true
+        }
+      }, {
+        value: 50,
+        options: {
+          floor: 0,
+          ceil: 100,
+          vertical: true
+        }
+      }, {
+        value: 50,
+        options: {
+          floor: 0,
+          ceil: 100,
+          vertical: true
+        }
+      }];
 
-    $scope.priceSlider3 = {
-      value: 50,
-      options: {
-        floor: 0,
-        ceil: 100,
-        vertical: true
-      }
-    };
 
-    $scope.priceSlider4 = {
-      value: 50,
-      options: {
-        floor: 0,
-        ceil: 100,
-        vertical: true
+    $scope.default = function() {
+      var l = $scope.priceSliders.length;
+      for( var i = 0 ; i < l ; i ++ ) {
+        $scope.priceSliders[i].value = CONFIG.MIX_DEFAULT_SOUND;
       }
-    };
-
-    $scope.priceSlider5 = {
-      value: 50,
-      options: {
-        floor: 0,
-        ceil: 100,
-        vertical: true
-      }
-    };
-
-    $scope.priceSlider6 = {
-      value: 50,
-      options: {
-        floor: 0,
-        ceil: 100,
-        vertical: true
-      }
-    };
-
+    }
 
     $scope.save = function save(str) {
       if (str !== undefined && str !=="" ) {
