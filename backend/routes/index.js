@@ -65,7 +65,7 @@ router.route('/login')
           return;
         }
         
-        // verify if correct password thank to BCrypt Hash
+        // verify if correct password thanks to BCrypt Hash
         // resCompare = true if same password else false
         if(utils.isEmpty(result)) {
           res.status(201);
