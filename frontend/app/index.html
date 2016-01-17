@@ -65,6 +65,78 @@
     <div ng-view=""></div>
 <!--    </div> -->
 
+
+
+
+<div id="demo" ng-controller="PlayerCtrl as player" >
+  <div class="row" style="background-color: gray; position: absolute; bottom: 0; left: 0; right: 0; margin: auto; border: none;">
+      <div class="col-sm-4">
+        <auto-scoll-text comments="commentTab"></auto-scoll-text>
+          <!--<span>
+            Je pense que ce titre est a prendre avec des pincettes :D
+          </span>-->
+      </div>
+      <div class="col-sm-1">
+          <span>
+            Titre
+          </span>
+          <br>
+          <span>Note : 4.5/5</span>
+          <br>
+          <span>Votre note : 4.5/5</span>
+      </div>
+      <div class="col-sm-6">
+          <ng-wavesurfer url="./media/test.wav" wave-color="#337ab7" progress-color="#23527c" height="64">
+          </ng-wavesurfer>
+      </div>
+
+      <div class="col-sm-1">
+          <button class="btn btn-success btn-block" ng-click="wavesurfer.playPause()">
+              <span id="play" ng-show="paused">
+                  <i class="glyphicon glyphicon-play"></i>
+                  Play
+              </span>
+
+              <span id="pause" ng-show="!paused">
+                  <i class="glyphicon glyphicon-pause"></i>
+                  Pause
+              </span>
+          </button>
+
+          <button class="btn btn-success btn-block" ng-click="wavesurfer.playPause()">
+            Queue
+          </button>
+      </div>
+  </div>
+  <!--
+  <div class="list-group" id="playlist">
+    <a href=""
+       ng-class="{ 'list-group-item': true, active: isPlaying('./media/demo.wav') }"
+       ng-click="play('./media/demo.wav')">
+        <i class="glyphicon glyphicon-play"></i>
+        czskamaarù – Trou
+        <span class="badge">0:21</span>
+    </a>
+
+    <a href=""
+       ng-class="{ 'list-group-item': true, active: isPlaying('./media/test.wav') }"
+       ng-click="play('./media/test.wav')">
+        <i class="glyphicon glyphicon-play"></i>
+        Looool
+        <span class="badge">1:04</span>
+    </a>
+  </div>
+    -->
+</div>
+
+
+
+
+
+
+
+
+
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
      <script>
        !function(A,n,g,u,l,a,r){A.GoogleAnalyticsObject=l,A[l]=A[l]||function(){
@@ -94,6 +166,7 @@
     <!-- endbower -->
     <!-- endbuild -->
     <script src="bower_components/ngnotification/notification.js"></script>
+    <script src="bower_components/wavesurfer/wavesurfer.min.js"></script>
 
         <!-- build:js({.tmp,app}) scripts/scripts.js -->
         <script src="scripts/app.js"></script>
@@ -107,6 +180,9 @@
         <script src="scripts/services/notification.js"></script>
         <script src="scripts/services/tokeninterceptor.js"></script>
         <script src="scripts/directives/compareto.js"></script>
+        <script src="scripts/directives/ngwavesurfer.js"></script>
+        <script src="scripts/controllers/player.js"></script>
+        <script src="scripts/directives/autoscolltext.js"></script>
         <!-- endbuild -->
 </body>
 </html>
