@@ -13,8 +13,10 @@ angular.module('frontendApp')
         request: function (config) {
             config.headers = config.headers || {};
             if ($window.sessionStorage.token) {
+                console.log("bearerssssssssssss");
                 config.headers.Authorization = 'Bearer ' + $window.sessionStorage.token;
             }
+            
             return config;
         },
  
@@ -32,9 +34,11 @@ angular.module('frontendApp')
  
         // Revoke client authentication if 401 is received 
         responseError: function(rejection) {
-            if (rejection !== null && rejection.status === 401 && ($window.sessionStorage.token || auth.isAuthenticated)) {
+            console.log("ici" + rejection.status + auth.isAuthenticated);
+            if (rejection !== null && rejection.status === 401 /*&& ($window.sessionStorage.token || auth.isAuthenticated)*/) {
                 delete $window.sessionStorage.token;
                 auth.isAuthenticated = false;
+
                 $location.path("/login");
             }
  

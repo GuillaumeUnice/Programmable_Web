@@ -1,0 +1,54 @@
+<form class="form-horizontal" name="register" ng-submit="signUp(user)" novalidate>
+
+    <div class="form-group">
+        <label for="email" class="col-sm-4 control-label">Email</label>
+        <div class="col-sm-4">
+            <input type="email" class="form-control" name="email" placeholder="Email" ng-model="user.email" required>
+            <p ng-show="register.email.$invalid && !register.email.$pristine" class="help-block">
+                Entrer un email valide.
+            </p>
+            <p ng-show="register.email.$error.required" class="help-block">
+                Email requis.
+            </p>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="password" class="col-sm-4 control-label">Password</label>
+        <div class="col-sm-4">
+            <input type="password" class="form-control" name="password" placeholder="Password" ng-model="user.password" required>
+            <p ng-show="register.password.$error.required" class="help-block">
+                Password requis.
+            </p>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="confirmPassword" class="col-sm-4 control-label">Confirmer Password</label>
+        <div class="col-sm-4">
+            <input type="password" class="form-control" name="confirmPassword" placeholder="Confirmer Password" ng-model="user.confirmPassword"
+            compare-to="user.password" required>
+            <p ng-show="register.confirmPassword.$error.compareTo" class="help-block">
+                La confirmation n'est pas identique au password
+            </p>
+            <p ng-show="register.confirmPassword.$error.required" class="help-block">
+                Confirmation de password requis.
+            </p>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-sm-offset-4 col-sm-10">
+            <button type="submit" class="btn btn-primary" ng-disabled="register.$invalid">S'enregistrer</button>
+        </div>
+    </div>
+</form>
+
+<form class="form-horizontal" name="testa" ng-submit="test()" novalidate>
+   
+    <div class="form-group">
+        <div class="col-sm-offset-4 col-sm-10">
+            <button type="submit" class="btn btn-default" ng-disabled="testa.$invalid">lool</button>
+        </div>
+    </div>
+</form>
