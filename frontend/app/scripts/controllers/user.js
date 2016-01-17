@@ -42,14 +42,16 @@ angular.module('frontendApp')
 
     $scope.logout = function logout() {
         if (auth.isAuthenticated) {
-
-            auth.isLogged = false;
-            auth.isAuthenticated = false;
-            delete $window.sessionStorage.token;
-            $location.path("/");
+        user.logout()
+            .then(function(data){
+                auth.isLogged = false;
+                auth.isAuthenticated = false;
+                delete $window.sessionStorage.token;
+                $location.path("/");
+            }, function(msg){
+                console.log('erreur promesses : ' + msg);
+            });   
         }
-
-
     };
 
 });

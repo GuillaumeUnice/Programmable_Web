@@ -13,7 +13,6 @@ angular.module('frontendApp')
         request: function (config) {
             config.headers = config.headers || {};
             if ($window.sessionStorage.token) {
-                console.log("bearerssssssssssss");
                 config.headers.Authorization = 'Bearer ' + $window.sessionStorage.token;
             }
             

@@ -53,6 +53,20 @@ angular.module('frontendApp')
            return deferred.promise;
          },
 
+          logout: function() {
+           var deferred = $q.defer();
+           $http.post(CONFIG.baseUrlApi + '/logout')
+             .success(function(data) {
+              console.log(data);
+               notification.writeNotification(data);
+               deferred.resolve(data);
+             }).error(function(data) {
+               notification.writeNotification(data);
+               deferred.reject(false);
+             });
+           return deferred.promise;
+         },
+
       };
 });
 

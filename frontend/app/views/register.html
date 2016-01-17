@@ -1,3 +1,4 @@
+
 <form class="form-horizontal" name="register" ng-submit="signUp(user)" novalidate>
 
     <div class="form-group">
@@ -49,6 +50,15 @@
     <div class="form-group">
         <div class="col-sm-offset-4 col-sm-10">
             <button type="submit" class="btn btn-default" ng-disabled="testa.$invalid">lool</button>
+        </div>
+    </div>
+</form>
+
+<form class="form-horizontal" name="testo" ng-submit="logout()" novalidate>
+   
+    <div class="form-group">
+        <div class="col-sm-offset-4 col-sm-10">
+            <button type="submit" class="btn btn-default" ng-disabled="testo.$invalid">logout</button>
         </div>
     </div>
 </form>

@@ -12,8 +12,7 @@ angular.module('frontendApp')
 
     return {
       writeNotification: function (json) {
-        console.log(json);
-        if(json === null) {
+
          if(json.status !== undefined) {
             var title = json.title ? json.title : "";
             var message = json.message ? json.message : "";
@@ -28,9 +27,7 @@ angular.module('frontendApp')
           } else {
             $notification.error('Erreur', 'Erreur requete ajax');
           }         
-        } else {
-          $notification.error('Erreur', 'Erreur requete ajax');        
-        }
+
 
 
         return;

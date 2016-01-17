@@ -12,7 +12,7 @@ var usersRepository = new usersRepositoryModule.UsersRepository();
 
 // module authentification
 var jwt = require('jsonwebtoken');
-var jwta = require('express-jwt');
+var jwtMid = require('express-jwt');
 var bcrypt = require('bcryptjs');
 var salt = bcrypt.genSaltSync(10); // salage
 
@@ -27,7 +27,7 @@ router.use(function(req, res, next) {
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   next(); // go to the next route*/
 
-    res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Origin", "*");
   res.header('Access-Control-Allow-Credentials', true);
   res.header('Access-Control-Allow-Methods', 'GET, POST, DELETE, PUT');
   res.header('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Authorization');
@@ -68,117 +68,14 @@ router.get('/', function(req, res, next) {
 });
 
 
-/**********************************************************************************
- *                Route for auth API
- **********************************************************************************/
-// TODO delete session
-router.route('/logout')
-  .get(function(req, res) {
-    console.log(req.session.emailUser);
-    res.json({ status: constants.JSON_STATUS_SUCCESS,
-      title: 'Connexion',
-      message: 'Vous êtes déconnecté!'});
-  });
 
-  router.post('/test', jwta({secret: constants.JWT_SECRET}), function(req, res) {
-    console.log("test");
-    res.json({ status: constants.JSON_STATUS_SUCCESS,
-      title: 'Connexion',
-      message: 'Vous êtes déconnecté!'});
-  });
+router.post('/test', jwtMid({secret: constants.JWT_SECRET}), function(req, res) {
+  console.log("test");
+  res.json({ status: constants.JSON_STATUS_SUCCESS,
+    title: 'Connexion',
+    message: 'Vous êtes déconnecté!'});
+});
 
-router.route('/login')
-
-    .post(function(req, res) {
-      console.log(req.body);
-      usersRepository.findUserByPseudo(req.db, req.body.email, function(err, result) {
-        if(err) {
-          console.log(err);
-          res.status(401);
-          res.json({ status: constants.JSON_STATUS_ERROR,
-            title: 'Erreur Système',
-            message: 'Une erreur inattendu c\'est produit! Veuillez contacter l\'administrateur'});  
-          return;
-        }
-        
-        // verify if correct password thanks to BCrypt Hash
-        // resCompare = true if same password else false
-        if(utils.isEmpty(result)) {
-          res.status(401);
-          res.json({ status: constants.JSON_STATUS_ERROR,
-            title: 'Erreur connexion',
-            message: 'L\'utilisateur n\'existe pas! Email incorrect!'});  
-        } else {
-        
-          bcrypt.compare(req.body.password, result.password, function(err, resCompare) { 
-            if(err) {
-              console.log(err);
-              res.status(401);
-              return;
-            }
-          
-            if(resCompare) {
-              var token = jwt.sign(result, constants.JWT_SECRET, { expiresInMinutes: 1/*60*5*/ });
-              // TODO ADD
-              /*req.session.idUser = result._id;
-              req.session.emailUser = result.email;
-              */
-              //console.log(req.session);
-              res.status(200);
-              res.json({ status: constants.JSON_STATUS_SUCCESS,
-                title: 'Connexion',
-                message: 'Vous êtes à présent connecté!',
-                token: token
-              });
-            } else {
-              res.status(401);
-              res.json({ status : constants.JSON_STATUS_ERROR,
-                title: 'Erreur connexion',
-                message: 'Le mot de passe est incorrect!'});  
-            }
-            
-          });
-        }
-      });
-    });
-
-router.route('/register')
-  .post(function(req, res) {
-    usersRepository.findUserByPseudo(req.db, req.body.email, function(err, result) {
-      if(err) {
-        console.log(err);
-        res.status(404);
-        res.json({ status: constants.JSON_STATUS_ERROR,
-          title: 'Erreur Système',
-          message: 'Une erreur inattendu c\'est produit! Veuillez contacter l\'administrateur'});
-        return;
-      }
-      console.log(result);
-      if(utils.isEmpty(result)) {
-        req.body.password = bcrypt.hashSync(req.body.password, salt);
-        usersRepository.addUser(req.db, req.body, function(err, result) {
-          if(err) {
-            console.log(err);
-            res.status(404);
-            res.json({ status: constants.JSON_STATUS_ERROR,
-              title: 'Erreur Système',
-              message: 'Une erreur inattendu c\'est produit! Veuillez contacter l\'administrateur'});
-            return;
-          }
-          res.status(200);
-          res.json({ status: constants.JSON_STATUS_SUCCESS,
-            title: 'Connexion',
-            message: 'Vous êtes à présent inscris!'});
-        });
-      } else {
-        res.status(401);
-        res.json({ status: constants.JSON_STATUS_SUCCESS,
-          title: 'Connexion',
-          message: 'Un compte avec cette email existe déjà!'});
-      }
-    });
-
-  });
 
 router.route('/save')
   .post(function(req, res) {
