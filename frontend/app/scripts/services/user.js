@@ -10,28 +10,11 @@
 angular.module('frontendApp')
   .factory('user', function (CONFIG, $http, $q, notification) {
    return {
-        logIn: function(username, password) {
 
-        	var deferred = $q.defer();
-	        $http.post(CONFIG.baseUrlApi + '/login', { email: username, password: password })
-	          .success(function(data) {
-	            notification.writeNotification(data);
-	            deferred.resolve(data);
-	          }).error(function(data) {
-	            notification.writeNotification(data);
-	            deferred.reject(false);
-	          });
-	        return deferred.promise;
-
-        },
-
-        logOut: function() {
-
-        },
-
-         saveInfo: function(str) {
+        register: function(user) {
+          delete user.confirmPassword;
            var deferred = $q.defer();
-           $http.post(CONFIG.baseUrlApi + '/save', {name: str})
+           $http.post(CONFIG.baseUrlApi + '/register', user)
              .success(function(data) {
                notification.writeNotification(data);
                deferred.resolve(data);
@@ -42,14 +25,48 @@ angular.module('frontendApp')
            return deferred.promise;
          },
 
-         upload: function(uri) {
+        logIn: function(user) {
+          var deferred = $q.defer();
+          $http.post(CONFIG.baseUrlApi + '/login', user)
+            .success(function(data) {
+              notification.writeNotification(data);
+              deferred.resolve(data);
+            }).error(function(data) {
+              notification.writeNotification(data);
+              deferred.reject(false);
+            });
+          return deferred.promise;
 
+        },
+
+        test: function() {
+           var deferred = $q.defer();
+           $http.post(CONFIG.baseUrlApi + '/test', {user: 'lol'})
+             .success(function(data) {
+              console.log(data);
+               notification.writeNotification(data);
+               deferred.resolve(data);
+             }).error(function(data) {
+               notification.writeNotification(data);
+               deferred.reject(false);
+             });
+           return deferred.promise;
          },
-         download: function(uri) {
 
-         }
+          logout: function() {
+           var deferred = $q.defer();
+           $http.post(CONFIG.baseUrlApi + '/logout')
+             .success(function(data) {
+              console.log(data);
+               notification.writeNotification(data);
+               deferred.resolve(data);
+             }).error(function(data) {
+               notification.writeNotification(data);
+               deferred.reject(false);
+             });
+           return deferred.promise;
+         },
 
-
-        };
-  });
+      };
+});
 

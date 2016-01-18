@@ -8,7 +8,7 @@ var bodyParser = require('body-parser');
 
 var busboy = require('connect-busboy');
 /** TODO ADD **/
-var session = require('express-session');
+//var session = require('express-session');
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
@@ -35,11 +35,42 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 /** TODO ADD **/
-app.use(session({
+/*app.use(session({
   secret: 'ceciestunsercretesfefefeffe',  // session secret
   duration: 30 * 60 * 1000,
   activeDuration: 5 * 60 * 1000,
-}));
+}));*/
+
+
+//Routes
+var routess = {};
+routess.auth = require('./controllers/auth.js');
+
+app.use(function(req, res, next) {
+  console.log('Middleware called.');
+  // allows requests fromt angularJS frontend applications
+  /*res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next(); // go to the next route*/
+
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header('Access-Control-Allow-Credentials', true);
+  res.header('Access-Control-Allow-Methods', 'GET, POST, DELETE, PUT');
+  res.header('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Authorization');
+  if ('OPTIONS' == req.method) return res.send(200);
+  next();
+});
+
+
+/**********************************************************************************
+ *                Route for auth API
+ **********************************************************************************/
+app.post('/register', routess.auth.register);
+app.post('/login', routess.auth.login);
+app.post('/logout', routess.auth.logout);
+
+
 
 
 app.use('/', routes);

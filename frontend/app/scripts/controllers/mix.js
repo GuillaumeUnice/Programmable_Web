@@ -64,7 +64,7 @@ angular.module('frontendApp')
       for( var i = 0 ; i < l ; i ++ ) {
         $scope.priceSliders[i].value = CONFIG.MIX_DEFAULT_SOUND;
       }
-    }
+    };
 
     $scope.save = function save(str) {
       if (str !== undefined && str !=="" ) {
