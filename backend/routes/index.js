@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-
+var path = require('path');
 var constants = require('../config/constants');
 var utils = require('../config/utils');
 
@@ -82,26 +82,26 @@ router.route('/login')
           res.status(404);
           res.json({ status: constants.JSON_STATUS_ERROR,
             title: 'Erreur Système',
-            message: 'Une erreur inattendu c\'est produit! Veuillez contacter l\'administrateur'});  
+            message: 'Une erreur inattendu c\'est produit! Veuillez contacter l\'administrateur'});
           return;
         }
-        
+
         // verify if correct password thanks to BCrypt Hash
         // resCompare = true if same password else false
         if(utils.isEmpty(result)) {
           res.status(201);
           res.json({ status: constants.JSON_STATUS_ERROR,
             title: 'Erreur connexion',
-            message: 'L\'utilisateur n\'existe pas! Email incorrect!'});  
+            message: 'L\'utilisateur n\'existe pas! Email incorrect!'});
         } else {
-        
-          bcrypt.compare(req.body.password, result.password, function(err, resCompare) { 
+
+          bcrypt.compare(req.body.password, result.password, function(err, resCompare) {
             if(err) {
               console.log(err);
               res.status(404);
               return;
             }
-          
+
             if(resCompare) {
               var token = jwt.sign(result, constants.JWT_SECRET, { expiresInMinutes: 1/*60*5*/ });
               req.session.idUser = result._id;
@@ -117,9 +117,9 @@ router.route('/login')
               res.status(201);
               res.json({ status : constants.JSON_STATUS_ERROR,
                 title: 'Erreur connexion',
-                message: 'Le mot de passe est incorrect!'});  
+                message: 'Le mot de passe est incorrect!'});
             }
-            
+
           });
         }
       });
@@ -246,6 +246,54 @@ router.route('/download')
           message: 'Un compte avec cette email existe déjà!'});
       }
     });
+  });
+
+router.route('/get')
+  .get(function(req, res) {
+    console.log('find'+req.query.name_find);
+    songsRepository.findRestaurants_by_field(req.db, 'name' ,req.query.name_find, function(err, result) {
+      //console.log(req.session.emailUser);
+      res.json({ status: constants.JSON_STATUS_SUCCESS,
+        title: 'Connexion',
+        message: result});
+    });
+  });
+
+var parth = /\/track\/(\w+)\/(?:sound|visualisation)\/((\w|.)+)/;
+
+router.route(parth)
+  .get(function(req, res) {
+    var id = req.params[0];
+    console.log('send songs');
+    console.log('kk'+req.params[0] + '/' + req.params[1]);
+    console.log(__dirname + '/../Musics/' + req.params[0] + '/' + req.params[1]);
+    res.sendfile(path.resolve(__dirname + '/../Musics/' + req.params[0] + '/' + req.params[1]));
+  });
+
+
+router.route('/track')
+  .get(function(req, res) {
+    songsRepository.getTracks(function(trackList) {
+      if (!trackList)
+        return res.send(404, 'No track found');
+      res.writeHead(200, { 'Content-Type': 'application/json' });
+      res.write(JSON.stringify(trackList));
+      res.end();
+    });
+    //res.sendfile(__dirname + '/../Musics/'  + req.params[0] + '/' + req.params[1]);
+  });
+
+router.route('/track/:id')
+  .get(function(req, res) {
+    var id = req.params.id;
+    songsRepository.getTrack(id,function(track) {
+      if (!track)
+        return res.send(404, 'Track not found with id "' + id + '"');
+      res.writeHead(200, { 'Content-Type': 'application/json' });
+      res.write(JSON.stringify(track));
+      res.end();
+    });
+    //res.sendfile(__dirname + '/../Musics/'  + req.params[0] + '/' + req.params[1]);
   });
 
 module.exports = router;

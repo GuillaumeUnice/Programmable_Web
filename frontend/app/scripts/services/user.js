@@ -42,6 +42,20 @@ angular.module('frontendApp')
            return deferred.promise;
          },
 
+         getInfo: function(str) {
+           var deferred = $q.defer();
+           $http.get(CONFIG.baseUrlApi + '/get', {params: {name_find: str}})
+             .success(function(data) {
+               notification.writeNotification(data);
+               deferred.resolve(data);
+               console.log(data.message);
+             }).error(function(data) {
+               notification.writeNotification(data);
+               deferred.reject(false);
+             });
+           return deferred.promise;
+         },
+
          upload: function(uri) {
 
          },
@@ -50,6 +64,12 @@ angular.module('frontendApp')
          }
 
 
-        };
+
+
+   };
+
+
+
+
   });
 
