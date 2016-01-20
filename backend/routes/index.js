@@ -12,6 +12,7 @@ var usersRepository = new usersRepositoryModule.UsersRepository();
 
 // module authentification
 var jwt = require('jsonwebtoken');
+var jwtMid = require('express-jwt');
 var bcrypt = require('bcryptjs');
 var salt = bcrypt.genSaltSync(10); // salage
 
@@ -21,10 +22,17 @@ var salt = bcrypt.genSaltSync(10); // salage
 router.use(function(req, res, next) {
   console.log('Middleware called.');
   // allows requests fromt angularJS frontend applications
-  res.header("Access-Control-Allow-Origin", "*");
+  /*res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  next(); // go to the next route
+  next(); // go to the next route*/
+
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header('Access-Control-Allow-Credentials', true);
+  res.header('Access-Control-Allow-Methods', 'GET, POST, DELETE, PUT');
+  res.header('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Authorization');
+  if ('OPTIONS' == req.method) return res.send(200);
+  next();
 });
 
 
@@ -60,17 +68,7 @@ router.get('/', function(req, res, next) {
 });
 
 
-/**********************************************************************************
- *                Route for auth API
- **********************************************************************************/
-// TODO delete session
-router.route('/logout')
-  .get(function(req, res) {
-    console.log(req.session.emailUser);
-    res.json({ status: constants.JSON_STATUS_SUCCESS,
-      title: 'Connexion',
-      message: 'Vous êtes déconnecté!'});
-  });
+
 
 router.route('/login')
 
@@ -126,41 +124,55 @@ router.route('/login')
     });
 router.route('/auth/register')
   .post(function(req, res) {
-    usersRepository.findUserByPseudo(req.db, req.body.email, function(err, result) {
-      if(err) {
+    usersRepository.findUserByPseudo(req.db, req.body.email, function (err, result) {
+      if (err) {
         console.log(err);
         res.status(404);
-        res.json({ status: constants.JSON_STATUS_ERROR,
+        res.json({
+          status: constants.JSON_STATUS_ERROR,
           title: 'Erreur Système',
-          message: 'Une erreur inattendu c\'est produit! Veuillez contacter l\'administrateur'});
+          message: 'Une erreur inattendu c\'est produit! Veuillez contacter l\'administrateur'
+        });
         return;
       }
       console.log(result);
-      if(utils.isEmpty(result)) {
+      if (utils.isEmpty(result)) {
         req.body.password = bcrypt.hashSync(req.body.password, salt);
-        usersRepository.addUser(req.db, req.body, function(err, result) {
-          if(err) {
+        usersRepository.addUser(req.db, req.body, function (err, result) {
+          if (err) {
             console.log(err);
             res.status(404);
-            res.json({ status: constants.JSON_STATUS_ERROR,
+            res.json({
+              status: constants.JSON_STATUS_ERROR,
               title: 'Erreur Système',
-              message: 'Une erreur inattendu c\'est produit! Veuillez contacter l\'administrateur'});
+              message: 'Une erreur inattendu c\'est produit! Veuillez contacter l\'administrateur'
+            });
             return;
           }
           res.status(201);
-          res.json({ status: constants.JSON_STATUS_SUCCESS,
+          res.json({
+            status: constants.JSON_STATUS_SUCCESS,
             title: 'Connexion',
-            message: 'Vous êtes à présent inscris!'});
+            message: 'Vous êtes à présent inscris!'
+          });
         });
       } else {
         res.status(201);
-        res.json({ status: constants.JSON_STATUS_SUCCESS,
+        res.json({
+          status: constants.JSON_STATUS_SUCCESS,
           title: 'Connexion',
-          message: 'Un compte avec cette email existe déjà!'});
+          message: 'Un compte avec cette email existe déjà!'
+        });
       }
     });
-
   });
+router.post('/test', jwtMid({secret: constants.JWT_SECRET}), function(req, res) {
+  console.log("test");
+  res.json({ status: constants.JSON_STATUS_SUCCESS,
+    title: 'Connexion',
+    message: 'Vous êtes déconnecté!'});
+});
+
 
 router.route('/save')
   .post(function(req, res) {

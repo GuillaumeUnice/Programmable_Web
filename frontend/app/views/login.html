@@ -1,19 +1,33 @@
-<form class="form-horizontal" role="form">
+<form class="form-horizontal" name="login" ng-submit="logIn(user)" novalidate>
     <div class="form-group">
-        <label for="inputUsername" class="col-sm-4 control-label">Email</label>
+        <label for="email" class="col-sm-4 control-label">Email</label>
         <div class="col-sm-4">
-            <input type="email" class="form-control" id="inputUsername" placeholder="Username" ng-model="login.email">
+            <input type="email" class="form-control" name="email" placeholder="Email" ng-model="user.email" required>
+            <p ng-show="login.email.$invalid && !login.email.$pristine" class="help-block">
+                Entrer un email valide.
+            </p>
+            <p ng-show="login.email.$error.required" class="help-block">
+                Email requis.
+            </p>
         </div>
     </div>
+
     <div class="form-group">
-        <label for="inputPassword" class="col-sm-4 control-label">Password</label>
+        <label for="password" class="col-sm-4 control-label">Password</label>
         <div class="col-sm-4">
-            <input type="password" class="form-control" id="inputPassword" placeholder="Password" ng-model="login.password">
+            <input type="password" class="form-control" name="password" placeholder="Password" ng-model="user.password" required>
+            <p ng-show="login.password.$error.required" class="help-block">
+                Password requis.
+            </p>
         </div>
     </div>
     <div class="form-group">
         <div class="col-sm-offset-4 col-sm-10">
-            <button type="submit" class="btn btn-default" ng-click="logIn(login.email, login.password)">Log In</button>
+            <button type="submit" class="btn btn-default" ng-disabled="login.$invalid">Connexion</button>
         </div>
     </div>
 </form>
+
+
+
+

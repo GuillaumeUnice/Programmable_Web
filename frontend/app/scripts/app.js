@@ -46,6 +46,11 @@ angular
         templateUrl: 'views/mix.html',
         controller: 'MixCtrl',
         controllerAs: 'mix',
+        access: { requiredLogin: true }
+      })
+      .when('/register', {
+        templateUrl: 'views/register.html',
+        controller: 'UserCtrl',
         access: { requiredLogin: false }
       })
       .when('/login', {
@@ -54,7 +59,6 @@ angular
         access: { requiredLogin: false }
       })
       .when('/logout', {
-        templateUrl: 'views/logout.html',
         controller: 'UserCtrl',
         access: { requiredLogin: true }
       })
