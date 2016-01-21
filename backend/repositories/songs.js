@@ -19,15 +19,17 @@ function SongsRepository () {
         });
     };
 
-  this.findRestaurants_by_field = function(db, domaine, content, callback) {
-    var cursor = db.collection('songs').find( { domaine : content } );
+  this.findRestaurants_by_field = function(db, findby, content, callback) {
+    var cursor = db.collection('songs').find( { name : content } );
+    var i =0;
     cursor.each(function(err, doc) {
        //assert.equal(err, null);
+      console.log(i++);
        if (doc !== null) {
-          console.log(doc._id, " in ", doc.a);
+          console.log(doc);
+          callback(null,doc);
        } else {
-          console.log("not found");
-          callback();
+          console.log("not found in the DB");
        }
     });
  };
@@ -94,6 +96,35 @@ function SongsRepository () {
       process.exit(0);
     });console.log("2");
     callback(null,'ok');
+  };
+
+  this.getTracks = function (callback) {
+    getFiles(__dirname + '/../Musics/', callback);
+  };
+
+  this.getTrack = function (id, callback) {
+    getFiles(__dirname + '/../Musics/' + id, function(fileNames) {
+      var track = {
+        id: id,
+        instruments: []
+      };
+      fileNames.sort();
+      for (var i = 0; i < fileNames.length; i += 2) {
+        var instrument = fileNames[i].match(/(.*)\.[^.]+$/, '')[1];
+        track.instruments.push({
+          name: instrument,
+          sound: instrument + '.mp3',
+          visualisation: instrument + '.png'
+        });
+      }
+      callback(track);
+    })
+  };
+
+  function getFiles(dirName, callback) {
+    fs.readdir(dirName, function(error, directoryObject) {
+      callback(directoryObject);
+    });
   };
 
 

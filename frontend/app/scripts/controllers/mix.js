@@ -10,7 +10,7 @@
  */
 angular.module('frontendApp')
 
-  .controller('MixCtrl', function ($scope, user,CONFIG,FileUploader) {
+  .controller('MixCtrl', function ($scope, user,mix, CONFIG,FileUploader) {
 
 
     $scope.priceSliders = [
@@ -75,6 +75,15 @@ angular.module('frontendApp')
       }
     };
 
+    $scope.get = function get(str) {
+      if (str !== undefined && str !=="" ) {
+        //console.log(uri);
+        user.getInfo(str);
+      }else{
+        alert("cann't be empty");
+      }
+    };
+
     $scope.download = function download(uri) {
 
       //user.download('kkk');
@@ -116,6 +125,44 @@ angular.module('frontendApp')
       $scope.uploader.remove();
       //$scope.imageURL = $scope.user.profileImageURL;
     };
+    $scope.buf = [];
+    //var mm = mix;
+    $scope.loadSong = function () {
 
+      mix.init($scope.buf);
+    };
+
+    $scope.play = function (n) {
+      console.log('kk');
+      $scope.buf = mix.playAT(n);
+      console.log('scpp'+ $scope.buf.length );
+    };
+    $scope.pause = function () {
+      console.log('kk');
+      mix.pauseAT($scope.buf);
+    };
+    $scope.stop = function () {
+      console.log('kk');
+      mix.stopAT($scope.buf);
+    };
+
+    $scope.changeMasterVolume = function () {
+      console.log('kk');
+      mix.changeMasterVolume();
+    };
+
+    $scope.muteUnmuteTrack = function () {
+      console.log('muteUnmuteTrack');
+      mix.muteUnmuteTrack();
+    };
+
+    $scope.changerangeslide = function (num) {
+      console.log('changerangeslide');
+      mix.changeRS(num);
+    };
+    $scope.loadOneSong = function (name) {
+      console.log('loadSong');
+      mix.loadOS(name);
+    };
   });
 
