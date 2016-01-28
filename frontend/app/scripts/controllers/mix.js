@@ -127,11 +127,16 @@ angular.module('frontendApp')
     };
     $scope.buf = [];
     //var mm = mix;
+    $scope.list = [];
     $scope.loadSong = function () {
 
-      var list = mix.init($scope.buf);
-    };
+      mix.init($scope.buf, function(b){
+        $scope.list =b;console.log("list "+ $scope.list );
 
+      });
+
+
+    };
     $scope.play = function (n) {
       console.log('kk');
       $scope.buf = mix.playAT(n);

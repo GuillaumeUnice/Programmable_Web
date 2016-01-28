@@ -21,12 +21,13 @@ angular.module('frontendApp')
     //var buttonPlay, buttonStop, buttonPause,
     var masterVolumeSlider, masterVolumeNode, divTrack;
 // List of tracks and mute buttons
-
+var listsongs = null;
 
 // requestAnim shim layer by Paul Irish, like that canvas animation works
 // in all browsers
 
     return {
+
       combine: function(b){
         //var bell = new Wad({source : 'sine'});
         console.log('play Wad');
@@ -83,9 +84,11 @@ angular.module('frontendApp')
 
       },
 
-      init: function(b){
+      init: function(b,callback){
         //var buf;
-        init(b);
+        listsongs = init(b,callback);
+
+
       },
 
       playAT :function (startTime) {
@@ -176,7 +179,7 @@ angular.module('frontendApp')
     }
     var canvas,ctx,analyser;
     var masterSlider;
-    function init(b) {
+    function init(b,callback) {
       // Get handles on buttons
       window.requestAnimFrame = (function() {
         return window.requestAnimationFrame ||
@@ -212,7 +215,7 @@ angular.module('frontendApp')
       console.log('init');
       // Get the list of the songs available on the server and build a
       // drop down menu
-      var listsongs = loadSongList();
+     var listsongs = loadSongList(callback);
 
       animateTime();
 
@@ -230,7 +233,7 @@ angular.module('frontendApp')
     var button;
 
 
-    function loadSongList() {
+    function loadSongList(callback) {
       var xhr = new XMLHttpRequest();
       xhr.open('GET',CONFIG.baseUrlApi + "/track", true);
 
@@ -244,7 +247,7 @@ angular.module('frontendApp')
       var songList ;
       xhr.onload = function(e) {
         songList = JSON.parse(this.response);
-
+        callback(songList);
         songList.forEach(function(songName) {
           console.log(songName);
           $("<option />", {value: songName, text: songName}).appendTo(s);
