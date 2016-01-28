@@ -13,6 +13,7 @@ var busboy = require('connect-busboy');
 var routes = require('./routes/index');
 var users = require('./routes/users');
 var feedbacks = require('./routes/feedbacks');
+var search = require('./routes/search');
 
 var app = express();app.use(busboy());
 
@@ -49,7 +50,7 @@ routess.auth = require('./controllers/auth.js');
 app.use(function(req, res, next) {
   console.log('Middleware called.');
   // allows requests fromt angularJS frontend applications
-  /*res.header("Access-Control-Allow-Origin", "*");
+ /* res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   next(); // go to the next route*/
@@ -76,6 +77,7 @@ app.post('/logout', routess.auth.logout);
 app.use('/', routes);
 app.use('/users', users);
 app.use('/feedbacks', feedbacks);
+app.use('/search', search);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
