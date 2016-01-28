@@ -129,7 +129,7 @@ angular.module('frontendApp')
     //var mm = mix;
     $scope.loadSong = function () {
 
-      mix.init($scope.buf);
+      var list = mix.init($scope.buf);
     };
 
     $scope.play = function (n) {
@@ -164,5 +164,9 @@ angular.module('frontendApp')
       console.log('loadSong');
       mix.loadOS(name);
     };
+    $scope.pppp = function(){
+      mix.combine($scope.buf);
+    };
+
   });
 

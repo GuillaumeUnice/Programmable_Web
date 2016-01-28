@@ -127,6 +127,38 @@ function SongsRepository () {
     });
   };
 
+  this.uploadMixed = function(req,res,callback) {
+    var fstream;
+    console.log('0');
+    req.pipe(req.busboy);
+    console.log('1');
+      //Path where image will be uploaded  '/home/user/Bureau/programClient/Programmable_Web/backend'
+    /*  fstream = fs.createWriteStream(__dirname + '/../Musics/' +'kk.mp3');
+    console.log('queue'+req.body);
+    //var blob = new Blob([req.xhr], {type: 'audio/mp3'});
+    req.body.pipe(fstream);
+
+      fstream.on('close', function () {
+        //console.log("Upload Finished of " + filename);
+        //res.redirect('back');           //where to go next
+        callback(null, { success: true });
+      });*/
+    req.busboy.on('file', function (fieldname, file, filename) {
+      console.log('2');
+      console.log("Uploading: " + filename);
+
+      //Path where image will be uploaded  '/home/user/Bureau/programClient/Programmable_Web/backend'
+      fstream = fs.createWriteStream(__dirname + '/../Musics/' + filename);
+      file.pipe(fstream);
+      fstream.on('close', function () {
+        console.log("Upload Finished of " + filename);
+        //res.redirect('back');           //where to go next
+        callback(null, { success: true });
+      });
+    });
+
+  };
+
 
 };
 
