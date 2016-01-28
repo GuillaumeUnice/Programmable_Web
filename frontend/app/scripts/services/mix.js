@@ -16,6 +16,7 @@ angular.module('frontendApp')
     var context;
     var tracks = [], buffers = [], samples = [];
     var lastTime = 0, currentTime, elapsedTimeSinceStart = 0, paused = true;
+    var songList ;
 
 // Master volume
     //var buttonPlay, buttonStop, buttonPause,
@@ -27,6 +28,13 @@ angular.module('frontendApp')
 // in all browsers
 
     return {
+      loadSongList : function() {
+        loadSongList();
+      },
+
+      getSongList : function () {
+        return songList;
+      },
       combine: function(b){
         //var bell = new Wad({source : 'sine'});
         console.log('play Wad');
@@ -85,7 +93,7 @@ angular.module('frontendApp')
 
       init: function(b){
         //var buf;
-        init(b);
+        return init(b);
       },
 
       playAT :function (startTime) {
@@ -228,31 +236,21 @@ angular.module('frontendApp')
      ********************/
 
     var button;
-
-
     function loadSongList() {
       var xhr = new XMLHttpRequest();
       xhr.open('GET',CONFIG.baseUrlApi + "/track", true);
 
-      // Menu for song selection
-      var s = $("<select/>");
-      s.appendTo("#songs");
-      s.change(function(e) {
-        console.log("You chose : " + $(this).val());
-        loadTrackList($(this).val());
-      });
-      var songList ;
-      xhr.onload = function(e) {
-        songList = JSON.parse(this.response);
 
+      xhr.onload = function() {
+        songList = JSON.stringify(this.response);
+
+        /**
         songList.forEach(function(songName) {
           console.log(songName);
           $("<option />", {value: songName, text: songName}).appendTo(s);
-        });
+        });**/
       };
       xhr.send();
-
-      return songList;
     }
 
     //** Init audio context

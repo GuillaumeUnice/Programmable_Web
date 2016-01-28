@@ -12,6 +12,19 @@ angular.module('frontendApp')
 
   .controller('MixCtrl', function ($scope, user,mix, CONFIG,FileUploader) {
 
+    //** Scope
+    /**=========================**/
+    $scope.mixName = "";
+    $scope.listSongs = [];
+    $scope.listTracks = [];
+
+    $scope.getSongs = function() {
+      mix.init($scope.buf);
+      var a = mix.getSongList();
+      console.log("Salut -> " +a);
+    };
+
+
 
     $scope.priceSliders = [
       {

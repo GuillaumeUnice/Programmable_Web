@@ -8,10 +8,10 @@
         <div id="pistes" class="panel panel-default">
           <!-- insert something -->
 
-          <input type="text" class="form-control" id="get_songs" placeholder="name" ng-model="send.songs">
-          <button type="submit" class="btn btn-default" ng-click="pppp()">play</button>
+          <input type="text" class="form-control" id="get_songs" placeholder="Mix name" ng-model="mixName">
 
-          <button type="submit" class="btn btn-default" ng-click="loadSong()">get songs</button>
+          <button type="submit" class="btn btn-default" ng-click="pppp()">play</button>
+          <button type="submit" class="btn btn-default" ng-click="getSongs()">get songs</button>
 
           <button ng-model="buttonplay" id="bplay" ng-click="play(0)" disabled >Start</button>
           <button ng-model="buttonpause" id="bpause" ng-click="pause()" disabled>Pause</button>
@@ -46,6 +46,7 @@
         <div class="col-md-6">
             <div id="console" class="panel panel-default">
               <div class="panel-body">
+                <p ng-repeat="s in listSongs">{{s}}</p>
                 <!-- insert something -->
               </div>
             </div>
