@@ -15,18 +15,73 @@ angular.module('frontendApp')
 
     var context;
     var tracks = [], buffers = [], samples = [];
+    var lastTime = 0, currentTime, elapsedTimeSinceStart = 0, paused = true;
 
 // Master volume
     //var buttonPlay, buttonStop, buttonPause,
     var masterVolumeSlider, masterVolumeNode, divTrack;
 // List of tracks and mute buttons
 
-    var lastTime = 0, currentTime, elapsedTimeSinceStart = 0, paused = true;
 
 // requestAnim shim layer by Paul Irish, like that canvas animation works
 // in all browsers
 
     return {
+      combine: function(b){
+        //var bell = new Wad({source : 'sine'});
+        console.log('play Wad');
+        //bell.play();
+        //bell.stop();
+        //buildGraph(b);
+        //context = initAudioContext();
+
+        var bb= mix(b);
+        var bbs =[];
+        bbs.push(bb);
+        buffers =bbs;
+        buildGraph(buffers);
+
+        playFrom(0);
+        //var tmp = context.createBuffer(buffers[0].numberOfChannels, buffers[0].length, buffers[0].sampleRate);
+        //var blob = new Blob([buffers[0]], {type: 'wav'});
+        //var mediaStreamSource = context.createMediaStreamSource(buffers[0]);
+
+        /*var rec = new Recorder(tmp, {
+          // pass the path to recorderWorker.js file here
+          workerPath: '../../../bower_components/Wad/src/Recorderjs/recorderWorker.js'
+        });
+        var blob = new Blob(buffers[0], {type: "audio/mp3"});
+        //rec.record();
+        rec.exportWAV(function(e){
+        */  //rec.clear();
+         // Recorder.forceDownload(blob, "output.wav");
+        //});
+
+       /*var xhr = new XMLHttpRequest();
+        xhr.open("POST", CONFIG.baseUrlApi + '/mixed', true);
+        //xhr.setRequestHeader("content-type", "audio/mp3");
+        xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
+        var formData = new FormData();
+        formData.append('mix', buffers[0]);
+        xhr.onload = function(e) {
+          // Handle the response.
+        };
+        xhr.send(formData);
+        /*var deferred = $q.defer();
+        $http.post(CONFIG.baseUrlApi + '/mixed', buffers[0])
+          .success(function (data) {
+            console.log(data);
+            notification.writeNotification(data);
+            deferred.resolve(data);
+          }).error(function (data) {
+            notification.writeNotification(data);
+            deferred.reject(false);
+          });
+        return deferred.promise;*/
+
+        //fileSystem.writeArrayBuffer('output',buffers[0] ,'wav');
+
+      },
 
       init: function(b){
         //var buf;
@@ -75,6 +130,42 @@ angular.module('frontendApp')
       }
     };
 
+    function mix(bs) {
+      /*if (buffer1.numberOfChannels != buffer2.numberOfChannels) {
+        console.log("number of channels is not the same!");
+        return null;
+      }
+
+      if (buffer1.sampleRate != buffer2.sampleRate) {
+        console.log("sample rates don't match!");
+        return null;
+      }*/
+      var lens = 0;
+        bs.forEach(function(s, i) {
+          lens += s.length;
+      });
+      var len =bs[0].length;
+      var tmp = context.createBuffer(bs[0].numberOfChannels, len, bs[0].sampleRate);
+
+      for (var i=0; i<tmp.numberOfChannels; i++) {
+        var data = tmp.getChannelData(i);
+        var cd,cds=[];
+        cds = bs[0].getChannelData(i);
+        if(bs.length > 1) {
+          for (var j = 1; j < bs.length; j++) {
+            cd = bs[j].getChannelData(i);
+            for (var k = 0; k < cd.length; k++) {
+              cds[k] += cd[k];
+            }
+          }
+        }
+        data.set(cds);
+        //data.set(buffer1.getChannelData(i));
+        //data.set(buffer2.getChannelData(i),buffer1.length);
+      }
+      return tmp;
+
+
 
     /*******************
      * *****************
@@ -82,17 +173,19 @@ angular.module('frontendApp')
      * ******************
      ********************/
 
+    }
+    var canvas,ctx,analyser;
     var masterSlider;
     function init(b) {
       // Get handles on buttons
-      $window.requestAnimFrame = (function() {
-        return $window.requestAnimationFrame ||
-          $window.webkitRequestAnimationFrame ||
-          $window.mozRequestAnimationFrame ||
-          $window.oRequestAnimationFrame ||
-          $window.msRequestAnimationFrame ||
+      window.requestAnimFrame = (function() {
+        return window.requestAnimationFrame ||
+          window.webkitRequestAnimationFrame ||
+          window.mozRequestAnimationFrame ||
+          window.oRequestAnimationFrame ||
+          window.msRequestAnimationFrame ||
           function(/* function */ callback, /* DOMElement */ element) {
-            $window.setTimeout(callback, 1000 / 60);
+            window.setTimeout(callback, 1000 / 60);
           };
       })();
       buffers = b;
@@ -103,18 +196,27 @@ angular.module('frontendApp')
 
       //divTrack = document.getElementById("tracks");
 
+
       // Master volume slider
       //masterVolumeSlider = document.querySelector("#masterVolume");
       //masterSlider = document.querySelector("#slide");
 
       // Init audio context
       context = initAudioContext();
+      analyser = context.createAnalyser();
+      canvas = document.getElementById('analyser');
+      //canvas = $('#analyser');
+      //canvas.width = 20;
+      ctx = canvas.getContext('2d');
+
       console.log('init');
       // Get the list of the songs available on the server and build a
       // drop down menu
-      loadSongList();
+      var listsongs = loadSongList();
 
       animateTime();
+
+      return listsongs;
     }
 
 
@@ -139,9 +241,9 @@ angular.module('frontendApp')
         console.log("You chose : " + $(this).val());
         loadTrackList($(this).val());
       });
-
+      var songList ;
       xhr.onload = function(e) {
-        var songList = JSON.parse(this.response);
+        songList = JSON.parse(this.response);
 
         songList.forEach(function(songName) {
           console.log(songName);
@@ -149,6 +251,8 @@ angular.module('frontendApp')
         });
       };
       xhr.send();
+
+      return songList;
     }
 
     //** Init audio context
@@ -159,9 +263,9 @@ angular.module('frontendApp')
       var ctx = new audioContext();
 
       if(ctx === undefined) { throw new Error('AudioContext is not supported. :('); }
-
       return ctx;
     }
+
 
     //** Reset all before loading new song
     /**=========================**/
@@ -204,8 +308,7 @@ angular.module('frontendApp')
       //buttonPlay.disabled = false;
     }
 
-    var trackVolumeNodes = [];
-    var masterSlideNode;
+
 
 
     /*******************
@@ -214,6 +317,7 @@ angular.module('frontendApp')
      * ******************
      ********************/
 
+    var trackVolumeNodes = [], masterSlideNode, source;
 
     //** Build graph
     /**=========================**/
@@ -242,10 +346,13 @@ angular.module('frontendApp')
         // Connect the master volume to the speakers
         masterVolumeNode.connect(context.destination);
         masterSlideNode.connect(context.destination);
-        console.log('jj'+ trackVolumeNodes[0]);
+        console.log('volume'+ trackVolumeNodes[0]);
         // On active les boutons start et stop
         samples = sources;
       });
+      //source = context.createMediaElementSource(buffers[0]);
+      samples[0].connect(analyser);
+      analyser.connect(context.destination);
       console.log("in build graph, bufferList.size = " + buffers.length);
     }
 
@@ -261,7 +368,7 @@ angular.module('frontendApp')
     /**=========================**/
     function playAllTracks(startTime) {
       console.log("ply= " + buffers.length);
-      var bb =   buffers.concat() ;
+      var bb = buffers.concat();
       console.log("ply= " + buffers.length);
       buildGraph(buffers);
 
@@ -368,6 +475,7 @@ angular.module('frontendApp')
      ********************/
 
 
+    var fbc_array,bars,bar_x,bar_width,bar_height ;
     function animateTime() {
       if (!paused) {
         // Draw the time on the front canvas
@@ -387,6 +495,19 @@ angular.module('frontendApp')
 
           elapsedTimeSinceStart += delta;
           lastTime = currentTime;
+
+          fbc_array = new Uint8Array(analyser.frequencyBinCount);
+          analyser.getByteFrequencyData(fbc_array);
+          ctx.clearRect(0,0,canvas.width,canvas.height);
+          ctx.fillStyle ='#FFFFFF';
+          bars = 100;
+          for(var i =0; i< bars; i++){
+            bar_x = i *3;
+            bar_width = 2;
+            bar_height = -(fbc_array[i]/2);
+            ctx.fillRect(bar_x,canvas.height, bar_width,bar_height);
+          }
+
         }
         var totalTime = buffers[0].duration;
         var x = elapsedTimeSinceStart * 100 / totalTime;
