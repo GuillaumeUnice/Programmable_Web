@@ -308,4 +308,33 @@ router.route('/track/:id')
     //res.sendfile(__dirname + '/../Musics/'  + req.params[0] + '/' + req.params[1]);
   });
 
+router.route('/mixed')
+  .post(function(req, res) {
+    //console.log( req.files.file.name);
+    songsRepository.uploadMixed(req,res, function(err, result) {
+      if(err) {
+        console.log(err);
+        res.status(404);
+        res.json({ status: constants.JSON_STATUS_ERROR,
+          title: 'Erreur Système',
+          message: 'Une erreur inattendu c\'est produit! Veuillez contacter l\'administrateur'});
+        return;
+      }
+
+      // verify if correct password thank to BCrypt Hash
+      // resCompare = true if same password else false
+      if(utils.isEmpty(result)) {
+        res.status(201);
+        res.json({ status: constants.JSON_STATUS_ERROR,
+          title: 'Erreur connexion',
+          message: 'L\'utilisateur n\'existe pas! Email incorrect!'});
+      } else {
+        res.status(201);
+        res.json({ status: constants.JSON_STATUS_SUCCESS,
+          title: 'Connexion',
+          message: 'Un compte avec cette email existe déjà!'});
+      }
+    });
+  });
+
 module.exports = router;
