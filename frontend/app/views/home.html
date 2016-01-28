@@ -1,15 +1,29 @@
 <div class="row">
 
+  <!-- barre de recherche-->
+  <div style="padding-left: 5%">
+    <input type="text" ng-model="searchInfo.motsCles">
+    <button ng-click="sendKeyWords()">Rechercher</button>
+  </div>
+
   <!-- fil d'actualité -->
   <div class="col-md-8" style="padding-left: 5%">
 
     <div style="height: 80vh ;" class="panel panel-default">
       <div class="panel-heading">
-        <h3 class="panel-title">Fil d'actualité</h3>
+        <h3 class="panel-title">Résultats de la recherche</h3>
       </div>
       <div class="panel-body" style="padding-left: 5%;">
-
-      <p>blabla</p>
+        <div class="list" style="padding-bottom: 10px; height: 310px; overflow-y:scroll;">
+				    <span  ng-repeat="result in results">
+              <div class="item" style="height: 30px; border-bottom: 2px solid">
+                {{result.name}}
+                <button ng-click="startListening(result)" style="float: right">
+                  Lancer lecture
+                </button>
+              </div>
+				    </span>
+        </div>
 
       </div>
     </div>
