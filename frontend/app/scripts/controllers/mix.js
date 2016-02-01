@@ -12,59 +12,66 @@ angular.module('frontendApp')
 
   .controller('MixCtrl', function ($scope, user,mix, CONFIG,FileUploader) {
 
-
-    $scope.priceSliders = [
-      {
-        value: 50,
-        options: {
-          floor: 0,
-          ceil: 100,
-          vertical: true
-        }
-      }, {
-        value: 50,
-        options: {
-          floor: 0,
-          ceil: 100,
-          vertical: true
-        }
-      }, {
-        value: 50,
-        options: {
-          floor: 0,
-          ceil: 100,
-          vertical: true
-        }
-      }, {
-        value: 50,
-        options: {
-          floor: 0,
-          ceil: 100,
-          vertical: true
-        }
-      }, {
-        value: 50,
-        options: {
-          floor: 0,
-          ceil: 100,
-          vertical: true
-        }
-      }, {
-        value: 50,
-        options: {
-          floor: 0,
-          ceil: 100,
-          vertical: true
-        }
-      }];
-
-    $scope.default = function() {
-      var l = $scope.priceSliders.length;
-      for( var i = 0 ; i < l ; i ++ ) {
-        $scope.priceSliders[i].value = CONFIG.MIX_DEFAULT_SOUND;
+    //** Scope
+    /**=========================**/
+    $scope.buf = [];
+    $scope.mixName = "";
+    $scope.listSongs = [];
+    $scope.listTracks = [];
+    $scope.priceSliders = [];
+    $scope.slider = {
+      value: 50,
+      options: {
+        floor: 0,
+        ceil: 100,
+        vertical: true
       }
     };
 
+    $scope.init = function () {
+      mix.init($scope.buf, function(b){
+        $scope.listSongs =b;
+      });
+    };
+
+    $scope.getAllTracks = function(name) {
+      mix.getAllTrackList(name, function(b){
+        $scope.listTracks =b;
+      });
+    };
+
+    $scope.play = function(n) {
+      $scope.buf = mix.playAT(n);
+    };
+
+    $scope.pause = function () { // marche pas
+      mix.pauseAT($scope.buf);
+    };
+
+    $scope.stop = function () { // marche pas
+      mix.stopAT($scope.buf);
+    };
+
+
+    def();
+    function def() {
+      var l = 6;
+      for( var i = 0 ; i < l ; i ++ ) {
+        $scope.priceSliders.push(
+          {
+          value: 50,
+          options: {
+            floor: 0,
+            ceil: 100,
+            vertical: true
+          }
+          }
+        );
+      }
+    };
+
+
+    /*** PAS COMPRIS **/
 
     $scope.save = function save(str) {
       if (str !== undefined && str !=="" ) {
@@ -85,9 +92,7 @@ angular.module('frontendApp')
     };
 
     $scope.download = function download(uri) {
-
       //user.download('kkk');
-
     };
 
     $scope.uploader = new FileUploader({
@@ -124,26 +129,6 @@ angular.module('frontendApp')
     $scope.remove = function () {
       $scope.uploader.remove();
       //$scope.imageURL = $scope.user.profileImageURL;
-    };
-    $scope.buf = [];
-    //var mm = mix;
-    $scope.loadSong = function () {
-
-      var list = mix.init($scope.buf);
-    };
-
-    $scope.play = function (n) {
-      console.log('kk');
-      $scope.buf = mix.playAT(n);
-      console.log('scpp'+ $scope.buf.length );
-    };
-    $scope.pause = function () {
-      console.log('kk');
-      mix.pauseAT($scope.buf);
-    };
-    $scope.stop = function () {
-      console.log('kk');
-      mix.stopAT($scope.buf);
     };
 
     $scope.changeMasterVolume = function () {

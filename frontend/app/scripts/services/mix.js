@@ -13,20 +13,15 @@
 angular.module('frontendApp')
   .factory('mix', function (CONFIG,$window, $http, $q, notification) {
 
-    var context;
-    var tracks = [], buffers = [], samples = [];
+    var context, tracks = [], buffers = [], samples = [];
     var lastTime = 0, currentTime, elapsedTimeSinceStart = 0, paused = true;
-
-// Master volume
-    //var buttonPlay, buttonStop, buttonPause,
     var masterVolumeSlider, masterVolumeNode, divTrack;
-// List of tracks and mute buttons
+    var listsongs = null;
+    var bufferLoader;
 
-
-// requestAnim shim layer by Paul Irish, like that canvas animation works
-// in all browsers
 
     return {
+
       combine: function(b){
         //var bell = new Wad({source : 'sine'});
         console.log('play Wad');
@@ -83,19 +78,20 @@ angular.module('frontendApp')
 
       },
 
-      init: function(b){
-        //var buf;
-        init(b);
+      init: function(b,callback){
+        listsongs = init(b,callback);
       },
-
+      getAllTrackList : function(songName, callback) {
+        loadTrackList(songName, callback);
+      },
       playAT :function (startTime) {
         playAllTracks(startTime);
         console.log("plyAT= " + buffers.length);
         return buffers;
       },
 
-      loadOS :function (name) {
-        loadTrackList(songName);
+      loadTrackList :function (name) {
+        loadTrackList(name);
       },
 
       pauseAT:  function (b) {
@@ -132,26 +128,26 @@ angular.module('frontendApp')
 
     function mix(bs) {
       /*if (buffer1.numberOfChannels != buffer2.numberOfChannels) {
-        console.log("number of channels is not the same!");
-        return null;
-      }
+       console.log("number of channels is not the same!");
+       return null;
+       }
 
-      if (buffer1.sampleRate != buffer2.sampleRate) {
-        console.log("sample rates don't match!");
-        return null;
-      }*/
+       if (buffer1.sampleRate != buffer2.sampleRate) {
+       console.log("sample rates don't match!");
+       return null;
+       }*/
       var lens = 0;
-        bs.forEach(function(s, i) {
-          lens += s.length;
+      bs.forEach(function (s, i) {
+        lens += s.length;
       });
-      var len =bs[0].length;
+      var len = bs[0].length;
       var tmp = context.createBuffer(bs[0].numberOfChannels, len, bs[0].sampleRate);
 
-      for (var i=0; i<tmp.numberOfChannels; i++) {
+      for (var i = 0; i < tmp.numberOfChannels; i++) {
         var data = tmp.getChannelData(i);
-        var cd,cds=[];
+        var cd, cds = [];
         cds = bs[0].getChannelData(i);
-        if(bs.length > 1) {
+        if (bs.length > 1) {
           for (var j = 1; j < bs.length; j++) {
             cd = bs[j].getChannelData(i);
             for (var k = 0; k < cd.length; k++) {
@@ -164,19 +160,38 @@ angular.module('frontendApp')
         //data.set(buffer2.getChannelData(i),buffer1.length);
       }
       return tmp;
-
-
-
-    /*******************
-     * *****************
-     *      INIT CONTEXT
-     * ******************
-     ********************/
-
     }
+
+
+
+
+
+    /* ******************************************************************************************************
+     * ******************************************************************************************************
+     *      CONTEXT
+     * ******************************************************************************************************
+     * ******************************************************************************************************/
+
+
+
     var canvas,ctx,analyser;
     var masterSlider;
-    function init(b) {
+
+
+    //** Init audio context
+    /**=========================**/
+    function initAudioContext() {
+      // Initialise the Audio Context : There can be only one!
+      var audioContext = $window.AudioContext || $window.webkitAudioContext;
+      var ctx = new audioContext();
+
+      if(ctx === undefined) { throw new Error('AudioContext is not supported. :('); }
+      return ctx;
+    }
+
+    //** Init environment
+    /**=========================**/
+    function init(b,callback) {
       // Get handles on buttons
       window.requestAnimFrame = (function() {
         return window.requestAnimationFrame ||
@@ -190,12 +205,8 @@ angular.module('frontendApp')
       })();
       buffers = b;
       lastTime = 0;
-      //buttonPlay = document.querySelector("#bplay");
-      //buttonPause = document.querySelector("#bpause");
-      //buttonStop = document.querySelector("#bstop");
-
+      //buttonPlay = document.querySelector("#bplay"); //buttonPause = document.querySelector("#bpause");//buttonStop = document.querySelector("#bstop");
       //divTrack = document.getElementById("tracks");
-
 
       // Master volume slider
       //masterVolumeSlider = document.querySelector("#masterVolume");
@@ -204,16 +215,12 @@ angular.module('frontendApp')
       // Init audio context
       context = initAudioContext();
       analyser = context.createAnalyser();
-      canvas = document.getElementById('analyser');
+      //canvas = document.getElementById('analyser');
       //canvas = $('#analyser');
       //canvas.width = 20;
-      ctx = canvas.getContext('2d');
+      //ctx = canvas.getContext('2d');
 
-      console.log('init');
-      // Get the list of the songs available on the server and build a
-      // drop down menu
-      var listsongs = loadSongList();
-
+      var listsongs = loadSongs(callback); // dropMenu
       animateTime();
 
       return listsongs;
@@ -221,54 +228,35 @@ angular.module('frontendApp')
 
 
 
-    /*******************
-     * *****************
-     *      SOUND
-     * ******************
-     ********************/
-
-    var button;
 
 
-    function loadSongList() {
+
+
+
+    /* ******************************************************************************************************
+     * ******************************************************************************************************
+     *      SOUNDS
+     * ******************************************************************************************************
+     * ******************************************************************************************************/
+
+
+    //** Load songs
+    /**=========================**/
+
+    function loadSongs(callback) {
       var xhr = new XMLHttpRequest();
       xhr.open('GET',CONFIG.baseUrlApi + "/track", true);
 
-      // Menu for song selection
-      var s = $("<select/>");
-      s.appendTo("#songs");
-      s.change(function(e) {
-        console.log("You chose : " + $(this).val());
-        loadTrackList($(this).val());
-      });
-      var songList ;
       xhr.onload = function(e) {
-        songList = JSON.parse(this.response);
-
-        songList.forEach(function(songName) {
-          console.log(songName);
-          $("<option />", {value: songName, text: songName}).appendTo(s);
-        });
+        callback(JSON.parse(this.response));
       };
+
       xhr.send();
-
-      return songList;
     }
-
-    //** Init audio context
-    /**=========================**/
-    function initAudioContext() {
-      // Initialise the Audio Context : There can be only one!
-      var audioContext = $window.AudioContext || $window.webkitAudioContext;
-      var ctx = new audioContext();
-
-      if(ctx === undefined) { throw new Error('AudioContext is not supported. :('); }
-      return ctx;
-    }
-
 
     //** Reset all before loading new song
     /**=========================**/
+
     function resetAllBeforeLoadingANewSong() {
       // Marche pas, c'est pour tester...
       console.log('resetAllBeforeLoadingANewSong');
@@ -284,8 +272,6 @@ angular.module('frontendApp')
        s.disconnect(0);
        });*/
     }
-
-    var bufferLoader;
 
     //** Load all sound samples
     /**=========================**/
@@ -417,17 +403,32 @@ angular.module('frontendApp')
 
     //** Load track list
     /**=========================**/
-    function loadTrackList(songName) {
-      resetAllBeforeLoadingANewSong();
 
+    function loadAllTrackList(songName, callback) {
+      var tackList = loadTrackList(songName, callback);
+      return trackList;
+    }
+
+    function loadTrackList(songName, callback) {
+      //resetAllBeforeLoadingANewSong();
+      console.log('NOM ' +songName);
       var xhr = new XMLHttpRequest();
       xhr.open('GET', CONFIG.baseUrlApi +"/track/" + songName, true);
       xhr.onload = function(e) {
-        var track = JSON.parse(this.response);
+
+      var track = JSON.parse(this.response);
+      track.instruments.forEach(function(instrument, trackNumber) {
+        var url = CONFIG.baseUrlApi + "/track/" + songName + "/sound/" + instrument.sound;
+        tracks.push(url);
+      });
+
+      callback(track);
+
         // resize canvas depending on number of samples
         //resizeSampleCanvas(track.instruments.length);
-        var i = 0;
+       // var i = 0;
 
+        //return track.instruments;
         /**
         track.instruments.forEach(function(instrument, trackNumber) {
           // Render HTMl
@@ -447,6 +448,7 @@ angular.module('frontendApp')
           console.log("Ajout piste audio " + instrument.name);
 
         });**/
+
         loadAllSoundSamples(tracks);
       };
       xhr.send();

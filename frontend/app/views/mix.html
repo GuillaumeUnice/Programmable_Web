@@ -1,43 +1,47 @@
-<div class="row">
+<div class="row" ng-init="init()">
 
     <!-- LEFT part -->
     <div class="col-md-2">
 
       <!-- PISTES -->
       <div class="row">
+
         <div id="pistes" class="panel panel-default">
           <!-- insert something -->
 
-          <input type="text" class="form-control" id="get_songs" placeholder="name" ng-model="send.songs">
-          <button type="submit" class="btn btn-default" ng-click="pppp()">play</button>
+          <div class="panel-heading">Mes pistes</div>
 
-          <button type="submit" class="btn btn-default" ng-click="loadSong()">get songs</button>
+          <div class="panel-body">
 
-          <button ng-model="buttonplay" id="bplay" ng-click="play(0)" disabled >Start</button>
-          <button ng-model="buttonpause" id="bpause" ng-click="pause()" disabled>Pause</button>
-          <button ng-model="buttonstop" id="bstop" ng-click="stop()" disabled>Stop</button>
-          Master Volume : <input type="range" id ="masterVolume" min="0" max="100" ng-value="100" ng-model="sound.value" ng-change="changeMasterVolume(sound.value);">
-          <br/>
-          <input id="slide" class="time-slider" type="range" ng-value="0" step="any" ng-model="slide" ng-change="changerangeslide(slide);"/>
 
-          <div id="songs"></div>
+          <select ng-model="blisterPackTemplateSelected"
+                  ng-options="blisterPackTemplate as blisterPackTemplate for blisterPackTemplate in listSongs"
+                  ng-change="getAllTracks(blisterPackTemplateSelected)"/>
 
-          <div id="tracks"></div>
+            <p  ng-repeat="a in listTracks.instruments">{{a.name}}</p>
 
-        </div>
-      </div>
 
-      <!-- JESAISPAS -->
-      <div class="row">
-        <div id="dunno" class="panel panel-default">
-          <!-- insert something -->
+            <button type="button" class="btn btn-circle btn-raised ripple-effect btn-default">
+              <span class="glyphicon glyphicon-stop"></span>
+            </button>
+
+            <button type="button" class="btn btn-circle btn-raised ripple-effect btn-default" ng-click="play(0)" >
+              <span class="glyphicon glyphicon-play"></span>
+            </button>
+
+            <button type="button" class="btn btn-circle btn-raised ripple-effect btn-default">
+              <span class="glyphicon glyphicon-pause"></span>
+            </button>
+
+          </div>
+
         </div>
       </div>
 
     </div>
 
     <!-- CENTER part -->
-    <div class="col-md-9">
+    <div class="col-md-10">
 
       <!-- TOP part -->
       <div class="row">
@@ -54,7 +58,7 @@
         <!-- WAVE -->
         <div class="col-md-6">
           <div id="wave" class="panel panel-default">
-            <!-- insert something -->
+            <canvas id = "analyser" style="width: 100%; height : 20vh; display:table-row; background: #002D3C;"></canvas>
           </div>
         </div>
 
@@ -65,36 +69,33 @@
       <div class="row" style="padding-top: 40px; padding-left: 50px">
 
         <!-- MIX part -->
-        <div class="col-md-9">
+        <div class="col-md-11" style="height : 50vh;">
           <div class="row">
-            <div class="col-md-2" style="height : 40vh;" ng-repeat="slider in priceSliders">
-              <rzslider class="fader" rz-slider-model="slider.value" rz-slider-options="slider.options" ></rzslider>
+            <div class="col-md-2" style=" height : 50vh; border: solid; padding: 20px" ng-repeat="a in listTracks.instruments">
+                <div class="row">
+                  <div class="col-md-6"><button class="btn mute"></button></div>
+                  <div class="col-md-6"><button class="btn mute"></button></div>
+                </div>
+                <div class="row">
+                  <div class="col-md-12"><button class="btn mute"></button></div>
+                </div>
+                <rzslider style="max-height: 35vh"class="fader" rz-slider-model="slider.value" rz-slider-options="slider.options" ></rzslider>
+                <div class="row">
+                  <p>{{a.name}}</p>
+                </div>
             </div>
           </div>
         </div>
 
-        <!-- Right part -->
-        <div class="col-md-2">
-          <div class="row">
-            <button ng-click="default()">Default</button>
-          </div>
-          <div class="row">
-
-          </div>
-          <div class="row">
-
-          </div>
-        </div>
 
 
       </div>
 
 
-      <!-- Bottom element -->
+      <!-- Bottom element --
       <div class="row">
 
           <div style="margin-left: 20px; width: 100%; height: 200px" class="panel panel-default">
-          <canvas id = "analyser" style="width: 500px; height: 30px; background: #002D3C;"></canvas>
 
           <input type="text" class="form-control" id="url_update" placeholder="send message" ng-model="send.msg">
             <button type="submit" class="btn btn-default" ng-click="save(send.msg)">save</button>
@@ -103,7 +104,7 @@
           <!--<input type="file" on-read-file="upload($fileContent)" />
           <pre>{{ uploader.queue.length }}</pre>
           <button type="submit" class="btn btn-default" ng-click="upload()">Upload</button>
-          -->
+          --
 
             <table class="table">
               <thead>
@@ -165,7 +166,7 @@
 
 
       </div>
-
+      -->
     </div>
 
 </div>
