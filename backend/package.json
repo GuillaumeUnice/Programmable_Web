@@ -9,6 +9,7 @@
   "devDependencies": {
     "expect.js": "^0.3.1",
     "mocha": "*",
+    "mongoose": "^4.3.7",
     "should": "^7.1.1",
     "supertest": "^1.1.0"
   },
