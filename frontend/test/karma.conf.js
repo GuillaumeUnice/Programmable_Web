@@ -36,6 +36,7 @@ module.exports = function(config) {
       'bower_components/bootstrap/dist/js/bootstrap.js',
       'bower_components/ngnotification/notification.js',
       'bower_components/angular-file-upload/angular-file-upload.js',
+      'bower_components/angular-modal-service/dst/angular-modal-service.js',
       'bower_components/async/lib/async.js',
       'bower_components/angular-mocks/angular-mocks.js',
       // endbower

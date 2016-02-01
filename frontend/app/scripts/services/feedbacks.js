@@ -1,22 +1,20 @@
 /**
- * Created by sy306571 on 25/01/16.
+ * Created by sy306571 on 01/02/16.
  */
-'use strict';
-
 /**
  * @ngdoc service
  * @name frontendApp.user
  * @description
- * # search
+ * # feedbacks
  * Factory in the frontendApp.
  */
 angular.module('frontendApp')
-  .factory('searchService', function (CONFIG, $http, $q) {
+  .factory('feedbackService', function (CONFIG, $http, $q) {
     return {
 
-      search: function (searchInfo) {
+      sendComment: function (idMix,commentInfo) {
         var deferred = $q.defer();
-        $http.post(CONFIG.baseUrlApi + '/search/mixes',searchInfo)
+        $http.post(CONFIG.baseUrlApi + '/feedbacks/'+idMix,commentInfo)
           .success(function (data) {
             console.log(data);
             deferred.resolve(data);
@@ -28,4 +26,3 @@ angular.module('frontendApp')
 
     };
   });
-

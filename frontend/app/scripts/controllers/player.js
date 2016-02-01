@@ -8,8 +8,13 @@
  * Controller of the frontendApp
  */
 angular.module('frontendApp')
-  .controller('PlayerCtrl', function ($scope) {
+  .controller('PlayerCtrl', function ($scope, currentMusicService) {
 var activeUrl = null;
+
+    $scope.title = null;
+    $scope.$watch(function () { return currentMusicService.getTitle(); }, function (newValue, oldValue) {
+      if (newValue !== oldValue) $scope.title = newValue;
+    });
 
     $scope.paused = true;
 
@@ -50,5 +55,8 @@ var activeUrl = null;
         return url == activeUrl;
     };
 
-    $scope.commentTab = ["commentaire1", "commentaire2"];
+    $scope.commentTab = [];
+    $scope.$watch(function () { return currentMusicService.getFeedbacks(); }, function (newValue, oldValue) {
+      if (newValue !== oldValue) $scope.commentTab = newValue;
+    });
   });

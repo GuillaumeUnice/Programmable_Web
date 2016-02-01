@@ -5,9 +5,12 @@ var express = require('express');
 var router = express.Router();
 
 /* GET feedbacks listing for a particular mix. */
+
+///!\ id ou _id ? /!\
+
 router.get('/:idMix', function(req, res) {
     var idMix = +req.params.idMix;
-    var cursor = req.db.collection('mixes').find({"_id" : idMix });
+    var cursor = req.db.collection('mixes').find({"id" : idMix });
     cursor.each(function(err, doc) {
         if (doc != null) {
             res.json(doc.feedbacks);
@@ -20,7 +23,7 @@ router.get('/:idMix', function(req, res) {
 router.post('/:idMix', function(req, res) {
     var newFeedback = { user: req.body.user, mark: +req.body.mark, comment: req.body.comment};
     var idMix = +req.params.idMix;
-    req.db.collection('mixes').updateOne({"_id" : idMix },{ $push: { "feedbacks": newFeedback } });
+    req.db.collection('mixes').updateOne({"id" : idMix },{ $push: { "feedbacks": newFeedback } });
     res.send('Feedback added!');
 });
 
