@@ -19,10 +19,8 @@ angular.module('frontendApp')
         $http.post(CONFIG.baseUrlApi + '/search/mixes',searchInfo)
           .success(function (data) {
             console.log(data);
-            notification.writeNotification(data);
             deferred.resolve(data);
           }).error(function (data) {
-            notification.writeNotification(data);
             deferred.reject(false);
           });
         return deferred.promise;

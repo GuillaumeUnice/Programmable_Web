@@ -18,8 +18,7 @@ angular
     'ngTouch',
     'rzModule',
     'notifications',
-    'angularFileUpload',
-    'fileSystem'
+    'angularFileUpload'
   ])
   .constant('CONFIG', {
     baseUrl: 'http://localhost:3000',
