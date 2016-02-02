@@ -1,5 +1,22 @@
 <div class="bodyBis">
 
+  <div id="morphsearch" class="morphsearch">
+    <form class="morphsearch-form">
+      <input id="morphsearch-input" class="morphsearch-input" type="search" placeholder="Search..."/>
+      <button class="morphsearch-submit" type="submit">Search</button>
+      <div class="morphsearch-content">
+        <div class="dummy-column_cont">
+          <p>Mix</p>
+          <p>Users</p>
+        </div>
+      </div><!-- /morphsearch-content -->
+    </form>
+
+    <span class="morphsearch-close"></span>
+  </div>
+
+
+
   <div class="col-md-3">
     <div style="height: 70vh ;" class="panel panel-default textAlign">
       <div class="panel-heading">
@@ -7,9 +24,10 @@
       </div>
       <div class="panel-body">
 
-        <h4 class="panel-title">Recherche<h4>
-        <input type="text" ng-model="searchInfo.motsCles">
-        <button ng-click="sendKeyWords()">Rechercher</button>
+        <h4 class="panel-title" style="text-align : left;">Recherche<h4>
+        <br><br><br>
+        <!--<input type="text" ng-model="searchInfo.motsCles">
+        <button ng-click="sendKeyWords()">Rechercher</button>-->
         <div class="row borderTop">
           <img class="avatar" src="images/logo.png" alt="avatar" />
         </div>
@@ -91,7 +109,7 @@
   </div>
 
   <div id="demo" ng-controller="PlayerCtrl as player" >
-    <div class="row" style="background-color: gray; position: absolute; bottom: 0; left: 0; right: 0; margin: auto; border: none;">
+    <div class="row" style="background-color: gray; position: absolute; bottom: 0; left: 0; right: 0; margin: auto; border: none; z-index : 99;">
         <div class="col-sm-4">
           <auto-scoll-text comments="commentTab"></auto-scoll-text>
             <!-- A COMMENTER<span>
@@ -155,3 +173,57 @@
   </div>
 </div>
 
+<script type="text/javascript">
+    jQuery(document).ready(function() {
+     var morphSearch = document.getElementById( 'morphsearch' ),
+      input = morphSearch.querySelector( 'input.morphsearch-input' ),
+      ctrlClose = morphSearch.querySelector( 'span.morphsearch-close' ),
+      isOpen = isAnimating = false,
+      // show/hide search area
+      toggleSearch = function(evt) {
+      
+        // return if open and the input gets focused
+        if( evt.type.toLowerCase() === 'focus' && isOpen ) return false;
+
+        var offsets = morphsearch.getBoundingClientRect();
+        if( isOpen ) {
+          classie.remove( morphSearch, 'open' );
+
+          // trick to hide input text once the search overlay closes 
+          // todo: hardcoded times, should be done after transition ends
+          if( input.value !== '' ) {
+            setTimeout(function() {
+              classie.add( morphSearch, 'hideInput' );
+              setTimeout(function() {
+                classie.remove( morphSearch, 'hideInput' );
+                input.value = '';
+              }, 300 );
+            }, 500);
+          }
+          
+          input.blur();
+        }
+        else {
+          classie.add( morphSearch, 'open' );
+        }
+        isOpen = !isOpen;
+      };
+
+    // events
+    input.addEventListener( 'focus', toggleSearch );
+    ctrlClose.addEventListener( 'click', toggleSearch );
+    // esc key closes search overlay
+    // keyboard navigation events
+    document.addEventListener( 'keydown', function( ev ) {
+      var keyCode = ev.keyCode || ev.which;
+      if( keyCode === 27 && isOpen ) {
+        toggleSearch(ev);
+      }
+    } );
+
+
+    /***** for demo purposes only: don't allow to submit the form *****/
+    morphSearch.querySelector( 'button[type="submit"]' ).addEventListener( 'click', function(ev) { alert("lancement de la recherche"); ev.preventDefault(); } );
+
+    });
+</script>
