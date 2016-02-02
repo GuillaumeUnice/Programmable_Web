@@ -264,13 +264,42 @@ rzslider.vertical .rz-ticks .tick .tick-value {
   transform: translate(0, -28%);
 }
 
-.panel-heading h3 {
+.panel-heading h3, .tabMenu {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
     line-height: normal;
-    width: 75%;
-    padding-top: 8px;
+    /*width: 75%;*/
+    padding-top: 15px !important;
+    font-size: 16px;
+}
+
+.tabMenu {
+  padding-bottom:21px !important;
+  cursor : pointer;
+}
+
+
+.tabMenu:hover {
+  background-color : darken($color1, 1%);
+}
+
+
+
+
+
+
+.iconList {
+  font-size: 20px !important;
+  margin-right: 20px !important;
+  cursor: pointer !important;
+  color: $color2 !important;
+}
+.iconList:hover {
+  color: $colorText1;
+}
+.avatarList {
+  margin: 0px !important;
 }
 
 
@@ -292,18 +321,16 @@ rzslider.vertical .rz-ticks .tick .tick-value {
 
 
 
+.panel-title, .panel-heading {
+  height : 55px !important;
+  padding: 0px !important;
+  text-align: center;
+  color: $colorText1 !important;
+}
 
-
-
-
-
-
-
-
-
-
-
-
+.panel-title {
+  padding-top : 10px;
+}
 
 .panel-default {
   background-color : $color1 !important;
@@ -316,7 +343,9 @@ rzslider.vertical .rz-ticks .tick .tick-value {
     border-color : $color2 !important;
     border-radius: 0px !important;
 }
-
+a {
+  text-decoration: none !important;
+}
 
 
 
@@ -343,6 +372,7 @@ html, body {
   -moz-background-size: cover;
   -o-background-size: cover;
   background-size: cover;
+  color: $colorText1;
 }
 
 .borderTop {
@@ -358,7 +388,10 @@ html, body {
 /* Rounded avatars */
 .avatar {
     
-    margin: 1em;
+    /*margin: 1em;*/
+    margin: 10px;
+    float: left;
+    width: 55px;
     position: relative;
 
     -webkit-border-radius: 50%;
@@ -512,7 +545,7 @@ fieldset {
 }
 
 legend {
-  color : $color2;
+  color : $colorText1;
   width: auto;
   padding: 5px;
   border: 0px !important;

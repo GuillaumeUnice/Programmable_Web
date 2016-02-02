@@ -18,22 +18,20 @@
 
 
   <div class="col-md-3">
-    <div style="height: 70vh ;" class="panel panel-default textAlign">
+    <div style="height: 75vh ;" class="panel panel-default textAlign">
       <div class="panel-heading">
-        <h3 class="panel-title">Recherche & Profil</h3>
+        <h3 class="panel-title">Search & Profil</h3>
       </div>
       <div class="panel-body">
 
-        <h4 class="panel-title" style="text-align : left;">Recherche<h4>
-        <br><br><br>
+        <h4 class="panel-title" style="text-align : left;">Search : <h4>
+        <br><br>
         <!--<input type="text" ng-model="searchInfo.motsCles">
         <button ng-click="sendKeyWords()">Rechercher</button>-->
         <div class="row borderTop">
           <img class="avatar" src="images/logo.png" alt="avatar" />
-        </div>
-        <div class="row borderTop">
-          <p><i class="glyphicon glyphicon-envelope"></i> test@gmail.com</p>
-          <p><i class="glyphicon glyphicon-time"></i> Joined on 15 Nov 2013</p>
+          <p style="margin-top: 10px; text-align: left; font-size: 15px;"><i class="glyphicon glyphicon-envelope"></i> test@gmail.com</p>
+          <p style="text-align: left; font-size: 15px;"><i class="glyphicon glyphicon-time"></i> Joined on 15 Nov 2013</p>
         </div>
 
         <div class="borderTop row">
@@ -69,10 +67,15 @@
 
     <div style="height: 80vh ;" class="panel panel-default">
       <div class="panel-heading">
-        <h3 class="panel-title">Résultats de la recherche</h3>
+
+    <div  class="col-sm-6 col-md-6 col-lg-6 tabMenu">News</div>
+    <div  class="col-sm-6 col-md-6 col-lg-6 tabMenu" >Followers</div>
+
+  <br>
+        <!--<h3 class="panel-title">Résultats de la recherche</h3>-->
       </div>
-      <div class="panel-body">
-        <div class="list" style="padding-bottom: 10px; height: 310px; overflow-y:scroll;">
+      <div class="panel-body" style="text-align: center; font-size : 20px; background-color: gray;">
+        <!--<div class="list" style="padding-bottom: 10px; height: 310px; overflow-y:scroll;">
   			    <span  ng-repeat="result in results">
               <div class="item" style="height: 30px; border-bottom: 2px solid">
                 {{result.name}}
@@ -81,8 +84,23 @@
                 </button>
               </div>
   			    </span>
+        </div>-->
+        <div class="borderTop">
+          <img style="width : 40px !important;" class="avatar avatarList" src="images/logo.png" alt="avatar" />
+          <span>Henry Dupont</span>
+          <i class="iconList glyphicon glyphicon-user pull-right button-icon-link"></i>
+          <i class="iconList glyphicon glyphicon-star pull-right button-icon-link"></i>
         </div>
 
+
+
+
+                <div class="borderTop">
+          <img style="width : 40px !important;" class="avatar avatarList" src="images/logo.png" alt="avatar" />
+          <span>Henry Dupont</span>
+          <i class="iconList glyphicon glyphicon-user pull-right button-icon-link"></i>
+          <i class="iconList glyphicon glyphicon-star pull-right button-icon-link"></i>
+        </div>
       </div>
     </div>
 
@@ -93,10 +111,14 @@
 
     <div style="height: 80vh;" class="panel panel-default">
       <div class="panel-heading">
-        <h3 class="panel-title pull-left">
+        <h3 class="panel-title pull-left" style="margin-left: 10px;">
           My mix
-        </h3>
-        <button class="btn btn-default pull-right"><a ng-href="#/mix">Add mix</a></button>
+        </h3><!--
+        <button class="btn btn-default pull-right">
+          <a ng-href="#/mix"><i class="glyphicon glyphicon-plus"></i> Add mix</a>
+        </button>-->
+        <button style="margin-top: 5px !important;" type="submit" class="button button-link glyphicon-plus" ng-disabled="login.$invalid"><span class="glyphicon glyphicon-plus button-icon-link"></span>Add mix
+        </button>
         <div class="clearfix"></div>
       </div>
       <div class="panel-body">
