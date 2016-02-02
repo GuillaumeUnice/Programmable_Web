@@ -3,6 +3,9 @@ $icon-font-path: "../bower_components/bootstrap-sass-official/assets/fonts/boots
 @import "bootstrap-sass-official/assets/stylesheets/_bootstrap.scss";
 // endbower
 
+@import "color.scss";
+@import "button.scss";
+@import "login.scss";
 
 // MIX.HTML
 #pistes{
@@ -258,3 +261,265 @@ rzslider.vertical .rz-ticks .tick .tick-value {
   right: -30px;
   transform: translate(0, -28%);
 }
+
+.panel-heading h3 {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: normal;
+    width: 75%;
+    padding-top: 8px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.panel-default {
+  background-color : $color1 !important;
+  border-color : $color2 !important;
+  border-radius: 0px !important;
+}
+.panel-default > .panel-heading {
+    color : $colorText1;
+    background-color : $color2 !important;
+    border-color : $color2 !important;
+    border-radius: 0px !important;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* fond ecran */
+html, body {
+  background: url(../images/background.jpg) no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
+.borderTop {
+  margin-top : 10px;
+  border-top : 2px $red solid;
+}
+
+.textAlign {
+  text-align: center;
+}
+
+
+/* Rounded avatars */
+.avatar {
+    
+    margin: 1em;
+    position: relative;
+
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
+
+    -webkit-box-shadow: 0 0 0 3px $red, 0 0 0 4px $blue, 0 2px 5px 4px rgba(0,0,0,.2);
+    -moz-box-shadow: 0 0 0 3px $red, 0 0 0 4px $blue, 0 2px 5px 4px rgba(0,0,0,.2);
+    box-shadow: 0 0 0 3px $red, 0 0 0 4px $blue, 0 2px 5px 4px rgba(0,0,0,.2);
+}
+
+.bodyBis {
+  margin-top : 10px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@mixin blur($px: 0) {
+    -webkit-filter: blur(#{$px}px) !important;
+    -ms-filter: blur(#{$px}px) !important;
+    -moz-filter: blur(#{$px}px) !important;
+    filter: url("data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\'><filter id=\'blur\'><feGaussianBlur stdDeviation=\'#{$px}\' /></filter></svg>#blur");
+    filter:progid:DXImageTransform.Microsoft.Blur(PixelRadius='#{$px}');
+}
+
+/// Mixin to customize scrollbars
+/// Beware, this does not work in all browsers
+/// @param {Length} $size - Horizontal scrollbar's height and vertical scrollbar's width
+/// @param {Color} $foreground-color - Scrollbar's color
+/// @param {Color} $background-color [mix($foreground-color, white, 50%)] - Scrollbar's color
+/// @example scss - Scrollbar styling
+/// @include scrollbars(.5em, slategray);
+@mixin scrollbars($size, $foreground-color, $background-color: mix($foreground-color, white,  50%)) {
+  // For Google Chrome
+  ::-webkit-scrollbar {
+      width:  $size;
+      height: $size;
+  }
+
+  ::-webkit-scrollbar-thumb {
+      background: $foreground-color;
+  }
+
+  ::-webkit-scrollbar-track {
+      background: $background-color;
+  }
+
+  // For Internet Explorer
+  body {
+    scrollbar-face-color: $foreground-color;
+    scrollbar-track-color: $background-color;
+  }
+}
+
+@include scrollbars(.6em, slategray);
+
+::selection {
+  color: white;
+  background: lighten( $color2, 20% );
+}
+
+$icon-font-path: "../bower_components/bootstrap-sass-official/assets/fonts/bootstrap/";
+// bower:scss
+@import "bootstrap-sass-official/assets/stylesheets/_bootstrap.scss";
+// endbower
+
+/* overwrite bootstrap */
+.modal-content {
+  background-color: lighten( $color1, 10% );
+  border-radius : 0px;
+}
+.modal-header {
+  border : none;
+  background-color: $color2;
+}
+.modal-footer {
+  border: none;
+    background-color: $color2;
+}
+.app-container{
+  @include blur(5); 
+}
+
+.content {
+  margin : 20px;
+}
+body {
+  color: $colorText1;
+  background-color : $color1;
+}
+
+textarea, input {
+  border: 3px solid #fff;
+  background-color : lighten($color1, 30%);
+  padding: 3px;
+}
+button {
+  cursor: pointer !important;
+}
+textarea {
+  min-height: 200px;
+  min-width: 50%;
+  resize: none;
+}
+
+label, button {
+  cursor: pointer;
+}
+
+fieldset {
+  border: 3px solid $color2;
+  width: 95%;
+  padding-bottom: 10px;
+  height: 85vh;
+  padding-bottom: 10px;
+}
+
+legend {
+  color : $color2;
+  width: auto;
+  padding: 5px;
+  border: 0px !important;
+  margin-bottom : 0px;
+}
+
+.gi-1-5{font-size: 1.5em;}
+.gi-1-8{font-size: 1.8em;}
+.gi-2x{font-size: 2em;}
+.gi-3x{font-size: 3em;}
+.gi-4x{font-size: 4em;}
+.gi-5x{font-size: 5em;}

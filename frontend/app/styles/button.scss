@@ -1,0 +1,109 @@
+@import "color.scss";
+
+button.button {
+  float: left;
+  /*float: left;*/
+  min-width: 150px;
+  max-width: 250px;
+  display: block;
+  margin: 1em;
+  margin-right: 60px;
+  padding: 1em 2em;
+  border: none;
+  background: none;
+  color: inherit;
+  vertical-align: middle;
+  position: relative;
+  z-index: 1;
+  -webkit-backface-visibility: hidden;
+  -moz-osx-font-smoothing: grayscale;
+  font-size: 16px;
+  font-weight: 600;
+  background: none;
+  border: none;
+  height: 60px;
+  -webkit-transition: color 0.3s;
+  transition: color 0.3s;
+  -webkit-transition-timing-function: cubic-bezier(0.75, 0, 0.125, 1);
+  transition-timing-function: cubic-bezier(0.75, 0, 0.125, 1);
+}
+
+button.button:focus {
+  outline: none;
+}
+
+button.button > span {
+  vertical-align: middle;
+}
+
+button.button::before,
+button.button::after {
+  content: '';
+  z-index: -1;
+  border-radius: inherit;
+  pointer-events: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  -webkit-backface-visibility: hidden;
+  -webkit-transition: -webkit-transform 0.3s, opacity 0.3s;
+  transition: transform 0.3s, opacity 0.3s;
+  -webkit-transition-timing-function: cubic-bezier(0.75, 0, 0.125, 1);
+  transition-timing-function: cubic-bezier(0.75, 0, 0.125, 1);
+}
+
+button.button::before {
+  border: 2px solid $color3;
+  opacity: 0;
+  -webkit-transform: scale3d(1.2, 1.2, 1);
+  transform: scale3d(1.2, 1.2, 1);
+  border-width: 1px;
+  border-color: $color3;
+}
+
+button.button::after {
+  background: $color3;
+
+}
+
+button.button:hover {
+  color: $color3;
+
+}
+
+button.button:hover::before {
+  opacity: 1;
+  -webkit-transform: scale3d(1, 1, 1);
+  transform: scale3d(1, 1, 1);
+}
+
+button.button:hover::after {
+  opacity: 0;
+  -webkit-transform: scale3d(0.8, 0.8, 1);
+  transform: scale3d(0.8, 0.8, 1);
+}
+input[type="submit"] {
+    background: none;
+    border: none;
+}
+
+.button-icon {
+  font-size : 2em !important;
+  margin-right: 30px;
+  margin-left: -30px;
+}
+
+button.button-alert::after{
+  background: darken( $red, 10% );
+}
+button.button-alert:hover{
+  color : darken( $red, 10% );
+}
+button.button-alert::before {
+  border-color: darken( $red, 10% );
+}
+button:active {
+    border-color: darken( $color3, 10% );
+}
