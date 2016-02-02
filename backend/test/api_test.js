@@ -9,6 +9,11 @@ var server = request.agent("http://localhost:3000/");
 
 describe("Unit test for UNKNOWN routes", function() {
 
+	before(function (done) {
+        done();
+    });
+
+
 	it("should return 404 error", function(done) {
 		server.get("/random")
 			.expect(404)
@@ -17,4 +22,8 @@ describe("Unit test for UNKNOWN routes", function() {
 				done();
 			});
 	});
+
+	after(function (done) {
+        done();
+    });
 });

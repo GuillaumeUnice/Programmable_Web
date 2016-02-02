@@ -6,12 +6,38 @@ var assert = require("assert");
 var request = require("supertest");
 var constants = require('../config/constants');
 
+var mongoose = require('mongoose');
+var db;
+var dbs;
+
 // On set notre adresse serveur
 var server = request.agent("http://localhost:3000");
 
 describe("Unit test for auth routes", function() {
 
 	before(function (done) {
+
+		mongoose.connect(constants.MONGO_URL_TEST_DB);
+		db = mongoose.connection;
+		dbs = mongoose.connection.db;
+
+		dbs.dropDatabase();
+		dbs.createCollection('users');
+
+		db.collection('users').insertOne(
+			{ 'email': 'test@gmail.com',
+				'password' : "$2a$10$vGVaf40wcE/DqZqp2FkUtepyq.CxsRehgk./Z37LzRQ.YizXdclfO"
+			},   function(err, result) {
+	        expect(result.email).to.be.equal("test@gmail.com");  
+	    });
+		mongoose.connection.close();
+	    done();
+    });
+
+	after(function (done) {
+		//dbs.dropDatabase();
+		//dbs.createCollection('users');
+
         done();
     });
 
@@ -53,7 +79,4 @@ describe("Unit test for auth routes", function() {
 			});
 	});
 
-	after(function (done) {
-        done();
-    });
 });

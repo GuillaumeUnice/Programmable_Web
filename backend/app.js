@@ -21,7 +21,12 @@ var constants = require('./config/constants');
 
 var expressMongoDb = require('express-mongo-db');
 
-app.use(expressMongoDb(constants.MONGO_URL_TEST_DB)); // DB connection
+if (app.get('env') === 'production') {
+ app.use(expressMongoDb(constants.MONGO_URL_PROD_DB)); // DB connection
+} else {
+  app.use(expressMongoDb(constants.MONGO_URL_TEST_DB)); // DB connection  
+}
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

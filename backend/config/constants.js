@@ -7,6 +7,8 @@ function define(name, value) {
 
 define("MONGO_URL", 'mongodb://localhost:27017');
 
+define("MONGO_URL_PROD_DB", 'mongodb://localhost:27017/prod');
+
 define("MONGO_URL_TEST_DB", 'mongodb://localhost:27017/test');
 
 define("JSON_STATUS_SUCCESS", 1);
