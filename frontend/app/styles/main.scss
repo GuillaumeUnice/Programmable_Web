@@ -8,6 +8,7 @@ $icon-font-path: "../bower_components/bootstrap-sass-official/assets/fonts/boots
 @import "morphSearch.scss";
 @import "button.scss";
 @import "login.scss";
+@import "timeline.scss";
 
 // MIX.HTML
 #pistes{
@@ -275,13 +276,13 @@ rzslider.vertical .rz-ticks .tick .tick-value {
 }
 
 .tabMenu {
-  padding-bottom:21px !important;
+  padding-bottom:15px !important;
   cursor : pointer;
 }
 
 
 .tabMenu:hover {
-  background-color : darken($color1, 1%);
+  background-color : #6cbfee;/*darken($color2, 1%);*/
 }
 
 
@@ -293,7 +294,8 @@ rzslider.vertical .rz-ticks .tick .tick-value {
   font-size: 20px !important;
   margin-right: 20px !important;
   cursor: pointer !important;
-  color: $color2 !important;
+  /*color: $color2 !important;*/
+  color: $red !important;
 }
 .iconList:hover {
   color: $colorText1;
@@ -306,7 +308,12 @@ rzslider.vertical .rz-ticks .tick .tick-value {
   font-size : 20px !important;
   background-color: gray !important;
 }
-
+.iconListTimeline {
+  color: $color2 !important;
+  margin-right: 8px !important;
+  margin-top: 8px !important;
+  cursor : auto !important;
+}
 
 
 
@@ -379,7 +386,8 @@ html, body {
 }
 
 .borderTop {
-  margin-top : 10px;
+  margin-top : 15px;
+  padding-top: 10px; 
   border-top : 2px $red solid;
 }
 
