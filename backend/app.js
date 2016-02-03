@@ -11,9 +11,9 @@ var busboy = require('connect-busboy');
 //var session = require('express-session');
 
 var routes = require('./routes/index');
-var users = require('./routes/users');
-var feedbacks = require('./routes/feedbacks');
-var search = require('./routes/search');
+//var users = require('./routes/users');
+//var feedbacks = require('./routes/feedbacks');
+//var search = require('./routes/search');
 
 var app = express();app.use(busboy());
 
@@ -51,6 +51,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 //Routes
 var routess = {};
 routess.auth = require('./controllers/auth.js');
+routess.search = require('./controllers/search.js');
+routess.feedbacks = require('./controllers/feedbacks.js');
+
+
 
 app.use(function(req, res, next) {
   console.log('Middleware called.');
@@ -76,13 +80,16 @@ app.post('/register', routess.auth.register);
 app.post('/login', routess.auth.login);
 app.post('/logout', routess.auth.logout);
 
+app.get('/feedbacks/:idSong', routess.feedbacks.getFeedbacks);
+app.post('/feedbacks/:idSong', routess.feedbacks.postFeedback);
+app.post('/search', routess.search.searchSongAndUser);
 
 
 
 app.use('/', routes);
-app.use('/users', users);
-app.use('/feedbacks', feedbacks);
-app.use('/search', search);
+//app.use('/users', users);
+//app.use('/feedbacks', feedbacks);
+//app.use('/search', search);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

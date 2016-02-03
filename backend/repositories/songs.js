@@ -19,7 +19,7 @@ function SongsRepository () {
         });
     };
 
-  this.findRestaurants_by_field = function(db, findby, content, callback) {
+  this.findSongs_by_field = function(db, findby, content, callback) {
     var cursor = db.collection('songs').find( { name : content } );
     var i =0;
     cursor.each(function(err, doc) {
@@ -33,6 +33,20 @@ function SongsRepository () {
        }
     });
  };
+
+    //Pre-condition : creation des indexes dans la BD
+    this.searchSongs_by_keywords = function(db,keywords,callback) {
+        var cursor = db.collection('songs').find( { $text: { $search: keywords } } );
+        var result = [];
+        cursor.each(function(err, doc) {
+            if (doc != null) {
+                result.push(doc)
+            }
+            else{
+                callback(result);
+            }
+        });
+    };
 
   this.update_AddInDocument = function(db, findby, input, callback) {
     console.log('updateDocument');
@@ -158,6 +172,23 @@ function SongsRepository () {
     });
 
   };
+
+    this.getFeedback = function(db,idSong,successCB,errorCB){
+        var cursor = db.collection('songs').find({"id" : idSong });
+        var first = true;
+        cursor.each(function(err, doc) {
+            if (doc != null) {
+                successCB(doc.feedbacks);
+                first = false;
+            }
+            else if(first) errorCB();
+        });
+    };
+
+    this.postFeedback = function(db,idSong,newFeedback,callback){
+        db.collection('songs').updateOne({"id" : idSong },{ $push: { "feedbacks": newFeedback } });
+        callback();
+    }
 
 
 };

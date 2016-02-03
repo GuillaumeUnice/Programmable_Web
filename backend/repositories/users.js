@@ -6,6 +6,19 @@ function UsersRepository () {
       });
   };
 
+  this.searchUserByKeywords = function(db, keywords, callback) {
+    var cursor = db.collection('users').find( { $text: { $search: keywords } } );
+    var result = [];
+    cursor.each(function(err, doc) {
+      if (doc != null) {
+        result.push(doc)
+      }
+      else{
+        callback(result);
+      }
+    });
+  };
+
   this.addUser = function(db, user, callback) {
     
     if((user.password === undefined) || (user.email === undefined)) {
@@ -16,7 +29,7 @@ function UsersRepository () {
       function(err, result) {
           callback(null, result);
       });
-  }; 
+  };
 
 };
 

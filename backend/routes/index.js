@@ -263,7 +263,7 @@ router.route('/download')
 router.route('/get')
   .get(function(req, res) {
     console.log('find'+req.query.name_find);
-    songsRepository.findRestaurants_by_field(req.db, 'name' ,req.query.name_find, function(err, result) {
+    songsRepository.findSongs_by_field(req.db, 'name' ,req.query.name_find, function(err, result) {
       //console.log(req.session.emailUser);
       res.json({ status: constants.JSON_STATUS_SUCCESS,
         title: 'Connexion',
