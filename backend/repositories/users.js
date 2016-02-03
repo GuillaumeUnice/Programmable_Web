@@ -6,6 +6,12 @@ function UsersRepository () {
       });
   };
 
+  this.findUserById = function(db, idUser, callback) {
+    db.collection('users').findOne( { 'id': idUser },   function(err, result) {
+      callback(null, result);
+    });
+  };
+
   this.searchUserByKeywords = function(db, keywords, callback) {
     var cursor = db.collection('users').find( { $text: { $search: keywords } } );
     var result = [];
@@ -30,7 +36,6 @@ function UsersRepository () {
           callback(null, result);
       });
   };
-
 };
 
 exports.UsersRepository = UsersRepository;

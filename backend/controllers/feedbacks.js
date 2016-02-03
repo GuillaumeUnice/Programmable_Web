@@ -6,7 +6,7 @@ var songsRepository = new songsRepositoryModule.SongsRepository();
 
 exports.getFeedbacks = function(req, res) {
 	var idSong = +req.params.idSong;
-	songsRepository.getFeedback(req.db,idSong,function(data){
+	songsRepository.getFeedbacks(req.db,idSong,function(data){
 		res.send(data);
 	},function(){
 		res.send(404,'No feedback found for this song');
@@ -18,5 +18,7 @@ exports.postFeedback = function(req, res) {
 	var idSong = +req.params.idSong;
 	songsRepository.postFeedback(req.db,idSong,newFeedback,function(data){
 		res.send("Feedback added!");
+	},function(error){
+		res.send(404,error);
 	});
 };
