@@ -1,29 +1,152 @@
-<div class="row">
+<div class="bodyBis">
 
-  <!-- barre de recherche-->
-  <div style="padding-left: 5%">
-    <input type="text" ng-model="searchInfo.motsCles">
-    <button ng-click="sendKeyWords()">Rechercher</button>
+  <div id="morphsearch" class="morphsearch">
+    <form class="morphsearch-form">
+      <input id="morphsearch-input" class="morphsearch-input" type="search" placeholder="Search..."/>
+      <button class="morphsearch-submit" type="submit">Search</button>
+      <div class="morphsearch-content">
+        <div class="dummy-column_cont">
+          <p>Mix</p>
+          <p>Users</p>
+        </div>
+      </div><!-- /morphsearch-content -->
+    </form>
+
+    <span class="morphsearch-close"></span>
   </div>
 
-  <!-- fil d'actualité -->
-  <div class="col-md-8" style="padding-left: 5%">
 
-    <div style="height: 80vh ;" class="panel panel-default">
+
+  <div class="col-md-3">
+    <div style="height: 75vh; overflow-y:scroll; overflow-x:hidden;" class="panel panel-default textAlign">
       <div class="panel-heading">
-        <h3 class="panel-title">Résultats de la recherche</h3>
+        <h3 class="panel-title">Search & Profile</h3>
       </div>
-      <div class="panel-body" style="padding-left: 5%;">
-        <div class="list" style="padding-bottom: 10px; height: 310px; overflow-y:scroll;">
-				    <span  ng-repeat="result in results">
+      <div class="panel-body">
+
+        <h4 class="panel-title" style="text-align : left;">Search : <h4>
+        <br><br>
+        <!--<input type="text" ng-model="searchInfo.motsCles">
+        <button ng-click="sendKeyWords()">Rechercher</button>-->
+        <div class="row borderTop">
+          <img class="avatar" src="images/logo.png" alt="avatar" />
+          <p style="margin-top: 10px; text-align: left; font-size: 15px;"><i class="glyphicon glyphicon-envelope"></i> test@gmail.com</p>
+          <p style="text-align: left; font-size: 15px;"><i class="glyphicon glyphicon-time"></i> Joined on 15 Nov 2013</p>
+        </div>
+
+        <div class="borderTop row">
+          <div class="col-md-4">
+            <strong class="red vcard-stat-count">0</strong>
+            <br>
+            <span class="text-muted">Followers</span>
+          </div>
+
+
+          <div class="col-md-4">
+            <strong class="red vcard-stat-count">4.5</strong>
+            <br>
+            <span class="text-muted">Average note</span>
+          </div>
+
+          <div class="col-md-4">
+            <strong class="red vcard-stat-count">0</strong>
+            <br>
+            <span class="text-muted">Followed</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+
+
+
+  <!-- fil d'actualité -->
+  <div class="col-md-6">
+
+    <div style="height: 75vh; overflow-y:scroll; overflow-x:hidden;" class="panel panel-default">
+      <div class="panel-heading">
+
+    <div  class="col-sm-6 col-md-6 col-lg-6 tabMenu">News</div>
+    <div  class="col-sm-6 col-md-6 col-lg-6 tabMenu" >Followers</div>
+
+  <br>
+        <!--<h3 class="panel-title">Résultats de la recherche</h3>-->
+      </div>
+      <div class="panel-body panelBody">
+        <!--<div class="list" style="padding-bottom: 10px; height: 310px; overflow-y:scroll;">
+  			    <span  ng-repeat="result in results">
               <div class="item" style="height: 30px; border-bottom: 2px solid">
                 {{result.name}}
                 <button ng-click="startListening(result)" style="float: right">
                   Lancer lecture
                 </button>
               </div>
-				    </span>
+  			    </span>
+        </div>-->
+        
+
+
+
+        <!--<form>
+          <input type="text" placeholder="filter..."/>
+        </form>
+        <div class="borderTop">
+          <img style="width : 40px !important;" class="avatar avatarList" src="images/logo.png" alt="avatar" />
+          <span>Henry Dupont</span>
+          <i title="look profile" class="iconList glyphicon glyphicon-user pull-right button-icon-link"></i>
+          <i title="unfollowed" class="iconList glyphicon glyphicon-star pull-right button-icon-link"></i>
         </div>
+
+
+        <div class="borderTop">
+          <img style="width : 40px !important;" class="avatar avatarList" src="images/logo.png" alt="avatar" />
+          <span>Henry Dupont</span>
+          <i title="look profile" class="iconList glyphicon glyphicon-user pull-right button-icon-link"></i>
+          <i title="unfollowed" class="iconList glyphicon glyphicon-star pull-right button-icon-link"></i>
+        </div>-->
+
+        <div class="main">
+          <ul class="cbp_tmtimeline">
+            <li>
+              <time class="cbp_tmtime" datetime="2013-04-10 18:30"><span>03/02/16</span> <span>18:30</span></time>
+              <div style="margin-top: {{ 0 * 128 }}px !important;" class="cbp_tmicon">
+                <i class="iconList iconListTimeline glyphicon glyphicon-play pull-right button-icon-link">
+                </i>
+              </div>
+              <div class="cbp_tmlabel">
+                <h2 style="font-size: 17px !important;">
+                  Henry Durand à ajouter un mix : 
+                </h2>
+                <p>
+                  <i style="cursor : initial !important;" class="iconList glyphicon glyphicon-headphones pull-left button-icon-link"></i>
+                  <span>Mylo Vs Miami Sound Machine - Drop The Pressure</span>
+                  <i title="play" class="iconList glyphicon glyphicon-play pull-right button-icon-link"></i>
+                </p>
+              </div>
+            </li>
+            <li>
+              <time class="cbp_tmtime" datetime="2013-04-10 18:30"><span>02/02/16</span> <span>18:30</span></time>
+              <div style="margin-top: {{ 1 * 128 }}px !important;" class="cbp_tmicon" >
+                <i class="iconList iconListTimeline glyphicon glyphicon-play pull-right button-icon-link">
+                </i>
+              </div>
+              <div class="cbp_tmlabel">
+                <h2 style="font-size: 17px !important;">
+                  Henry Durand à ajouter un commentaire : 
+                </h2>
+                <p>
+                  <i style="cursor : initial !important;" class="iconList glyphicon glyphicon-headphones pull-left button-icon-link"></i>
+                  <span>Mylo Vs Miami Sound Machine - Drop The Pressure</span>
+                  <i title="play" class="iconList glyphicon glyphicon-play pull-right button-icon-link"></i>
+                </p>
+              </div>
+            </li>
+
+          </ul>
+        </div>
+
 
       </div>
     </div>
@@ -31,14 +154,98 @@
   </div>
 
   <!-- mes mix -->
-  <div class="col-md-4"  style="padding-right: 5%">
+  <div class="col-md-3">
 
-    <div style="height: 80vh ;" class="panel panel-default">
+    <div style="height: 75vh; overflow-y:scroll; overflow-x:hidden;" class="panel panel-default">
       <div class="panel-heading">
-        <h3 class="panel-title">Mes mix</h3>
+        <h3 class="panel-title pull-left" style="margin-left: 10px;">
+          My mix
+        </h3><!--
+        <button class="btn btn-default pull-right">
+          <a ng-href="#/mix"><i class="glyphicon glyphicon-plus"></i> Add mix</a>
+        </button>-->
+        <button style="margin-top: 5px !important;" type="submit" class="button button-link glyphicon-plus" ng-disabled="login.$invalid"><span class="glyphicon glyphicon-plus button-icon-link"></span>Add mix
+        </button>
+        <div class="clearfix"></div>
       </div>
-      <div class="panel-body">
-        <p>blabla</p>
+      <div class="panel-body panelBody" style="font-size: 15px !important;">
+        <form>
+          <input type="text" placeholder="filter..."/>
+        </form>
+
+        <div class="borderTop">
+          <i style="cursor : initial !important;" class="iconList glyphicon glyphicon-headphones pull-left button-icon-link"></i>
+          <span>Mylo Vs Miami Sound Machine - Drop The Pressure</span>
+          <i title="play" class="iconList glyphicon glyphicon-play pull-right button-icon-link"></i>
+        </div>
+
+
+
+
+
+
+
+
+
+
+
+        <div class="borderTop">
+          <i  class="iconList glyphicon glyphicon-headphones pull-left button-icon-link"></i>
+          <span>Mylo Vs Miami Sound Machine - Drop The Pressure</span>
+          <i class="iconList glyphicon glyphicon-play pull-right button-icon-link"></i>
+        </div>        <div class="borderTop">
+          <i class="iconList glyphicon glyphicon-headphones pull-left button-icon-link"></i>
+          <span>Mylo Vs Miami Sound Machine - Drop The Pressure</span>
+          <i class="iconList glyphicon glyphicon-play pull-right button-icon-link"></i>
+        </div>        <div class="borderTop">
+          <i class="iconList glyphicon glyphicon-headphones pull-left button-icon-link"></i>
+          <span>Mylo Vs Miami Sound Machine - Drop The Pressure</span>
+          <i class="iconList glyphicon glyphicon-play pull-right button-icon-link"></i>
+        </div>        <div class="borderTop">
+          <i class="iconList glyphicon glyphicon-headphones pull-left button-icon-link"></i>
+          <span>Mylo Vs Miami Sound Machine - Drop The Pressure</span>
+          <i class="iconList glyphicon glyphicon-play pull-right button-icon-link"></i>
+        </div>        <div class="borderTop">
+          <i class="iconList glyphicon glyphicon-headphones pull-left button-icon-link"></i>
+          <span>Mylo Vs Miami Sound Machine - Drop The Pressure</span>
+          <i class="iconList glyphicon glyphicon-play pull-right button-icon-link"></i>
+        </div>        <div class="borderTop">
+          <i class="iconList glyphicon glyphicon-headphones pull-left button-icon-link"></i>
+          <span>Mylo Vs Miami Sound Machine - Drop The Pressure</span>
+          <i class="iconList glyphicon glyphicon-play pull-right button-icon-link"></i>
+        </div>        <div class="borderTop">
+          <i class="iconList glyphicon glyphicon-headphones pull-left button-icon-link"></i>
+          <span>Mylo Vs Miami Sound Machine - Drop The Pressure</span>
+          <i class="iconList glyphicon glyphicon-play pull-right button-icon-link"></i>
+        </div>        <div class="borderTop">
+          <i class="iconList glyphicon glyphicon-headphones pull-left button-icon-link"></i>
+          <span>Mylo Vs Miami Sound Machine - Drop The Pressure</span>
+          <i class="iconList glyphicon glyphicon-play pull-right button-icon-link"></i>
+        </div>        <div class="borderTop">
+          <i class="iconList glyphicon glyphicon-headphones pull-left button-icon-link"></i>
+          <span>Mylo Vs Miami Sound Machine - Drop The Pressure</span>
+          <i class="iconList glyphicon glyphicon-play pull-right button-icon-link"></i>
+        </div>        <div class="borderTop">
+          <i class="iconList glyphicon glyphicon-headphones pull-left button-icon-link"></i>
+          <span>Mylo Vs Miami Sound Machine - Drop The Pressure</span>
+          <i class="iconList glyphicon glyphicon-play pull-right button-icon-link"></i>
+        </div>        <div class="borderTop">
+          <i class="iconList glyphicon glyphicon-headphones pull-left button-icon-link"></i>
+          <span>Mylo Vs Miami Sound Machine - Drop The Pressure</span>
+          <i class="iconList glyphicon glyphicon-play pull-right button-icon-link"></i>
+        </div>
+
+
+
+
+
+
+
+
+
+
+
+
 
 
       </div>
@@ -46,69 +253,122 @@
 
   </div>
 
-<div id="demo" ng-controller="PlayerCtrl as player" >
-  <div class="row" style="background-color: gray; position: absolute; bottom: 0; left: 0; right: 0; margin: auto; border: none;">
-      <div class="col-sm-4">
-        <auto-scoll-text comments="commentTab"></auto-scoll-text>
-          <!-- A COMMENTER<span>
-            Je pense que ce titre est a prendre avec des pincettes :D
-          </span> A COMMENTER-->
-      </div>
-      <div class="col-sm-1">
-          <span>
-            {{title}}
-          </span>
-          <br>
-          <span>Note : 4.5/5</span>
-          <br>
-          <span>Votre note : 4.5/5</span>
-      </div>
-      <div class="col-sm-6">
-          <ng-wavesurfer url="./media/test.wav" wave-color="#337ab7" progress-color="#23527c" height="64">
-          </ng-wavesurfer>
-      </div>
+  <div id="demo" ng-controller="PlayerCtrl as player" >
+    <div class="row" style="background-color: gray; position: absolute; bottom: 0; left: 0; right: 0; margin: auto; border: none; z-index : 99;">
+        <div class="col-sm-4">
+          <auto-scoll-text comments="commentTab"></auto-scoll-text>
+            <!-- A COMMENTER<span>
+              Je pense que ce titre est a prendre avec des pincettes :D
+            </span> A COMMENTER-->
+        </div>
+        <div class="col-sm-1">
+            <span>
+              {{title}}
+            </span>
+            <br>
+            <span>Note : 4.5/5</span>
+            <br>
+            <span>Votre note : 4.5/5</span>
+        </div>
+        <div class="col-sm-6">
+            <ng-wavesurfer url="./media/test.wav" wave-color="#337ab7" progress-color="#23527c" height="64">
+            </ng-wavesurfer>
+        </div>
 
-      <div class="col-sm-1">
-          <button class="btn btn-success btn-block" ng-click="wavesurfer.playPause()">
-              <span id="play" ng-show="paused">
-                  <i class="glyphicon glyphicon-play"></i>
-                  Play
-              </span>
+        <div class="col-sm-1">
+            <button class="btn btn-success btn-block" ng-click="wavesurfer.playPause()">
+                <span id="play" ng-show="paused">
+                    <i class="glyphicon glyphicon-play"></i>
+                    Play
+                </span>
 
-              <span id="pause" ng-show="!paused">
-                  <i class="glyphicon glyphicon-pause"></i>
-                  Pause
-              </span>
-          </button>
+                <span id="pause" ng-show="!paused">
+                    <i class="glyphicon glyphicon-pause"></i>
+                    Pause
+                </span>
+            </button>
 
-          <button class="btn btn-success btn-block" ng-click="wavesurfer.playPause()">
-            Queue
-          </button>
-          <button class="btn btn-success btn-block" ng-click="addComment()">
-          Comment
-          </button>
-      </div>
+            <button class="btn btn-success btn-block" ng-click="wavesurfer.playPause()">
+              Queue
+            </button>
+            <button class="btn btn-success btn-block" ng-click="addComment()">
+            Comment
+            </button>
+        </div>
+    </div>
+    <!-- A COMMENTER
+    <div class="list-group" id="playlist">
+      <a href=""
+         ng-class="{ 'list-group-item': true, active: isPlaying('./media/demo.wav') }"
+         ng-click="play('./media/demo.wav')">
+          <i class="glyphicon glyphicon-play"></i>
+          czskamaarù – Trou
+          <span class="badge">0:21</span>
+      </a>
+
+      <a href=""
+         ng-class="{ 'list-group-item': true, active: isPlaying('./media/test.wav') }"
+         ng-click="play('./media/test.wav')">
+          <i class="glyphicon glyphicon-play"></i>
+          Looool
+          <span class="badge">1:04</span>
+      </a>
+    </div>
+      A COMMENTER -->
   </div>
-  <!-- A COMMENTER
-  <div class="list-group" id="playlist">
-    <a href=""
-       ng-class="{ 'list-group-item': true, active: isPlaying('./media/demo.wav') }"
-       ng-click="play('./media/demo.wav')">
-        <i class="glyphicon glyphicon-play"></i>
-        czskamaarù – Trou
-        <span class="badge">0:21</span>
-    </a>
-
-    <a href=""
-       ng-class="{ 'list-group-item': true, active: isPlaying('./media/test.wav') }"
-       ng-click="play('./media/test.wav')">
-        <i class="glyphicon glyphicon-play"></i>
-        Looool
-        <span class="badge">1:04</span>
-    </a>
-  </div>
-    A COMMENTER -->
 </div>
 
-</div>
+<script type="text/javascript">
+    jQuery(document).ready(function() {
+     var morphSearch = document.getElementById( 'morphsearch' ),
+      input = morphSearch.querySelector( 'input.morphsearch-input' ),
+      ctrlClose = morphSearch.querySelector( 'span.morphsearch-close' ),
+      isOpen = isAnimating = false,
+      // show/hide search area
+      toggleSearch = function(evt) {
+      
+        // return if open and the input gets focused
+        if( evt.type.toLowerCase() === 'focus' && isOpen ) return false;
 
+        var offsets = morphsearch.getBoundingClientRect();
+        if( isOpen ) {
+          classie.remove( morphSearch, 'open' );
+
+          // trick to hide input text once the search overlay closes 
+          // todo: hardcoded times, should be done after transition ends
+          if( input.value !== '' ) {
+            setTimeout(function() {
+              classie.add( morphSearch, 'hideInput' );
+              setTimeout(function() {
+                classie.remove( morphSearch, 'hideInput' );
+                input.value = '';
+              }, 300 );
+            }, 500);
+          }
+          
+          input.blur();
+        }
+        else {
+          classie.add( morphSearch, 'open' );
+        }
+        isOpen = !isOpen;
+      };
+
+    // events
+    input.addEventListener( 'focus', toggleSearch );
+    ctrlClose.addEventListener( 'click', toggleSearch );
+    // esc key closes search overlay
+    // keyboard navigation events
+    document.addEventListener( 'keydown', function( ev ) {
+      var keyCode = ev.keyCode || ev.which;
+      if( keyCode === 27 && isOpen ) {
+        toggleSearch(ev);
+      }
+    } );
+
+
+    /***** for demo purposes only: don't allow to submit the form *****/
+    morphSearch.querySelector( 'button[type="submit"]' ).addEventListener( 'click', function(ev) { alert("lancement de la recherche"); ev.preventDefault(); } );
+
+    });
+</script>
