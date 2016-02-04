@@ -84,6 +84,9 @@ app.get('/feedbacks/:idSong', routess.feedbacks.getFeedbacks);
 app.post('/feedbacks/:idSong', routess.feedbacks.postFeedback);
 app.post('/search', routess.search.searchSongAndUser);
 app.post('/follow',routess.follow.followSomeone);
+app.get('/follow/followers/:idUser',routess.follow.getFollowers);
+app.get('/follow/followed/:idUser',routess.follow.getFollowed);
+
 
 
 
