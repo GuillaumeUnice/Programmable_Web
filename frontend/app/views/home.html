@@ -16,29 +16,10 @@
               </div>  
                             <div class="borderTop border">
                   <i  class="iconList glyphicon glyphicon-headphones pull-left button-icon-link"></i>
-                  <span>Mylo Vs Miami Sound Machine - Drop The Pressure</span>
+                  <span>Chimeric - Metronome</span>
                   <i class="iconList glyphicon glyphicon-play pull-right button-icon-link"></i>
               </div>  
-                            <div class="borderTop border">
-                  <i  class="iconList glyphicon glyphicon-headphones pull-left button-icon-link"></i>
-                  <span>Mylo Vs Miami Sound Machine - Drop The Pressure</span>
-                  <i class="iconList glyphicon glyphicon-play pull-right button-icon-link"></i>
-              </div>  
-                            <div class="borderTop border">
-                  <i  class="iconList glyphicon glyphicon-headphones pull-left button-icon-link"></i>
-                  <span>Mylo Vs Miami Sound Machine - Drop The Pressure</span>
-                  <i class="iconList glyphicon glyphicon-play pull-right button-icon-link"></i>
-              </div>  
-                            <div class="borderTop border">
-                  <i  class="iconList glyphicon glyphicon-headphones pull-left button-icon-link"></i>
-                  <span>Mylo Vs Miami Sound Machine - Drop The Pressure</span>
-                  <i class="iconList glyphicon glyphicon-play pull-right button-icon-link"></i>
-              </div>  
-                            <div class="borderTop border">
-                  <i  class="iconList glyphicon glyphicon-headphones pull-left button-icon-link"></i>
-                  <span>Mylo Vs Miami Sound Machine - Drop The Pressure</span>
-                  <i class="iconList glyphicon glyphicon-play pull-right button-icon-link"></i>
-              </div>   
+                       
             </div>
           </div>
           <div class="dummy-column_contContent">
@@ -227,84 +208,14 @@
       </div>
       <div class="panel-body panelBody" style="font-size: 15px !important; height: 75vh; overflow-y:scroll; overflow-x:hidden;">
         <form>
-          <input type="text" placeholder="filter..."/>
+          <input type="text" placeholder="filter..." ng-model="filterMyMix"/>
         </form>
 
-        <div class="borderTop">
+        <div class="borderTop" ng-repeat="mix in myMix | orderBy:'created_at':true | filter:{ name:filterMyMix}">
           <i style="cursor : initial !important;" class="iconList glyphicon glyphicon-headphones pull-left button-icon-link"></i>
-          <span>Mylo Vs Miami Sound Machine - Drop The Pressure</span>
+          <span>{{ mix.name }}</span>
           <i title="play" class="iconList glyphicon glyphicon-play pull-right button-icon-link"></i>
         </div>
-
-
-
-
-
-
-
-
-
-
-
-        <div class="borderTop">
-          <i  class="iconList glyphicon glyphicon-headphones pull-left button-icon-link"></i>
-          <span>Mylo Vs Miami Sound Machine - Drop The Pressure</span>
-          <i class="iconList glyphicon glyphicon-play pull-right button-icon-link"></i>
-        </div>        <div class="borderTop">
-          <i class="iconList glyphicon glyphicon-headphones pull-left button-icon-link"></i>
-          <span>Mylo Vs Miami Sound Machine - Drop The Pressure</span>
-          <i class="iconList glyphicon glyphicon-play pull-right button-icon-link"></i>
-        </div>        <div class="borderTop">
-          <i class="iconList glyphicon glyphicon-headphones pull-left button-icon-link"></i>
-          <span>Mylo Vs Miami Sound Machine - Drop The Pressure</span>
-          <i class="iconList glyphicon glyphicon-play pull-right button-icon-link"></i>
-        </div>        <div class="borderTop">
-          <i class="iconList glyphicon glyphicon-headphones pull-left button-icon-link"></i>
-          <span>Mylo Vs Miami Sound Machine - Drop The Pressure</span>
-          <i class="iconList glyphicon glyphicon-play pull-right button-icon-link"></i>
-        </div>        <div class="borderTop">
-          <i class="iconList glyphicon glyphicon-headphones pull-left button-icon-link"></i>
-          <span>Mylo Vs Miami Sound Machine - Drop The Pressure</span>
-          <i class="iconList glyphicon glyphicon-play pull-right button-icon-link"></i>
-        </div>        <div class="borderTop">
-          <i class="iconList glyphicon glyphicon-headphones pull-left button-icon-link"></i>
-          <span>Mylo Vs Miami Sound Machine - Drop The Pressure</span>
-          <i class="iconList glyphicon glyphicon-play pull-right button-icon-link"></i>
-        </div>        <div class="borderTop">
-          <i class="iconList glyphicon glyphicon-headphones pull-left button-icon-link"></i>
-          <span>Mylo Vs Miami Sound Machine - Drop The Pressure</span>
-          <i class="iconList glyphicon glyphicon-play pull-right button-icon-link"></i>
-        </div>        <div class="borderTop">
-          <i class="iconList glyphicon glyphicon-headphones pull-left button-icon-link"></i>
-          <span>Mylo Vs Miami Sound Machine - Drop The Pressure</span>
-          <i class="iconList glyphicon glyphicon-play pull-right button-icon-link"></i>
-        </div>        <div class="borderTop">
-          <i class="iconList glyphicon glyphicon-headphones pull-left button-icon-link"></i>
-          <span>Mylo Vs Miami Sound Machine - Drop The Pressure</span>
-          <i class="iconList glyphicon glyphicon-play pull-right button-icon-link"></i>
-        </div>        <div class="borderTop">
-          <i class="iconList glyphicon glyphicon-headphones pull-left button-icon-link"></i>
-          <span>Mylo Vs Miami Sound Machine - Drop The Pressure</span>
-          <i class="iconList glyphicon glyphicon-play pull-right button-icon-link"></i>
-        </div>        <div class="borderTop">
-          <i class="iconList glyphicon glyphicon-headphones pull-left button-icon-link"></i>
-          <span>Mylo Vs Miami Sound Machine - Drop The Pressure</span>
-          <i class="iconList glyphicon glyphicon-play pull-right button-icon-link"></i>
-        </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
       </div>
     </div>
 
