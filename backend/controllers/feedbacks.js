@@ -5,20 +5,17 @@ var songsRepositoryModule = require('../repositories/songs');
 var songsRepository = new songsRepositoryModule.SongsRepository();
 
 exports.getFeedbacks = function(req, res) {
-	var idSong = +req.params.idSong;
+	var idSong = req.params.idSong;
 	songsRepository.getFeedbacks(req.db,idSong,function(data){
 		res.send(data);
 	},function(){
-		res.send(404,'No feedback found for this song');
+		res.send(404,'This song doesn\'t exist');
 	})
 };
 
 exports.postFeedback = function(req, res) {
 	var newFeedback = { user: req.body.user, mark: +req.body.mark, comment: req.body.comment};
-	var idSong = +req.params.idSong;
-	songsRepository.postFeedback(req.db,idSong,newFeedback,function(data){
-		res.send("Feedback added!");
-	},function(error){
-		res.send(404,error);
-	});
+	var idSong = req.params.idSong;
+	songsRepository.postFeedback(req.db,idSong,newFeedback);
+	res.send("Feedback added!");
 };

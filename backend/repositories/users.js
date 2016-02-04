@@ -7,7 +7,7 @@ function UsersRepository () {
   };
 
   this.findUserById = function(db, idUser, callback) {
-    db.collection('users').findOne( { 'id': idUser },   function(err, result) {
+    db.collection('users').findOne( { '_id': idUser },   function(err, result) {
       callback(null, result);
     });
   };

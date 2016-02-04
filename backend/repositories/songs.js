@@ -174,7 +174,7 @@ function SongsRepository () {
   };
 
     this.getFeedbacks = function(db,idSong,successCB,errorCB){
-        var cursor = db.collection('songs').find({"id" : idSong });
+        var cursor = db.collection('songs').findOne({"_id" : idSong });
         var first = true;
         cursor.each(function(err, doc) {
             if (doc != null) {
@@ -185,15 +185,9 @@ function SongsRepository () {
         });
     };
 
-    this.postFeedback = function(db,idSong,newFeedback,successCB,errorCB){
-        db.collection('songs').updateOne({"id" : idSong },{ $push: { "feedbacks": newFeedback } },function(err,success){
-            if(err){
-                errorCB(err.message);
-            }
-            else successCB(success);
-        });
+    this.postFeedback = function(db,idSong,newFeedback){
+        db.collection('songs').updateOne({"_id" : idSong },{ $push: { "feedbacks": newFeedback } });
     }
-
 
 };
 

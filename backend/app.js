@@ -53,7 +53,7 @@ var routess = {};
 routess.auth = require('./controllers/auth.js');
 routess.search = require('./controllers/search.js');
 routess.feedbacks = require('./controllers/feedbacks.js');
-
+routess.follow = require('./controllers/follow.js');
 
 
 app.use(function(req, res, next) {
@@ -83,6 +83,7 @@ app.post('/logout', routess.auth.logout);
 app.get('/feedbacks/:idSong', routess.feedbacks.getFeedbacks);
 app.post('/feedbacks/:idSong', routess.feedbacks.postFeedback);
 app.post('/search', routess.search.searchSongAndUser);
+app.post('/follow',routess.follow.followSomeone);
 
 
 
