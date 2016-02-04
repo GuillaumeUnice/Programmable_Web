@@ -184,5 +184,7 @@ angular.module('frontendApp')
         });
     };*/
 
-
+  $scope.addComment = function(){
+    alert("addComment");
+  };
 });

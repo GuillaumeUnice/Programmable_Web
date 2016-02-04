@@ -196,29 +196,47 @@
   </div>
 
   <div id="demo" ng-controller="PlayerCtrl as player" >
-    <div class="row" style="background-color: gray; position: absolute; bottom: 0; left: 0; right: 0; margin: auto; border: none; z-index : 99;">
+    <div class="row" style="background-color: gray; position: absolute; bottom: 0; left: 0; right: 0; margin: auto; border: none; z-index : 99; min-height: 120px !important;">
         <div class="col-sm-4">
           <auto-scoll-text comments="commentTab"></auto-scoll-text>
             <!-- A COMMENTER<span>
               Je pense que ce titre est a prendre avec des pincettes :D
             </span> A COMMENTER-->
+            <form name="comment" ng-submit="addComment()" novalidate style="margin-top: 10px;">
+              <input type="text" placeholder="No comment already!" ng-model="myComment" style="float: left; float: left; bottom: -75px; position: absolute; width: 90%;     border: 3px solid #F57362;" required/>
+              <!--<button type="submit" class="button button-link button-player" ng-disabled="comment.$invalid"><span class="glyphicon glyphicon-send button-icon" style="font-size: 25px !important;"></span>Add
+              </button>-->
+            </form>
         </div>
-        <div class="col-sm-1">
+        <div class="col-sm-2" style="text-align: right;">
+            <span>Note : </span>
+            <span class="rating">
+              <span>☆</span>
+              <span>☆</span>
+              <span>☆</span>
+              <span>☆</span>
+              <span>☆</span>
+            </span>
+            <br>
+            <span>Votre note : </span>
+            <span class="rating">
+              <span>☆</span>
+              <span>☆</span>
+              <span>☆</span>
+              <span>☆</span>
+              <span class="marked">☆</span>
+            </span>
+        </div>
+        <div class="col-sm-4">
+            <ng-wavesurfer url="./media/test.wav" wave-color="#337ab7" progress-color="#23527c" height="64">
+            </ng-wavesurfer>
             <span>
               {{title}}
             </span>
-            <br>
-            <span>Note : 4.5/5</span>
-            <br>
-            <span>Votre note : 4.5/5</span>
-        </div>
-        <div class="col-sm-6">
-            <ng-wavesurfer url="./media/test.wav" wave-color="#337ab7" progress-color="#23527c" height="64">
-            </ng-wavesurfer>
         </div>
 
-        <div class="col-sm-1">
-            <button class="btn btn-success btn-block" ng-click="wavesurfer.playPause()">
+        <div class="col-sm-2">
+            <!--<button class="btn btn-success btn-block" ng-click="wavesurfer.playPause()">
                 <span id="play" ng-show="paused">
                     <i class="glyphicon glyphicon-play"></i>
                     Play
@@ -228,14 +246,23 @@
                     <i class="glyphicon glyphicon-pause"></i>
                     Pause
                 </span>
+            </button>-->
+            <button class="button button-link button-player" ng-click="wavesurfer.playPause()">
+              <span ng-if="paused" class="glyphicon glyphicon-play button-icon" style="font-size: 25px !important;"></span>
+              <span ng-if="!paused" class="glyphicon glyphicon-pause button-icon" style="font-size: 25px !important;"></span>
+              <span ng-if="paused">Play</span>
+              <span ng-if="!paused">Pause</span>
             </button>
-
-            <button class="btn btn-success btn-block" ng-click="wavesurfer.playPause()">
+            <button class="button button-link button-player">
+              <span class="glyphicon glyphicon-send button-icon" style="font-size: 25px !important;"></span>
+              Queue
+            </button>
+            <!--<button class="btn btn-success btn-block" ng-click="wavesurfer.playPause()">
               Queue
             </button>
             <button class="btn btn-success btn-block" ng-click="addComment()">
             Comment
-            </button>
+            </button>-->
         </div>
     </div>
     <!-- A COMMENTER

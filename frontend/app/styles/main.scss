@@ -428,7 +428,23 @@ html, body {
 
 
 
-
+.rating {
+  unicode-bidi: bidi-override;
+  direction: rtl;
+  cursor: pointer;
+}
+.rating > span {
+  display: inline-block;
+  position: relative;
+  width: 0.7em;
+  font-size: 25px;
+}
+.rating > span:hover:before,
+.rating > span.marked:before,
+.rating > span:hover ~ span:before {
+   content: "\2605";
+   position: absolute;
+}
 
 
 
