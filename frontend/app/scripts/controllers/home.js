@@ -2,7 +2,7 @@
 
 angular.module('frontendApp')
   .controller('HomeCtrl', function ($scope, ModalService, searchService,currentMusicService, feedbackService,auth) {
-    
+    // initialisation
     $scope.myMix = [
       { _id: 1,
         name: "Drop The Pressure",
@@ -33,6 +33,27 @@ angular.module('frontendApp')
         created_at: 1454616847
       },
     ];
+
+    $scope.followers = [
+      { _id: 1,
+        name: "Henry Dupont",
+        created_at: 1454616841
+      },
+      { _id: 2,
+        name: "Henry Durant",
+        created_at: 1454616842
+      },
+      { _id: 3,
+        name: "Butch Clancy",
+        created_at: 1454616843
+      },
+      { _id: 6,
+        name: "Jhon Smith",
+        created_at: 1454616846
+      }
+    ];
+
+    $scope.isTabMenuNewsSelected = true;
 
 
     /*$scope.searchInfo = {motsCles: null};

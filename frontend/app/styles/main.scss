@@ -280,11 +280,13 @@ rzslider.vertical .rz-ticks .tick .tick-value {
   cursor : pointer;
 }
 
-
 .tabMenu:hover {
-  background-color : #6cbfee;/*darken($color2, 1%);*/
+  background-color : $red;/*#6cbfee;*//*darken($color2, 1%);*/
 }
 
+.tabMenuSelected {
+  background-color : $red;/*#6cbfee;*//*darken($color2, 1%);*/
+}
 
 
 

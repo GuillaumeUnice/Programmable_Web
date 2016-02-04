@@ -104,8 +104,8 @@
     <div  class="panel panel-default">
       <div class="panel-heading">
 
-    <div  class="col-sm-6 col-md-6 col-lg-6 tabMenu">News</div>
-    <div  class="col-sm-6 col-md-6 col-lg-6 tabMenu" >Followers</div>
+    <div ng-class="{ 'tabMenuSelected': isTabMenuNewsSelected }" class="col-sm-6 col-md-6 col-lg-6 tabMenu" ng-click="isTabMenuNewsSelected = true;">News</div>
+    <div ng-class="{ 'tabMenuSelected': !isTabMenuNewsSelected }" ng-click="isTabMenuNewsSelected = false;" class="col-sm-6 col-md-6 col-lg-6 tabMenu" >Followers</div>
 
   <br>
         <!--<h3 class="panel-title">Résultats de la recherche</h3>-->
@@ -122,28 +122,19 @@
   			    </span>
         </div>-->
         
-
-
-
-        <!--<form>
-          <input type="text" placeholder="filter..."/>
-        </form>
-        <div class="borderTop">
-          <img style="width : 40px !important;" class="avatar avatarList" src="images/logo.png" alt="avatar" />
-          <span>Henry Dupont</span>
-          <i title="look profile" class="iconList glyphicon glyphicon-user pull-right button-icon-link"></i>
-          <i title="unfollowed" class="iconList glyphicon glyphicon-star pull-right button-icon-link"></i>
+        <div ng-if="!isTabMenuNewsSelected">
+          <form>
+            <input type="text" placeholder="filter..." ng-model="filterFollower"/>
+          </form>
+          <div class="borderTop" ng-repeat="follower in followers | orderBy:'created_at':true | filter:{ name:filterFollower }">
+            <img style="width : 40px !important;" class="avatar avatarList" src="images/logo.png" alt="avatar" />
+            <span>{{ follower.name}}</span>
+            <i title="look profile" class="iconList glyphicon glyphicon-user pull-right button-icon-link"></i>
+            <i title="unfollowed" class="iconList glyphicon glyphicon-star pull-right button-icon-link"></i>
+          </div>
         </div>
 
-
-        <div class="borderTop">
-          <img style="width : 40px !important;" class="avatar avatarList" src="images/logo.png" alt="avatar" />
-          <span>Henry Dupont</span>
-          <i title="look profile" class="iconList glyphicon glyphicon-user pull-right button-icon-link"></i>
-          <i title="unfollowed" class="iconList glyphicon glyphicon-star pull-right button-icon-link"></i>
-        </div>-->
-
-        <div class="main">
+        <div ng-if="isTabMenuNewsSelected" class="main">
           <ul class="cbp_tmtimeline">
             <li>
               <time class="cbp_tmtime" datetime="2013-04-10 18:30"><span>03/02/16</span> <span>18:30</span></time>
