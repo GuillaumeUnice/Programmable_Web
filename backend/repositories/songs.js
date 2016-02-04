@@ -174,14 +174,10 @@ function SongsRepository () {
   };
 
     this.getFeedbacks = function(db,idSong,successCB,errorCB){
-        var cursor = db.collection('songs').findOne({"_id" : idSong });
-        var first = true;
-        cursor.each(function(err, doc) {
-            if (doc != null) {
-                successCB(doc.feedbacks);
-                first = false;
-            }
-            else if(first) errorCB();
+        db.collection('songs').findOne({"_id" : idSong },function(err,result){
+            if(err){
+                errorCB();
+            }else successCB(result.feedbacks);
         });
     };
 

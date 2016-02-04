@@ -36,6 +36,23 @@ function UsersRepository () {
           callback(null, result);
       });
   };
-};
+
+  this.writeEvent = function(db,idUser,event){
+    db.collection('users').updateOne({"_id" : idUser },{ $push: { "events": event } });
+  };
+
+  this.notifyFollowers = function(db,idUser,event){
+    var cursor = db.collection('users').findOne({"_id" : idUser });
+
+    cursor.each(function(err, doc) {
+      if (doc != null) {
+        var results = doc.followers;
+        results.forEach(function(result){
+          db.collection('users').updateOne({"_id" : result._id },{ $push: { "events": event } });
+        })
+      }
+    });
+  }
+}
 
 exports.UsersRepository = UsersRepository;

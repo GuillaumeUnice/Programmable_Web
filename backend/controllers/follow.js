@@ -8,29 +8,31 @@ exports.followSomeone = function(req,res){
     //...
     req.db.collection('users').updateOne({_id : idUser},{ $push: { followed: idFollowed } });
     req.db.collection('users').updateOne({_id : idFollowed},{ $push: { followers: idUser } });
-    res.send("Success!")
+    req.db.collection('users').findOne({_id : idFollowed},function(err,doc){
+            if(err){
+                res.send(404,'Error');
+            }
+           else{
+                usersRepository.writeEvent(req.db,idUser,"Vous suivez "+doc.full_name);
+                res.send("Success!")
+            }
+    });
 };
 
 exports.getFollowed = function(req,res){
-    var cursor = db.collection('users').findOne({"_id" : req.body.idUser });
-    var first = true;
-    cursor.each(function(err, doc) {
-        if (doc != null) {
-            res.send(doc.followed);
-            first = false;
+    var cursor = req.db.collection('users').findOne({_id : req.params.idUser },function(err,doc){
+        if(err){
+            res.send(404,'This user doesn\'t exist');
         }
-        else if(first) res.send(404,'This user doesn\'t exist');
+        else res.send(doc.followed);
     });
 };
 
 exports.getFollowers = function(req,res){
-    var cursor = db.collection('users').findOne({"_id" : req.body.idUser });
-    var first = true;
-    cursor.each(function(err, doc) {
-        if (doc != null) {
-            res.send(doc.followers);
-            first = false;
+    var cursor = req.db.collection('users').findOne({_id : req.params.idUser },function(err,doc){
+        if(err){
+            res.send(404,'This user doesn\'t exist');
         }
-        else if(first) res.send(404,'This user doesn\'t exist');
+        else res.send(doc.followed);
     });
 };
