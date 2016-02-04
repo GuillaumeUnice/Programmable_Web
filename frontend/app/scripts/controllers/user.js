@@ -31,14 +31,14 @@ angular.module('frontendApp')
             });
     };
 
-    $scope.test = function test() {
+    /*$scope.test = function test() {
         user.test()
             .then(function(data){
                 //$location.path("/login");
             }, function(msg){
                 console.log('erreur promesses : ' + msg);
             });
-    };
+    };*/
 
 
     $scope.logout = function logout() {
@@ -48,7 +48,7 @@ angular.module('frontendApp')
                 auth.isLogged = false;
                 auth.isAuthenticated = false;
                 delete $window.sessionStorage.token;
-                $location.path("/");
+                $location.path("/login");
             }, function(msg){
                 console.log('erreur promesses : ' + msg);
             });

@@ -32,6 +32,12 @@
           <img class="avatar" src="images/logo.png" alt="avatar" />
           <p style="margin-top: 10px; text-align: left; font-size: 15px;"><i class="glyphicon glyphicon-envelope"></i> test@gmail.com</p>
           <p style="text-align: left; font-size: 15px;"><i class="glyphicon glyphicon-time"></i> Joined on 15 Nov 2013</p>
+
+          <form name="logoutForm" ng-submit="logout()" novalidate ng-controller="UserCtrl as user">
+               <button type="submit"  ng-disabled="logoutForm.$invalid" class="button button-link button-logout">
+              <span class="glyphicon glyphicon glyphicon-log-out button-icon-link button-icon"></span>Logout
+            </button>
+          </form>
         </div>
 
         <div class="borderTop row">
@@ -164,7 +170,7 @@
         <button class="btn btn-default pull-right">
           <a ng-href="#/mix"><i class="glyphicon glyphicon-plus"></i> Add mix</a>
         </button>-->
-        <button style="margin-top: 5px !important;" type="submit" class="button button-link glyphicon-plus" ng-disabled="login.$invalid"><span class="glyphicon glyphicon-plus button-icon-link"></span>Add mix
+        <button style="margin-top: 5px !important;" type="submit" class="button button-link glyphicon-plus"><span class="glyphicon glyphicon-plus button-icon-link"></span>Add mix
         </button>
         <div class="clearfix"></div>
       </div>

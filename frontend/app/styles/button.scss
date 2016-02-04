@@ -28,6 +28,10 @@ button.button {
   transition-timing-function: cubic-bezier(0.75, 0, 0.125, 1);
 }
 
+button.button-red {
+  color: white;
+}
+
 button.button-link {
   color: white;
   float: right;
@@ -35,10 +39,14 @@ button.button-link {
   max-width: 156px;
   height: 45px;
   margin: 0px !important;
-}  
+} 
 
 button.button-link span {
   padding-right: 10px;
+}
+
+button.button-logout {
+  float: none !important;
 }
 
 button.button:focus {
@@ -86,17 +94,17 @@ button.button:hover {
 }
 
 
-button.button-link::before {
+button.button-link::before, button.button-red::before {
   border: 2px solid $red !important;
   border-color: $red !important;
 }
 
-button.button-link::after {
+button.button-link::after, button.button-red::after {
   background: $red !important;
 
 }
 
-button.button-link:hover {
+button.button-link:hover, button.button-red:hover {
   color: $red !important;
 }
 
