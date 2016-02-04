@@ -43,9 +43,11 @@
 }
 
 .morphsearch.open .morphsearch-form {
-	width: 80%;
+	width: 90%;
 	/*height: 100%;*/
-	padding: 120px;
+	/*padding: 120px;*/
+	padding-top: 0px;
+	padding-bottom: 35%;
 	-webkit-transform: translate3d(0,3em,0);
 	transform: translate3d(0,3em,0);
 }
@@ -74,7 +76,7 @@
 }
 
 .morphsearch.open .morphsearch-input {
-	font-size: 7em;
+	font-size: 3em;
 }
 
 /* placeholder */
@@ -111,12 +113,12 @@ input[type="search"] { /* reset normalize */
 
 .morphsearch-submit {
 	position: absolute;
-	width: 80px;
-	height: 80px;
+	width: 60px;
+	height: 60px;
 	text-indent: 100px;
 	overflow: hidden;
 	right: 0;
-	top: 50%;
+	top: 25%; /*50%;*/
 	background: transparent url(../images/magnifier.svg) no-repeat center center;
 	background-size: 100%;
 	border: none;
@@ -210,7 +212,7 @@ input[type="search"] { /* reset normalize */
 
 .morphsearch.open .morphsearch-content {
 	opacity: 1;
-	padding-top: 50px;/*TODO*/
+	/*padding-top: 50px;*/
 	height: 100%;
 	overflow: visible; /* this breaks the transition of the children in FF: https://bugzilla.mozilla.org/show_bug.cgi?id=625289 */
 	pointer-events: auto;
@@ -218,14 +220,14 @@ input[type="search"] { /* reset normalize */
 	transition: opacity 0.3s 0.5s;
 }
 .dummy-column_cont {
-	
+	text-align: center;
 	position : relative;
-	top : -120px;
+	top : -15px; /*-120px;*/
 	left : 0px;
 	z-index :9;
 	height : 123px;
 }
-.dummy-column_cont p{
+.dummy-column_cont div{
 	width: 50%;
 	float: left;
 	-webkit-transform: translate3d(0,100px,0);
@@ -381,3 +383,26 @@ input[type="search"] { /* reset normalize */
 		right: 10%;
 	}
 }*/
+
+#morphsearch-input {
+	height: 60px !important;
+	top: 10px;
+	left: 30px;
+	right: 30px !important;
+}
+
+#morphsearch-submit {
+	top: 40px;
+	right: 30px;
+}
+
+.morphsearch.open .morphsearch-submit {
+	position: absolute;
+}
+
+.contentSearch {
+
+	width: 100% !important;
+	margin-left : 10px;
+	margin-right : 10px;
+}
