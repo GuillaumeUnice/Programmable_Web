@@ -53,6 +53,81 @@ angular.module('frontendApp')
       }
     ];
 
+    $scope.news = [
+      { _id: 1,
+        name: "Henry Dupont",
+        action: "a commenté",
+        music: "Pumped Up Kicks",
+        author: "Jhon Doe",
+        created_at: 1454616841,
+        glyphicon: 'glyphicon-comment'
+      },
+      { _id: 2,
+        name: "Henry Durant",
+        action: "a édité commentaire",
+        music: "Pumped Up Kicks",
+        author: "Jhon Doe",
+        created_at: 1454616842,
+        glyphicon: 'glyphicon-comment'
+      },
+      { _id: 3,
+        name: "Butch Clancy",
+        action: "a noté",
+        music: "Close Encounter",
+        author: "Mylo",
+        created_at: 1454616843,
+        glyphicon: 'glyphicon-certificate'
+      },
+      { _id: 4,
+        name: "Butch Clancy",
+        action: "a modifié sa note",
+        music: "Close Encounter",
+        author: "Mylo",
+        created_at: 1454616844,
+        glyphicon: 'glyphicon-certificate'
+      },
+      { _id: 5,
+        name: "Butch Clancy",
+        action: "a follow",
+        music: "",
+        author: "Mylo",
+        created_at: 1454616845,
+        glyphicon: 'glyphicon-thumbs-up'
+      },
+      { _id: 6,
+        name: "Butch Clancy",
+        action: "ne follow plus",
+        music: "Close Encounter",
+        author: "Mylo",
+        created_at: 1454616846,
+        glyphicon: 'glyphicon-thumbs-down'
+      },
+      { _id: 7,
+        name: "Mylo",
+        action: "a ajouté un mix",
+        music: "Close Encounter",
+        author: "Mylo",
+        created_at: 1454616847,
+        glyphicon: 'glyphicon-volume-up'
+      },
+      { _id: 8,
+        name: "Mylo",
+        action: "a édité un mix",
+        music: "Close Encounter",
+        author: "Mylo",
+        created_at: 1454616848,
+        glyphicon: 'glyphicon-volume-up'
+      },
+      { _id: 9,
+        name: "Mylo",
+        action: "a supprimé un mix",
+        music: "Close Encounter",
+        author: "Mylo",
+        created_at: 1454616849,
+        glyphicon: 'glyphicon-volume-up'
+      }
+    ];
+
     $scope.isTabMenuNewsSelected = true;
 
 
