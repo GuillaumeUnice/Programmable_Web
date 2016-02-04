@@ -1,64 +1,54 @@
-
-<form class="form-horizontal" name="register" ng-submit="signUp(user)" novalidate>
-
-    <div class="form-group">
-        <label for="email" class="col-sm-4 control-label">Email</label>
-        <div class="col-sm-4">
-            <input type="email" class="form-control" name="email" placeholder="Email" ng-model="user.email" required>
-            <p ng-show="register.email.$invalid && !register.email.$pristine" class="help-block">
-                Entrer un email valide.
-            </p>
-            <p ng-show="register.email.$error.required" class="help-block">
-                Email requis.
-            </p>
-        </div>
-    </div>
-
-    <div class="form-group">
-        <label for="password" class="col-sm-4 control-label">Password</label>
-        <div class="col-sm-4">
-            <input type="password" class="form-control" name="password" placeholder="Password" ng-model="user.password" required>
-            <p ng-show="register.password.$error.required" class="help-block">
-                Password requis.
-            </p>
-        </div>
-    </div>
-
-    <div class="form-group">
-        <label for="confirmPassword" class="col-sm-4 control-label">Confirmer Password</label>
-        <div class="col-sm-4">
-            <input type="password" class="form-control" name="confirmPassword" placeholder="Confirmer Password" ng-model="user.confirmPassword"
+<div class="modal-dialog" role="document">
+<div class="modal-content">
+  <div class="modal-header">
+    <h3 class="modal-title" id="myModalLabel">Register :</h3>
+  </div>
+  <div class="modal-body">
+    <div class="container">
+      <div class="row">
+        <dv class="col-md-6 col-md-offset-1">
+          <form class="form-horizontal"  name="register" ng-submit="signUp(user)" novalidate>
+            <label for="email">Email</label>
+            <br>
+            <input type="email" name="email" placeholder="Email" ng-model="user.email" required>
+            <span ng-show="register.email.$invalid && !register.email.$pristine" class="red">
+                <span class="glyphicon glyphicon-exclamation-sign"></span>email no valid.
+            </span>
+            <span ng-show="register.email.$error.required" class="red">
+                <span class="glyphicon glyphicon-exclamation-sign"></span> email is required!
+            </span>
+            <br>
+            <br>
+            <label for="password">Password</label>
+            <br>
+            <input type="password" name="password" placeholder="Password" ng-model="user.password" required>
+            <span ng-show="register.password.$error.required" class="red">
+                <span class="glyphicon glyphicon-exclamation-sign"></span> A password is required!
+            </span>
+            <br>
+            <label for="confirmPassword">Confirm password</label>
+            <br>
+            <input type="password" name="confirmPassword" placeholder="Confirmer Password" ng-model="user.confirmPassword"
             compare-to="user.password" required>
-            <p ng-show="register.confirmPassword.$error.compareTo" class="help-block">
-                La confirmation n'est pas identique au password
-            </p>
-            <p ng-show="register.confirmPassword.$error.required" class="help-block">
-                Confirmation de password requis.
-            </p>
+            <span ng-show="register.confirmPassword.$error.compareTo" class="red">
+                The confirmed password is not the same password!
+            </span>
+            <span ng-show="register.confirmPassword.$error.required" class="red">
+                Confirmed password is required!
+            </span>
+            <br>
+            <button type="submit" class="button" ng-disabled="register.$invalid"><span class="glyphicon glyphicon-send button-icon"></span>Register
+            </button>
+            <a ng-href="#/login">
+              <button class="button button-red">
+                <span class="glyphicon glyphicon-circle-arrow-right button-icon"></span>Login
+              </button>
+            </a>
+          </form>
         </div>
+      </div>
     </div>
-
-    <div class="form-group">
-        <div class="col-sm-offset-4 col-sm-10">
-            <button type="submit" class="btn btn-primary" ng-disabled="register.$invalid">S'enregistrer</button>
-        </div>
-    </div>
-</form>
-
-<form class="form-horizontal" name="testa" ng-submit="test()" novalidate>
-   
-    <div class="form-group">
-        <div class="col-sm-offset-4 col-sm-10">
-            <button type="submit" class="btn btn-default" ng-disabled="testa.$invalid">lool</button>
-        </div>
-    </div>
-</form>
-
-<form class="form-horizontal" name="testo" ng-submit="logout()" novalidate>
-   
-    <div class="form-group">
-        <div class="col-sm-offset-4 col-sm-10">
-            <button type="submit" class="btn btn-default" ng-disabled="testo.$invalid">logout</button>
-        </div>
-    </div>
-</form>
+  </div>
+  <div class="modal-footer">
+  </div>
+</div>
