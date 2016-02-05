@@ -36,7 +36,7 @@ function SongsRepository () {
 
     //Pre-condition : creation des indexes dans la BD
     this.searchSongs_by_keywords = function(db,keywords,callback) {
-        var cursor = db.collection('songs').find( { $text: { $search: keywords } } );
+        var cursor = db.collection('songs').find({ name: { $regex: keywords }  } );
         var result = [];
         cursor.each(function(err, doc) {
             if (doc != null) {
