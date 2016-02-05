@@ -8,7 +8,7 @@ function UsersRepository () {
 
   this.findUserById = function(db, idUser, callback) {
     db.collection('users').findOne( { '_id': idUser },   function(err, result) {
-      callback(null, result);
+      callback(err, result);
     });
   };
 
@@ -41,15 +41,18 @@ function UsersRepository () {
     db.collection('users').updateOne({"_id" : idUser },{ $push: { "events": event } });
   };
 
-  this.notifyFollowers = function(db,idUser,event){
-    var cursor = db.collection('users').findOne({"_id" : idUser });
 
-    cursor.each(function(err, doc) {
-      if (doc != null) {
+  this.notifyFollowers = function(db,idUser,event,successCB,errorCB){
+    db.collection('users').findOne({"_id" : idUser },function(err,doc){
+      if(err){
+        errorCB();
+      }else {
         var results = doc.followers;
-        results.forEach(function(result){
-          db.collection('users').updateOne({"_id" : result._id },{ $push: { "events": event } });
-        })
+
+        for(var i = 0; i<results.length;i++){
+          db.collection('users').updateOne({"_id" : results[i]},{ $push: { "events": event } });
+        }
+        successCB();
       }
     });
   }
