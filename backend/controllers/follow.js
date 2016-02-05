@@ -28,7 +28,9 @@ exports.followSomeone = function(req,res){
                     followed = result;
                     req.db.collection('users').updateOne({_id : idUser},{ $push: { followed: idFollowed } });
                     req.db.collection('users').updateOne({_id : idFollowed},{ $push: { followers: idUser } });
-                    usersRepository.notifyFollowers(req.db,idUser,user.full_name+" is now following "+followed.full_name,
+                    var event = {describ: user.full_name+" is now following "+followed.full_name,
+                        created_at: new Date().getTime()};
+                    usersRepository.notifyFollowers(req.db,idUser,event,
                      function(){
                          res.send('Success!')
                      },function(){
@@ -42,8 +44,8 @@ exports.followSomeone = function(req,res){
 };
 
 exports.getFollowed = function(req,res){
-    var cursor = req.db.collection('users').findOne({_id : req.params.idUser },function(err,doc){
-        if(err){
+    req.db.collection('users').findOne({_id : req.params.idUser },function(err,doc){
+        if(doc==null){
             res.send(404,'This user doesn\'t exist');
         }
         else res.send(doc.followed);
@@ -51,10 +53,10 @@ exports.getFollowed = function(req,res){
 };
 
 exports.getFollowers = function(req,res){
-    var cursor = req.db.collection('users').findOne({_id : req.params.idUser },function(err,doc){
-        if(err){
+    req.db.collection('users').findOne({_id : req.params.idUser },function(err,doc){
+        if(doc==null){
             res.send(404,'This user doesn\'t exist');
         }
-        else res.send(doc.followed);
+        else res.send(doc.followers);
     });
 };
