@@ -50,7 +50,7 @@ function UsersRepository () {
         var results = doc.followers;
 
         for(var i = 0; i<results.length;i++){
-          db.collection('users').updateOne({"_id" : results[i]},{ $push: { "events": event } });
+          db.collection('users').updateOne({"_id" : results[i]._id},{ $push: { "events": event } });
         }
         successCB();
       }

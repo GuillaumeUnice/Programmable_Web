@@ -16,6 +16,8 @@ exports.getFeedbacks = function(req, res) {
 exports.postFeedback = function(req, res) {
 	var newFeedback = { user: req.body.user, mark: +req.body.mark, comment: req.body.comment};
 	var idSong = req.params.idSong;
-	songsRepository.postFeedback(req.db,idSong,newFeedback);
+	songsRepository.postFeedback(req.db,idSong,newFeedback,function(){
+		res.send(500,'The format of the message is wrong')
+	});
 	res.send("Feedback added!");
 };
