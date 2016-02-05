@@ -4,18 +4,40 @@ var usersRepository = new usersRepositoryModule.UsersRepository();
 exports.followSomeone = function(req,res){
     var idUser = req.body.idUser;
     var idFollowed = req.body.idFollowed;
-    //We have to test first if the user isn't already following the other user
-    //...
-    req.db.collection('users').updateOne({_id : idUser},{ $push: { followed: idFollowed } });
-    req.db.collection('users').updateOne({_id : idFollowed},{ $push: { followers: idUser } });
-    req.db.collection('users').findOne({_id : idFollowed},function(err,doc){
-            if(err){
-                res.send(404,'Error');
+
+    var user;
+    var followed;
+    usersRepository.findUserById(req.db,idUser,function(err,result){
+        if(result==null){
+            res.send(404,'User not found')
+        }
+        else{
+            user = result;
+            for(var i = 0; i<user.followed.length;i++){
+                if(user.followed[i]==idFollowed){
+                    res.send(404,'User already following the other user');
+                    return;
+                }
             }
-           else{
-                usersRepository.writeEvent(req.db,idUser,"Vous suivez "+doc.full_name);
-                res.send("Success!")
-            }
+
+            usersRepository.findUserById(req.db,idFollowed,function(err,result){
+                if(result==null){
+                    res.send(404,'The followed user not found')
+                }
+                else{
+                    followed = result;
+                    req.db.collection('users').updateOne({_id : idUser},{ $push: { followed: idFollowed } });
+                    req.db.collection('users').updateOne({_id : idFollowed},{ $push: { followers: idUser } });
+                    usersRepository.notifyFollowers(req.db,idUser,user.full_name+" is now following "+followed.full_name,
+                     function(){
+                         res.send('Success!')
+                     },function(){
+                            res.send(500,'Error!')
+                        }
+                )
+                }
+            });
+        }
     });
 };
 
