@@ -13,7 +13,13 @@ angular.module('frontendApp')
     $scope.logIn = function logIn(login) {
         user.logIn(login)
             .then(function(data){
+                console.log(data.data);
                 auth.isLogged = true;
+                auth.username = data.data.email;
+                auth.id = data.data._id;
+                auth.full_name = data.data.full_name;
+                auth.name = data.data.name;
+                auth.first_name = data.data.first_name;
                 $window.sessionStorage.token = data.token;
                 $location.path("/");
             }, function(msg){
@@ -30,14 +36,18 @@ angular.module('frontendApp')
             });
     };
 
-    $scope.test = function test() {
+    /*$scope.test = function test() {
         user.test()
             .then(function(data){
                 //$location.path("/login");
             }, function(msg){
                 console.log('erreur promesses : ' + msg);
             });
+<<<<<<< HEAD
     };
+=======
+    };*/
+>>>>>>> 63dc22b83b762e20a0ab8e96315aa2c532d4fce6
 
 
     $scope.logout = function logout() {
@@ -47,7 +57,7 @@ angular.module('frontendApp')
                 auth.isLogged = false;
                 auth.isAuthenticated = false;
                 delete $window.sessionStorage.token;
-                $location.path("/");
+                $location.path("/login");
             }, function(msg){
                 console.log('erreur promesses : ' + msg);
             });

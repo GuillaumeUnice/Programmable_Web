@@ -20,7 +20,7 @@ exports.register = function(req, res) {
         res.status(404);
         res.json({ status: constants.JSON_STATUS_ERROR,
           title: 'Erreur Système',
-          message: 'Une erreur inattendu c\'est produit! Veuillez contacter l\'administrateur'});
+          message: 'Une erreur inattendue s\'est produite ! Veuillez contacter l\'administrateur'});
         return;
       }
       if(utils.isEmpty(result)) {
@@ -31,19 +31,19 @@ exports.register = function(req, res) {
             res.status(404);
             res.json({ status: constants.JSON_STATUS_ERROR,
               title: 'Erreur Système',
-              message: 'Une erreur inattendu c\'est produit! Veuillez contacter l\'administrateur'});
+              message: 'Une erreur inattendue s\'est produite ! Veuillez contacter l\'administrateur'});
             return;
           }
           res.status(200);
           res.json({ status: constants.JSON_STATUS_SUCCESS,
             title: 'Connexion',
-            message: 'Vous êtes à présent inscris!'});
+            message: 'Vous êtes à présent inscrit !'});
         });
       } else {
         res.status(401);
         res.json({ status: constants.JSON_STATUS_SUCCESS,
           title: 'Connexion',
-          message: 'Un compte avec cette email existe déjà!'});
+          message: 'Un compte avec cet email existe déjà !'});
       }
     });
 }; // end register()
@@ -56,7 +56,7 @@ exports.login = function(req, res) {
 		  res.status(401);
 		  res.json({ status: constants.JSON_STATUS_ERROR,
 		    title: 'Erreur Système',
-		    message: 'Une erreur inattendu c\'est produit! Veuillez contacter l\'administrateur'});  
+		    message: 'Une erreur inattendue s\'est produite ! Veuillez contacter l\'administrateur'});
 		  return;
 		}
 
@@ -66,7 +66,7 @@ exports.login = function(req, res) {
 		  res.status(401);
 		  res.json({ status: constants.JSON_STATUS_ERROR,
 		    title: 'Erreur connexion',
-		    message: 'L\'utilisateur n\'existe pas! Email incorrect!'});  
+		    message: 'L\'utilisateur n\'existe pas ! Email incorrect !'});
 		} else {
 
 		  bcrypt.compare(req.body.password, result.password, function(err, resCompare) { 
@@ -83,17 +83,19 @@ exports.login = function(req, res) {
 		      req.session.emailUser = result.email;
 		      */
 		      //console.log(req.session);
+		      delete result.password;
 		      res.status(200);
 		      res.json({ status: constants.JSON_STATUS_SUCCESS,
 		        title: 'Connexion',
-		        message: 'Vous êtes à présent connecté!',
+		        message: 'Vous êtes à présent connecté !',
+		        data: result,
 		        token: token
 		      });
 		    } else {
 		      res.status(401);
 		      res.json({ status : constants.JSON_STATUS_ERROR,
 		        title: 'Erreur connexion',
-		        message: 'Le mot de passe est incorrect!'});  
+		        message: 'Le mot de passe est incorrect !'});
 		    }
 		    
 		  });
@@ -134,7 +136,7 @@ exports.logout = function(req, res) {
 		res.status(200);
 		res.json({ status: constants.JSON_STATUS_SUCCESS,
       	title: 'Connexion',
-      	message: 'Vous êtes déconnecté!'});
+      	message: 'Vous êtes déconnecté !'});
 	/*}
 	else {
 		return res.send(401);

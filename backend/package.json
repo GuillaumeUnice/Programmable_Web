@@ -7,7 +7,9 @@
     "test": "node_modules/.bin/mocha -w"
   },
   "devDependencies": {
+    "expect.js": "^0.3.1",
     "mocha": "*",
+    "mongoose": "^4.3.7",
     "should": "^7.1.1",
     "supertest": "^1.1.0"
   },
@@ -28,6 +30,7 @@
     "jade": "~1.11.0",
     "jsonwebtoken": "^5.4.1",
     "mongodb": "https://github.com/mongodb/node-mongodb-native/archive/gridfs-specification.tar.gz",
+    "bson-objectid": "1.1.4",
     "morgan": "~1.6.1",
     "mysql": "~2.9.0",
     "passport": "^0.3.2",

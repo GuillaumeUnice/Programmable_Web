@@ -5,15 +5,15 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-
 var busboy = require('connect-busboy');
+
 /** TODO ADD **/
 //var session = require('express-session');
 
 var routes = require('./routes/index');
-var users = require('./routes/users');
-var feedbacks = require('./routes/feedbacks');
-var search = require('./routes/search');
+//var users = require('./routes/users');
+//var feedbacks = require('./routes/feedbacks');
+//var search = require('./routes/search');
 
 var app = express();app.use(busboy());
 
@@ -21,7 +21,12 @@ var constants = require('./config/constants');
 
 var expressMongoDb = require('express-mongo-db');
 
-app.use(expressMongoDb(constants.MONGO_URL_TEST_DB)); // DB connection
+if (app.get('env') === 'production') {
+ app.use(expressMongoDb(constants.MONGO_URL_PROD_DB)); // DB connection
+} else {
+  app.use(expressMongoDb(constants.MONGO_URL_TEST_DB)); // DB connection  
+}
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -46,6 +51,11 @@ app.use(express.static(path.join(__dirname, 'public')));
 //Routes
 var routess = {};
 routess.auth = require('./controllers/auth.js');
+routess.search = require('./controllers/search.js');
+routess.feedbacks = require('./controllers/feedbacks.js');
+routess.follow = require('./controllers/follow.js');
+routess.manageMySongs = require('./controllers/manageMySongs.js');
+
 
 app.use(function(req, res, next) {
   console.log('Middleware called.');
@@ -71,13 +81,25 @@ app.post('/register', routess.auth.register);
 app.post('/login', routess.auth.login);
 app.post('/logout', routess.auth.logout);
 
+app.get('/feedbacks/:idSong', routess.feedbacks.getFeedbacks);
+app.post('/feedbacks/:idSong', routess.feedbacks.postFeedback);
+
+app.post('/search', routess.search.searchSongAndUser);
+
+app.post('/follow',routess.follow.followSomeone);
+app.get('/follow/followers/:idUser',routess.follow.getFollowers);
+app.get('/follow/following/:idUser',routess.follow.getFollowing);
+app.delete('/follow/',routess.follow.unfollow);
+
+app.get('/manageMySongs/:idUser',routess.manageMySongs.findMySongs);
+
 
 
 
 app.use('/', routes);
-app.use('/users', users);
-app.use('/feedbacks', feedbacks);
-app.use('/search', search);
+//app.use('/users', users);
+//app.use('/feedbacks', feedbacks);
+//app.use('/search', search);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

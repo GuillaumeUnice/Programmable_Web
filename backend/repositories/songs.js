@@ -19,7 +19,31 @@ function SongsRepository () {
         });
     };
 
-  this.findRestaurants_by_field = function(db, findby, content, callback) {
+    this.findSongs_by_user = function(db, idUser, successCB,errorCB) {
+        db.collection('songs').find( { "author._id" : idUser },function(err,cursor){
+            if(err){
+                errorCB(500,'Error!');
+            }
+            else{
+                var result = [];
+                cursor.each(function(err,doc){
+                    if(err){
+                        errorCB(500,'Error!')
+                    }
+                    else if(doc!=null){
+                        result.push(doc);
+                    }
+                    else{
+                        successCB(result);
+                    }
+                });
+            }
+
+        } );
+
+    };
+
+  this.findSongs_by_field = function(db, findby, content, callback) {
     var cursor = db.collection('songs').find( { name : content } );
     var i =0;
     cursor.each(function(err, doc) {
@@ -33,6 +57,20 @@ function SongsRepository () {
        }
     });
  };
+
+    //Pre-condition : creation des indexes dans la BD
+    this.searchSongs_by_keywords = function(db,keywords,callback) {
+        var cursor = db.collection('songs').find({ name: { $regex: keywords, $options: "i"  }  } );
+        var result = [];
+        cursor.each(function(err, doc) {
+            if (doc != null) {
+                result.push(doc)
+            }
+            else{
+                callback(result);
+            }
+        });
+    };
 
   this.update_AddInDocument = function(db, findby, input, callback) {
     console.log('updateDocument');
@@ -159,6 +197,26 @@ function SongsRepository () {
 
   };
 
+    this.getFeedbacks = function(db,idSong,successCB,errorCB){
+        db.collection('songs').findOne({"_id" : idSong },function(err,result){
+            if(result==null){
+                errorCB(404,"This song doesn\'t exist");
+            }else successCB(result.feedbacks);
+        });
+    };
+
+    this.postFeedback = function(db,idSong,newFeedback,successCB,errorCB){
+        if(newFeedback.user==undefined || newFeedback.mark==undefined ||newFeedback.comment==undefined){
+            errorCB(400,"The message format is wrong");
+        }
+        else if(newFeedback.mark==null||newFeedback.user==null||newFeedback.comment==null){
+            errorCB(400,"The message format is wrong");
+        }
+        else{
+            db.collection('songs').updateOne({"_id" : idSong },{ $push: { "feedbacks": newFeedback } });
+            successCB("Feedback added!");
+        }
+    }
 
 };
 

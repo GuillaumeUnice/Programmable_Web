@@ -1,0 +1,20 @@
+<div class="modal fade">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <b>Post your feedback</b>
+      </div>
+      <form name="feedback" >
+        <label for="mark">Add your mark: </label>
+        <input id="mark" name="mark" type="number" min="1" max="5" required>
+        <label for="mark">/5</label><br>
+        <!--<p ng-show="feedback.mark.$error.required" class="help-block">
+          Entrer un email valide.
+        </p>-->
+        <textarea class="form-control" rows="8" ng-model="myComment" placeholder="Enter a comment here if you want..."></textarea><br>
+        <button ng-click="valider()" data-dismiss="modal" ng-disabled="feedback.$invalid">POST</button>
+        <button ng-click="annuler()" data-dismiss="modal">CANCEL</button>
+      </form>
+    </div>
+  </div>
+</div>

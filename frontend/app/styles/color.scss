@@ -1,0 +1,14 @@
+$red : #F57362;
+$blue : rgba(71, 163, 218, 0.9);
+$gray : rgba(50, 50, 50, 0.8);
+//darken( $blue, 10% )
+
+$color1 : $gray;
+$color2 : $blue;
+$color3 : $blue;
+
+$colorText1: white;
+
+.red {
+	color : $red;
+}

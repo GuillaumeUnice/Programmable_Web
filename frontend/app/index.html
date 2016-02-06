@@ -34,8 +34,8 @@
 <div notifications="bottom right" ></div>
 
 
-    <!-- Add your site or application content here -->
-    <div class="header">
+    <!--TODO : Delete Add your site or application content here -->
+   <!-- <div class="header">
       <div class="navbar navbar-default" role="navigation">
         <div class="container">
           <div class="navbar-header">
@@ -59,7 +59,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </div>-->
 
 
 <!--    <div class="container">-->
@@ -67,10 +67,9 @@
 <!--    </div> -->
 
 
-
 <!-- A DECOMMENTER
 <div id="demo" ng-controller="PlayerCtrl as player" >
-  <div class="row" style="background-color: gray; position: absolute; bottom: 0; left: 0; right: 0; margin: auto; border: none;">
+  <div class="row" style="background-color: gray; position: absolute; bottom: 0; left: 0; right: 0; margin: auto; border: none; z-index: 99;">
       <div class="col-sm-4">
         <auto-scoll-text comments="commentTab"></auto-scoll-text>
           <!- A COMMENTER<span>
@@ -131,13 +130,6 @@
 </div>
 -->
 
-
-
-
-
-
-
-
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
      <script>
        !function(A,n,g,u,l,a,r){A.GoogleAnalyticsObject=l,A[l]=A[l]||function(){
@@ -173,7 +165,7 @@
     <!-- endbuild -->
     <script src="bower_components/ngnotification/notification.js"></script>
     <script src="scripts/lib/wavesurfer/wavesurfer.min.js"></script>
-
+    <script src="scripts/lib/classie.js"></script>
 
     <!-- build:js({.tmp,app}) scripts/scripts.js -->
         <script src="scripts/app.js"></script>
@@ -184,15 +176,19 @@
 
         <script src="scripts/services/auth.js"></script>
         <script src="scripts/services/user.js"></script>
+        <script src="scripts/services/currentMusic.js"></script>
         <script src="scripts/services/notification.js"></script>
         <script src="scripts/services/tokeninterceptor.js"></script>
         <script src="scripts/services/buffer-loader.js"></script>
         <script src="scripts/services/mix.js"></script>
         <script src="scripts/services/search.js"></script>
+        <script src="scripts/services/feedbacks.js"></script>
         <script src="scripts/directives/compareto.js"></script>
         <script src="scripts/directives/ngwavesurfer.js"></script>
         <script src="scripts/controllers/player.js"></script>
         <script src="scripts/directives/autoscolltext.js"></script>
+        <script src="scripts/services/follow.js"></script>
+        <script src="scripts/filters/follow.js"></script>
         <!-- endbuild -->
 </body>
 </html>

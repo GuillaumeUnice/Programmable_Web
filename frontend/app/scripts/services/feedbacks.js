@@ -1,28 +1,26 @@
-/**
- * Created by sy306571 on 25/01/16.
- */
 'use strict';
 
+/**
+ * Created by sy306571 on 01/02/16.
+ */
 /**
  * @ngdoc service
  * @name frontendApp.user
  * @description
- * # search
+ * # feedbacks
  * Factory in the frontendApp.
  */
 angular.module('frontendApp')
-  .factory('searchService', function (CONFIG, $http, $q, notification) {
+  .factory('feedbackService', function (CONFIG, $http, $q) {
     return {
 
-      search: function (searchInfo) {
-        var search = { keywords: searchInfo};
+      sendComment: function (idMix,commentInfo) {
         var deferred = $q.defer();
-        $http.post(CONFIG.baseUrlApi + '/search', search)
+        $http.post(CONFIG.baseUrlApi + '/feedbacks/'+idMix,commentInfo)
           .success(function (data) {
-            //notification.writeNotification(data);
+            console.log(data);
             deferred.resolve(data);
           }).error(function (data) {
-            //notification.writeNotification(data);
             deferred.reject(false);
           });
         return deferred.promise;
@@ -30,4 +28,3 @@ angular.module('frontendApp')
 
     };
   });
-

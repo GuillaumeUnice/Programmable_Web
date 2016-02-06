@@ -4,10 +4,16 @@ var should = require("should");
 var assert = require("assert");
 var request = require("supertest");
 
+
 // On set notre adresse serveur
 var server = request.agent("http://localhost:3000/");
 
 describe("Unit test for UNKNOWN routes", function() {
+
+	before(function (done) {
+        done();
+    });
+
 
 	it("should return 404 error", function(done) {
 		server.get("/random")
@@ -17,4 +23,8 @@ describe("Unit test for UNKNOWN routes", function() {
 				done();
 			});
 	});
+
+	after(function (done) {
+        done();
+    });
 });

@@ -10,8 +10,9 @@
 angular.module('frontendApp')
   .factory('auth', function () {
      var auth = {
-        isLogged: false
+        isLogged: false,
+        username: null
     };
- 
+
     return auth;
   });
