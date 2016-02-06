@@ -167,20 +167,19 @@ angular.module('frontendApp')
     };
 
     $scope.follow = function(user) {
-      var elementPos = $scope.followers.map(function(x) {return x._id; }).indexOf(user._id);
-      if(elementPos !== -1) { 
-        follow.follow(userId).then(function(data){
+        follow.follow(auth.id, user._id).then(function(data){
           $scope.following.push(data);
         },function(msg){
           console.log('erreur promesses : ' + msg);
         });
-      } else {
-        follow.unFollow(userId).then(function(data){
-          $scope.followers.splice($scope.followers.indexOf(user), 1);
-        },function(msg){
-          console.log('erreur promesses : ' + msg);
-        });
-      }
+    }
+
+    $scope.unfollow = function(user) {
+      follow.unFollow(auth.id, user._id).then(function(data){
+        $scope.followers.splice($scope.followers.indexOf(user), 1);
+      },function(msg){
+        console.log('erreur promesses : ' + msg);
+      });
     }
 
     $scope.seeProfil = function(userId) {

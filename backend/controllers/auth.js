@@ -83,10 +83,12 @@ exports.login = function(req, res) {
 		      req.session.emailUser = result.email;
 		      */
 		      //console.log(req.session);
+		      delete result.password;
 		      res.status(200);
 		      res.json({ status: constants.JSON_STATUS_SUCCESS,
 		        title: 'Connexion',
 		        message: 'Vous êtes à présent connecté !',
+		        data: result,
 		        token: token
 		      });
 		    } else {
