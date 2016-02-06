@@ -20,7 +20,7 @@ angular.module('frontendApp')
       	if(rang !== null) {
       		scope.comment = scope.comments[rang];
       	} else {
-      		scope.comment = "Aucun commentaire!"
+      		scope.comment = "No comment yet!"
       	}
 
 		$interval(function() {
@@ -31,7 +31,7 @@ angular.module('frontendApp')
 	        	} else {
 	        		rang = scope.comments.length-1;
 	        		scope.comment = scope.comments[rang];
-	        	}	
+	        	}
 			}
     	}, 10000);
 

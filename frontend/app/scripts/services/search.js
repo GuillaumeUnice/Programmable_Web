@@ -16,7 +16,7 @@ angular.module('frontendApp')
 
       search: function (searchInfo) {
         var deferred = $q.defer();
-        $http.post(CONFIG.baseUrlApi + '/search/mixes',searchInfo)
+        $http.post(CONFIG.baseUrlApi + '/search',searchInfo)
           .success(function (data) {
             console.log(data);
             deferred.resolve(data);
