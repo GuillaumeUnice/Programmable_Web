@@ -59,3 +59,9 @@ exports.getFollowers = function(req,res){
         res.send(code,msg);
     });
 };
+
+exports.unfollow = function(req,res){
+    req.db.collection('users').updateOne({"_id" : ObjectId(req.body.idUser) },{ $pull: { following :
+    {_id: ObjectId(req.body.idFollowing)} } });
+    res.send("Finished!");
+};
