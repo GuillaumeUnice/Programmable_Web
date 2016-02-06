@@ -1,8 +1,7 @@
 var constants = require('../config/constants');
 var utils = require('../config/utils');
 
-var mongoose = require('mongoose');
-var ObjectId = mongoose.Types.ObjectId;
+var ObjectId = require("bson-objectid");
 
 var songsRepositoryModule = require('../repositories/songs');
 var songsRepository = new songsRepositoryModule.SongsRepository();
