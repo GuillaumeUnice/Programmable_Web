@@ -21,7 +21,7 @@ function UsersRepository () {
   };
 
   this.searchUserByKeywords = function(db, keywords, callback) {
-    var cursor = db.collection('users').find( { full_name: { $regex: keywords } } );
+    var cursor = db.collection('users').find( { full_name: { $regex: keywords, $options: "i" } } );
     var result = [];
     cursor.each(function(err, doc) {
       if (doc != null) {
