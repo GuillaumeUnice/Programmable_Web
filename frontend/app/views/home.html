@@ -1,16 +1,17 @@
 <div class="bodyBis">
 
   <div id="morphsearch" class="morphsearch">
-    <form class="morphsearch-form">
-      <input id="morphsearch-input" class="morphsearch-input" type="search" placeholder="Search..."/>
+    <form class="morphsearch-form" name="formSearch" ng-submit="search(searchQuery)" novalidate>
+      <input id="morphsearch-input" ng-model="searchQuery" class="morphsearch-input" type="search" placeholder="Search..."/>
       <button class="morphsearch-submit" type="submit">Search</button>
       <div class="morphsearch-content">
         <div class="dummy-column_cont">
           <div class="dummy-column_contContent">
             <p>Mix</p>
             <div class="contentSearch">
-              <div class="borderTop border">
+              <div class="borderTop border" ng-repeat="song in searchResults.songs">
                   <i  class="iconList glyphicon glyphicon-headphones pull-left button-icon-link"></i>
+<<<<<<< HEAD
                   <span>Mylo Vs Miami Sound Machine - Drop The Pressure</span>
                   <i class="iconList glyphicon glyphicon-play pull-right button-icon-link"></i>
               </div>
@@ -20,6 +21,11 @@
                   <i class="iconList glyphicon glyphicon-play pull-right button-icon-link"></i>
               </div>
 
+=======
+                  <span>{{ song.author }} - {{ song.name }}</span>
+                  <i class="iconList glyphicon glyphicon-play pull-right button-icon-link"></i>
+              </div>
+>>>>>>> 0dab86ab0c90004e6c9db23993f2091e4d248bd0
             </div>
           </div>
           <div class="dummy-column_contContent">
@@ -30,9 +36,9 @@
                   <span>Mylo Vs Miami Sound Machine - Drop The Pressure</span>
                   <i class="iconList glyphicon glyphicon-play pull-right button-icon-link"></i>
               </span>-->
-              <div class="borderTop border">
+              <div class="borderTop border" ng-repeat="user in searchResults.users">
                 <img style="width : 40px !important;" class="avatar avatarList" src="images/logo.png" alt="avatar" />
-                <span>Henry Dupont</span>
+                <span>{{ user.full_name }}</span>
                 <i title="look profile" class="iconList glyphicon glyphicon-user pull-right button-icon-link"></i>
                 <i title="unfollowed" class="iconList glyphicon glyphicon-star pull-right button-icon-link"></i>
               </div>
@@ -72,7 +78,7 @@
 
         <div class="borderTop row">
           <div class="col-md-4">
-            <strong class="red vcard-stat-count">0</strong>
+            <strong class="red vcard-stat-count">{{ followers.length }}</strong>
             <br>
             <span class="text-muted">Followers</span>
           </div>
@@ -85,9 +91,9 @@
           </div>
 
           <div class="col-md-4">
-            <strong class="red vcard-stat-count">0</strong>
+            <strong class="red vcard-stat-count">{{ following.length }}</strong>
             <br>
-            <span class="text-muted">Followed</span>
+            <span class="text-muted">Following</span>
           </div>
         </div>
       </div>
@@ -105,32 +111,19 @@
       <div class="panel-heading">
 
     <div ng-class="{ 'tabMenuSelected': isTabMenuNewsSelected }" class="col-sm-6 col-md-6 col-lg-6 tabMenu" ng-click="isTabMenuNewsSelected = true;">News</div>
-    <div ng-class="{ 'tabMenuSelected': !isTabMenuNewsSelected }" ng-click="isTabMenuNewsSelected = false;" class="col-sm-6 col-md-6 col-lg-6 tabMenu" >Followers</div>
-
-  <br>
-        <!--<h3 class="panel-title">Résultats de la recherche</h3>-->
+    <div ng-class="{ 'tabMenuSelected': !isTabMenuNewsSelected }" ng-click="isTabMenuNewsSelected = false;" class="col-sm-6 col-md-6 col-lg-6 tabMenu" >Following</div>
+      <br>
       </div>
       <div class="panel-body panelBody" style="height: 75vh; overflow-y:scroll; overflow-x:hidden;">
-        <!--<div class="list" style="padding-bottom: 10px; height: 310px; overflow-y:scroll;">
-  			    <span  ng-repeat="result in results">
-              <div class="item" style="height: 30px; border-bottom: 2px solid">
-                {{result.name}}
-                <button ng-click="startListening(result)" style="float: right">
-                  Lancer lecture
-                </button>
-              </div>
-  			    </span>
-        </div>-->
-
         <div ng-if="!isTabMenuNewsSelected">
           <form>
             <input type="text" placeholder="filter..." ng-model="filterFollower"/>
           </form>
-          <div class="borderTop" ng-repeat="follower in followers | orderBy:'created_at':true | filter:{ name:filterFollower }">
+          <div class="borderTop" ng-repeat="followed in following | orderBy:'created_at':true | filter:{ full_name:filterFollower }">
             <img style="width : 40px !important;" class="avatar avatarList" src="images/logo.png" alt="avatar" />
-            <span>{{ follower.name}}</span>
-            <i title="look profile" class="iconList glyphicon glyphicon-user pull-right button-icon-link"></i>
-            <i title="unfollowed" class="iconList glyphicon glyphicon-star pull-right button-icon-link"></i>
+            <span>{{ followed.full_name }}</span>
+            <i title="look profile" class="iconList glyphicon glyphicon-user pull-right button-icon-link" ng-click="follow(followed)"></i>
+            <i title="unfollowed" class="iconList glyphicon glyphicon-star pull-right button-icon-link" ng-click="seeProfil(followed)"></i>
           </div>
         </div>
 
@@ -337,7 +330,13 @@
 
 
     /***** for demo purposes only: don't allow to submit the form *****/
-    morphSearch.querySelector( 'button[type="submit"]' ).addEventListener( 'click', function(ev) { alert("lancement de la recherche"); ev.preventDefault(); } );
+    /*morphSearch.querySelector( 'button[type="submit"]' ).addEventListener( 'click', function(ev) { alert("lancement de la recherche"); ev.preventDefault();
+    });*/
 
+<<<<<<< HEAD
     });
 </script>
+=======
+  });
+</script>
+>>>>>>> 0dab86ab0c90004e6c9db23993f2091e4d248bd0
