@@ -181,11 +181,17 @@ function SongsRepository () {
         });
     };
 
-    this.postFeedback = function(db,idSong,newFeedback,errorCB){
+    this.postFeedback = function(db,idSong,newFeedback,successCB,errorCB){
         if(newFeedback.user==undefined || newFeedback.mark==undefined ||newFeedback.comment==undefined){
             errorCB();
         }
-        db.collection('songs').updateOne({"_id" : idSong },{ $push: { "feedbacks": newFeedback } });
+        else if(newFeedback.mark==null||newFeedback.user==null||newFeedback.comment==null){
+            errorCB();
+        }
+        else{
+            db.collection('songs').updateOne({"_id" : idSong },{ $push: { "feedbacks": newFeedback } });
+            successCB();
+        }
     }
 
 };
