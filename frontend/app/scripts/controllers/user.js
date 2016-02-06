@@ -43,11 +43,7 @@ angular.module('frontendApp')
             }, function(msg){
                 console.log('erreur promesses : ' + msg);
             });
-<<<<<<< HEAD
-    };
-=======
-    };*/
->>>>>>> 63dc22b83b762e20a0ab8e96315aa2c532d4fce6
+    };**/
 
 
     $scope.logout = function logout() {
