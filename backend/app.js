@@ -54,6 +54,7 @@ routess.auth = require('./controllers/auth.js');
 routess.search = require('./controllers/search.js');
 routess.feedbacks = require('./controllers/feedbacks.js');
 routess.follow = require('./controllers/follow.js');
+routess.manageMySongs = require('./controllers/manageMySongs.js');
 
 
 app.use(function(req, res, next) {
@@ -82,10 +83,15 @@ app.post('/logout', routess.auth.logout);
 
 app.get('/feedbacks/:idSong', routess.feedbacks.getFeedbacks);
 app.post('/feedbacks/:idSong', routess.feedbacks.postFeedback);
+
 app.post('/search', routess.search.searchSongAndUser);
+
 app.post('/follow',routess.follow.followSomeone);
 app.get('/follow/followers/:idUser',routess.follow.getFollowers);
 app.get('/follow/following/:idUser',routess.follow.getFollowing);
+app.delete('/follow/',routess.follow.unfollow);
+
+app.get('/manageMySongs/:idUser',routess.manageMySongs.findMySongs);
 
 
 

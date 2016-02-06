@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title></title>
+    <title>Do Your mix</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width">
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="bower_components/angularjs-slider/dist/rzslider.css" />
     <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.css" />
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="bower_components/angular-treasure-overlay-spinner/dist/treasure-overlay-spinner.min.css" />
     <!-- endbower -->
     <!-- endbuild -->
     <!-- build:css(.tmp) styles/main.css -->
@@ -155,12 +156,15 @@
     <script src="bower_components/angularjs-slider/dist/rzslider.js"></script>
     <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
     <script src="bower_components/angular-file-upload/angular-file-upload.js"></script>
+    <script src="bower_components/async/lib/async.js"></script>
+    <script src="bower_components/angular-treasure-overlay-spinner/dist/treasure-overlay-spinner.min.js"></script>
     <script src="bower_components/angular-modal-service/dst/angular-modal-service.js"></script>
+    <script src="bower_components/jquery-circle-progress/dist/circle-progress.js"></script>
+    <script src="bower_components/jquery-ui/jquery-ui.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
     <script src="bower_components/ngnotification/notification.js"></script>
     <script src="scripts/lib/wavesurfer/wavesurfer.min.js"></script>
-    <script src="bower_components/async/lib/async.js"></script>
     <script src="scripts/lib/classie.js"></script>
 
     <!-- build:js({.tmp,app}) scripts/scripts.js -->
@@ -184,6 +188,7 @@
         <script src="scripts/controllers/player.js"></script>
         <script src="scripts/directives/autoscolltext.js"></script>
         <script src="scripts/services/follow.js"></script>
+        <script src="scripts/filters/follow.js"></script>
         <!-- endbuild -->
 </body>
 </html>

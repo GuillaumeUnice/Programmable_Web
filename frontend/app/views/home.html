@@ -13,7 +13,7 @@
                   <i  class="iconList glyphicon glyphicon-headphones pull-left button-icon-link"></i>
                   <span>{{ song.author }} - {{ song.name }}</span>
                   <i class="iconList glyphicon glyphicon-play pull-right button-icon-link"></i>
-              </div>   
+              </div>
             </div>
           </div>
           <div class="dummy-column_contContent">
@@ -28,7 +28,8 @@
                 <img style="width : 40px !important;" class="avatar avatarList" src="images/logo.png" alt="avatar" />
                 <span>{{ user.full_name }}</span>
                 <i title="look profile" class="iconList glyphicon glyphicon-user pull-right button-icon-link"></i>
-                <i title="unfollowed" class="iconList glyphicon glyphicon-star pull-right button-icon-link"></i>
+                <i ng-if="(user._id | follow:followers)" title="unfollow" class="iconList glyphicon glyphicon-star pull-right button-icon-link button-icon-unfollow" ng-click="unfollow(user)"></i>
+                <i ng-if="!(user._id | follow:followers)" title="follow" class="iconList glyphicon glyphicon-star pull-right button-icon-link" ng-click="follow(user)"></i>
               </div>
             </div>
           </div>
@@ -48,7 +49,7 @@
       </div>
       <div class="panel-body" style="height: 75vh; overflow-y:scroll; overflow-x:hidden;">
 
-        <h4 class="panel-title" style="text-align : left;">Search : <h4>
+        <h4 class="panel-title" style="text-align : left;">Search : </h4>
         <br><br>
         <!--<input type="text" ng-model="searchInfo.motsCles">
         <button ng-click="sendKeyWords()">Rechercher</button>-->
@@ -75,7 +76,7 @@
           <div class="col-md-4">
             <strong class="red vcard-stat-count">4.5</strong>
             <br>
-            <span class="text-muted">Average note</span>
+            <span class="text-muted">Average mark</span>
           </div>
 
           <div class="col-md-4">
@@ -102,14 +103,14 @@
     <div ng-class="{ 'tabMenuSelected': !isTabMenuNewsSelected }" ng-click="isTabMenuNewsSelected = false;" class="col-sm-6 col-md-6 col-lg-6 tabMenu" >Following</div>
       <br>
       </div>
-      <div class="panel-body panelBody" style="height: 75vh; overflow-y:scroll; overflow-x:hidden;"> 
+      <div class="panel-body panelBody" style="height: 75vh; overflow-y:scroll; overflow-x:hidden;">
         <div ng-if="!isTabMenuNewsSelected">
           <form>
             <input type="text" placeholder="filter..." ng-model="filterFollower"/>
           </form>
           <div class="borderTop" ng-repeat="followed in following | orderBy:'created_at':true | filter:{ full_name:filterFollower }">
             <img style="width : 40px !important;" class="avatar avatarList" src="images/logo.png" alt="avatar" />
-            <span>{{ followed.full_name }}</span>
+            <span>{{ followed.full_name }} {{ followed._id | follow:followers }}</span>
             <i title="look profile" class="iconList glyphicon glyphicon-user pull-right button-icon-link" ng-click="follow(followed)"></i>
             <i title="unfollowed" class="iconList glyphicon glyphicon-star pull-right button-icon-link" ng-click="seeProfil(followed)"></i>
           </div>
@@ -125,7 +126,7 @@
               </div>
               <div class="cbp_tmlabel">
                 <h2 style="font-size: 17px !important;">
-                  {{ new.name }} {{ new.action }} : 
+                  {{ new.name }} {{ new.action }} :
                 </h2>
                 <p>
                   <i style="cursor : initial !important;" class="iconList glyphicon glyphicon-headphones pull-left button-icon-link"></i>
@@ -276,7 +277,7 @@
       isOpen = isAnimating = false,
       // show/hide search area
       toggleSearch = function(evt) {
-      
+
         // return if open and the input gets focused
         if( evt.type.toLowerCase() === 'focus' && isOpen ) return false;
 
@@ -284,7 +285,7 @@
         if( isOpen ) {
           classie.remove( morphSearch, 'open' );
 
-          // trick to hide input text once the search overlay closes 
+          // trick to hide input text once the search overlay closes
           // todo: hardcoded times, should be done after transition ends
           if( input.value !== '' ) {
             setTimeout(function() {
@@ -295,7 +296,7 @@
               }, 300 );
             }, 500);
           }
-          
+
           input.blur();
         }
         else {
@@ -320,6 +321,7 @@
     /***** for demo purposes only: don't allow to submit the form *****/
     /*morphSearch.querySelector( 'button[type="submit"]' ).addEventListener( 'click', function(ev) { alert("lancement de la recherche"); ev.preventDefault();
     });*/
+
 
   });
 </script>

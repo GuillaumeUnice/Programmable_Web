@@ -1,8 +1,9 @@
 var usersRepositoryModule = require('../repositories/users');
 var usersRepository = new usersRepositoryModule.UsersRepository();
 
-var mongoose = require('mongoose');
-var ObjectId = mongoose.Types.ObjectId;
+/*var mongoose = require('mongoose');
+var ObjectId = mongoose.Types.ObjectId;*/
+var ObjectId = require("bson-objectid");
 
 exports.followSomeone = function(req,res){
     var idUser = ObjectId(req.body.idUser);
@@ -58,4 +59,10 @@ exports.getFollowers = function(req,res){
     },function(code,msg){
         res.send(code,msg);
     });
+};
+
+exports.unfollow = function(req,res){
+    req.db.collection('users').updateOne({"_id" : ObjectId(req.body.idUser) },{ $pull: { following :
+    {_id: ObjectId(req.body.idFollowing)} } });
+    res.send("Finished!");
 };

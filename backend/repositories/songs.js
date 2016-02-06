@@ -19,6 +19,30 @@ function SongsRepository () {
         });
     };
 
+    this.findSongs_by_user = function(db, idUser, successCB,errorCB) {
+        db.collection('songs').find( { "author._id" : idUser },function(err,cursor){
+            if(err){
+                errorCB(500,'Error!');
+            }
+            else{
+                var result = [];
+                cursor.each(function(err,doc){
+                    if(err){
+                        errorCB(500,'Error!')
+                    }
+                    else if(doc!=null){
+                        result.push(doc);
+                    }
+                    else{
+                        successCB(result);
+                    }
+                });
+            }
+
+        } );
+
+    };
+
   this.findSongs_by_field = function(db, findby, content, callback) {
     var cursor = db.collection('songs').find( { name : content } );
     var i =0;
