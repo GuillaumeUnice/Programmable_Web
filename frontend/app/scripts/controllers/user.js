@@ -43,7 +43,8 @@ angular.module('frontendApp')
             }, function(msg){
                 console.log('erreur promesses : ' + msg);
             });
-    };*/
+
+    };**/
 
 
 
