@@ -11,16 +11,18 @@
  * Factory in the frontendApp.
  */
 angular.module('frontendApp')
-  .factory('searchService', function (CONFIG, $http, $q) {
+  .factory('searchService', function (CONFIG, $http, $q, notification) {
     return {
 
       search: function (searchInfo) {
+        var search = { keywords: searchInfo};
         var deferred = $q.defer();
-        $http.post(CONFIG.baseUrlApi + '/search/mixes',searchInfo)
+        $http.post(CONFIG.baseUrlApi + '/search', search)
           .success(function (data) {
-            console.log(data);
+            //notification.writeNotification(data);
             deferred.resolve(data);
           }).error(function (data) {
+            //notification.writeNotification(data);
             deferred.reject(false);
           });
         return deferred.promise;

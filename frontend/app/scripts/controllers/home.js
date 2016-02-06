@@ -1,8 +1,11 @@
 'use strict';
 
 angular.module('frontendApp')
-  .controller('HomeCtrl', function ($scope, ModalService, searchService,currentMusicService, feedbackService,auth) {
+  .controller('HomeCtrl', function ($scope, notification, CONFIG, ModalService, searchService,currentMusicService, feedbackService,auth, follow) {
     // initialisation
+    $scope.followers = [];
+    $scope.following = [];
+
     $scope.myMix = [
       { _id: 1,
         name: "Drop The Pressure",
@@ -34,7 +37,7 @@ angular.module('frontendApp')
       },
     ];
 
-    $scope.followers = [
+    /*$scope.followers = [
       { _id: 1,
         name: "Henry Dupont",
         created_at: 1454616841
@@ -51,7 +54,7 @@ angular.module('frontendApp')
         name: "Jhon Smith",
         created_at: 1454616846
       }
-    ];
+    ];*/
 
     $scope.news = [
       { _id: 1,
@@ -130,18 +133,62 @@ angular.module('frontendApp')
 
     $scope.isTabMenuNewsSelected = true;
 
+    follow.getFollowing("56b4e07045b766bd49eb5d63").then(function(data){
+      $scope.following = data;
+    },function(msg){
+      console.log('erreur promesses : ' + msg);
+    });
 
-    /*$scope.searchInfo = {motsCles: null};
-    $scope.results = [];
-    $scope.chosenMusic = null;
+    follow.getFollowers("56b4e07045b766bd49eb5d63").then(function(data){
+      $scope.followers = data;
+    },function(msg){
+      console.log('erreur promesses : ' + msg);
+    });
 
-    $scope.sendKeyWords = function() {
-      searchService.search($scope.searchInfo).then(function(data){
-        $scope.results = data;
+    $scope.searchQuery = "";
+    $scope.searchResults = {};
+
+    $scope.search = function(query) {
+      searchService.search(query).then(function(data){
+        //$scope.results = data;
+        if((data.songs.length === 0) && (data.users.length === 0)) {
+          notification.writeNotification(
+            { 
+              status: CONFIG.JSON_STATUS_NOTICE,
+              title: 'Search',
+              message: 'There is no result!'
+            }
+          );
+        }
+        $scope.searchResults = data;
       },function(msg){
         console.log('erreur promesses : ' + msg);
       });
     };
+
+    $scope.follow = function(user) {
+      var elementPos = $scope.followers.map(function(x) {return x._id; }).indexOf(user._id);
+      if(elementPos !== -1) { 
+        follow.follow(userId).then(function(data){
+          $scope.following.push(data);
+        },function(msg){
+          console.log('erreur promesses : ' + msg);
+        });
+      } else {
+        follow.unFollow(userId).then(function(data){
+          $scope.followers.splice($scope.followers.indexOf(user), 1);
+        },function(msg){
+          console.log('erreur promesses : ' + msg);
+        });
+      }
+    }
+
+    $scope.seeProfil = function(userId) {
+      alert("seeProfil : " + userId);
+    };
+
+    /*
+    $scope.chosenMusic = null;
 
     $scope.startListening = function(result){
       $scope.chosenMusic = result;
