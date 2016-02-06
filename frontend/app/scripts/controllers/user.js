@@ -9,7 +9,7 @@
  */
 angular.module('frontendApp')
   .controller('UserCtrl', function ($scope, $location, $window, user, auth, notification) {
-    
+
     $scope.logIn = function logIn(login) {
         user.logIn(login)
             .then(function(data){
@@ -27,7 +27,7 @@ angular.module('frontendApp')
                 $location.path("/login");
             }, function(msg){
                 console.log('erreur promesses : ' + msg);
-            });          
+            });
     };
 
     $scope.test = function test() {
@@ -36,7 +36,7 @@ angular.module('frontendApp')
                 //$location.path("/login");
             }, function(msg){
                 console.log('erreur promesses : ' + msg);
-            });          
+            });
     };
 
 
@@ -50,7 +50,7 @@ angular.module('frontendApp')
                 $location.path("/");
             }, function(msg){
                 console.log('erreur promesses : ' + msg);
-            });   
+            });
         }
     };
 

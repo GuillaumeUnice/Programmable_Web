@@ -8,6 +8,7 @@
  *
  * Main module of the application.
  */
+
 angular
   .module('frontendApp', [
     'ngAnimate',
@@ -18,7 +19,8 @@ angular
     'ngTouch',
     'rzModule',
     'notifications',
-    'angularFileUpload'
+    'angularFileUpload',
+    'angularModalService'
   ])
   .constant('CONFIG', {
     baseUrl: 'http://localhost:3000',
