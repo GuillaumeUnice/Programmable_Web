@@ -6,9 +6,17 @@ function UsersRepository () {
       });
   };
 
-  this.findUserById = function(db, idUser, callback) {
+  this.findUserById = function(db, idUser, successCB, errorCB) {
     db.collection('users').findOne( { '_id': idUser },   function(err, result) {
-      callback(err, result);
+      if(err){
+        errorCB(500,"Error!")
+      }
+      else if(result==null){
+        errorCB(404,'This user doesn\'t exist');
+      }
+      else{
+        successCB(result);
+      }
     });
   };
 
@@ -45,14 +53,14 @@ function UsersRepository () {
   this.notifyFollowers = function(db,idUser,event,successCB,errorCB){
     db.collection('users').findOne({"_id" : idUser },function(err,doc){
       if(err){
-        errorCB();
+        errorCB(500,"Error!");
       }else {
         var results = doc.followers;
 
         for(var i = 0; i<results.length;i++){
           db.collection('users').updateOne({"_id" : results[i]._id},{ $push: { "events": event } });
         }
-        successCB();
+        successCB("The followers are notified");
       }
     });
   }
