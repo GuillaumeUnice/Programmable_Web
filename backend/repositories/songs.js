@@ -176,21 +176,21 @@ function SongsRepository () {
     this.getFeedbacks = function(db,idSong,successCB,errorCB){
         db.collection('songs').findOne({"_id" : idSong },function(err,result){
             if(result==null){
-                errorCB();
+                errorCB(404,"This song doesn\'t exist");
             }else successCB(result.feedbacks);
         });
     };
 
     this.postFeedback = function(db,idSong,newFeedback,successCB,errorCB){
         if(newFeedback.user==undefined || newFeedback.mark==undefined ||newFeedback.comment==undefined){
-            errorCB();
+            errorCB(400,"The message format is wrong");
         }
         else if(newFeedback.mark==null||newFeedback.user==null||newFeedback.comment==null){
-            errorCB();
+            errorCB(400,"The message format is wrong");
         }
         else{
             db.collection('songs').updateOne({"_id" : idSong },{ $push: { "feedbacks": newFeedback } });
-            successCB();
+            successCB("Feedback added!");
         }
     }
 

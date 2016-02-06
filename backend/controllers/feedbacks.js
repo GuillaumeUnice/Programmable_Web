@@ -11,18 +11,18 @@ exports.getFeedbacks = function(req, res) {
 	var idSong = ObjectId(req.params.idSong);
 	songsRepository.getFeedbacks(req.db,idSong,function(data){
 		res.send(data);
-	},function(){
-		res.send(404,'This song doesn\'t exist');
+	},function(code,msg){
+		res.send(code,msg);
 	})
 };
 
 exports.postFeedback = function(req, res) {
 	var newFeedback = { user: req.body.user, mark: +req.body.mark, comment: req.body.comment};
 	var idSong = ObjectId(req.params.idSong);
-	songsRepository.postFeedback(req.db,idSong,newFeedback,function() {
-		res.send("Feedback added!");
-	},function(){
-			res.send(500,'The message format is wrong')
+	songsRepository.postFeedback(req.db,idSong,newFeedback,function(msg) {
+		res.send(msg);
+	},function(code,msg){
+			res.send(code,msg)
 		}
 	);
 };
