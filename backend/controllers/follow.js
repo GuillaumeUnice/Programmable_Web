@@ -1,9 +1,12 @@
 var usersRepositoryModule = require('../repositories/users');
 var usersRepository = new usersRepositoryModule.UsersRepository();
 
+var mongoose = require('mongoose');
+var ObjectId = mongoose.Types.ObjectId;
+
 exports.followSomeone = function(req,res){
-    var idUser = req.body.idUser;
-    var idfollowing = req.body.idFollowing;
+    var idUser = ObjectId(req.body.idUser);
+    var idfollowing = ObjectId(req.body.idFollowing);
 
     var user;
     var following;
@@ -46,7 +49,7 @@ exports.followSomeone = function(req,res){
 };
 
 exports.getFollowing = function(req,res){
-    req.db.collection('users').findOne({_id : req.params.idUser },function(err,doc){
+    usersRepository.findUserById(req.db,ObjectId(req.params.idUser),function(err,doc){
         if(doc==null){
             res.send(404,'This user doesn\'t exist');
         }
@@ -55,7 +58,7 @@ exports.getFollowing = function(req,res){
 };
 
 exports.getFollowers = function(req,res){
-    req.db.collection('users').findOne({_id : req.params.idUser },function(err,doc){
+    usersRepository.findUserById(req.db,ObjectId(req.params.idUser),function(err,doc){
         if(doc==null){
             res.send(404,'This user doesn\'t exist');
         }
