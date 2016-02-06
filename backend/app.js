@@ -89,6 +89,7 @@ app.post('/search', routess.search.searchSongAndUser);
 app.post('/follow',routess.follow.followSomeone);
 app.get('/follow/followers/:idUser',routess.follow.getFollowers);
 app.get('/follow/following/:idUser',routess.follow.getFollowing);
+app.delete('/follow/',routess.follow.unfollow);
 
 app.get('/manageMySongs/:idUser',routess.manageMySongs.findMySongs);
 
