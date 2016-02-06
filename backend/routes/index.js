@@ -337,4 +337,50 @@ router.route('/mixed')
     });
   });
 
+
+router.route('/savemixed')
+  .post(function(req, res) {
+    usersRepository.savemiedjson(req.db, req.body.mixed, function (err, result) {
+      if (err) {
+        console.log(err);
+        res.status(404);
+        res.json({
+          status: constants.JSON_STATUS_ERROR,
+          title: 'Erreur Système',
+          message: 'Une erreur inattendu c\'est produit! Veuillez contacter l\'administrateur'
+        });
+        return;
+      }
+      console.log(result);
+      if (utils.isEmpty(result)) {
+        req.body.password = bcrypt.hashSync(req.body.password, salt);
+        usersRepository.addUser(req.db, req.body, function (err, result) {
+          if (err) {
+            console.log(err);
+            res.status(404);
+            res.json({
+              status: constants.JSON_STATUS_ERROR,
+              title: 'Erreur Système',
+              message: 'Une erreur inattendu c\'est produit! Veuillez contacter l\'administrateur'
+            });
+            return;
+          }
+          res.status(201);
+          res.json({
+            status: constants.JSON_STATUS_SUCCESS,
+            title: 'Connexion',
+            message: 'Vous êtes à présent inscris!'
+          });
+        });
+      } else {
+        res.status(201);
+        res.json({
+          status: constants.JSON_STATUS_SUCCESS,
+          title: 'Connexion',
+          message: 'Un compte avec cette email existe déjà!'
+        });
+      }
+    });
+  });
+
 module.exports = router;

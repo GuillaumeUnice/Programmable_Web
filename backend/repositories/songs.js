@@ -194,6 +194,16 @@ function SongsRepository () {
         }
     }
 
+
+    this.savemiedjson = function(db, input, callback) {
+      console.log('insertDocument');
+      db.collection('mixed').insertOne(input,
+        function(err, result) {
+          //assert.equal(err, null);
+          console.log("Inserted a document into the songs collection.");
+          callback(null, result);
+        });
+    };
 };
 
 exports.SongsRepository = SongsRepository;
