@@ -31,14 +31,26 @@ angular.module('frontendApp')
          });
        return deferred.promise;
      },
-     follow: function (userId) {
+     follow: function (myUserId,userId) {
        var deferred = $q.defer();
-       $http.post(CONFIG.baseUrlApi + '/follow/', userId)
+       $http.post(CONFIG.baseUrlApi + '/follow/', {idUser: myUserId, idFollowing:  userId})
          .success(function (data) {
-           notification.writeNotification(data);
+           //notification.writeNotification(data);
            deferred.resolve(data);
          }).error(function (data) {
-           notification.writeNotification(data);
+           //notification.writeNotification(data);
+           deferred.reject(false);
+         });
+       return deferred.promise;
+     },
+     unfollow: function (myUserId, userId) {
+       var deferred = $q.defer();
+       $http.delete(CONFIG.baseUrlApi + '/follow/', {idUser: myUserId, idFollowing: userId})
+         .success(function (data) {
+           //notification.writeNotification(data);
+           deferred.resolve(data);
+         }).error(function (data) {
+           //notification.writeNotification(data);
            deferred.reject(false);
          });
        return deferred.promise;
