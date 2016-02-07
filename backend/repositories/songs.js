@@ -277,7 +277,7 @@ function SongsRepository () {
           }
         ]
       ).toArray(function(err, result) {
-        //console.log(result);
+        console.log(result);
         callback(null, result);
       });
     };

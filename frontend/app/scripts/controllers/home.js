@@ -20,6 +20,10 @@ angular.module('frontendApp')
     $scope.followers = [];
     $scope.news = [];
     $scope.email = null;
+    $scope.currentSong = {};
+    $scope.currentSong.comment = ["No comment Yet!"];
+    $scope.currentSong.myComment = "";
+    $scope.currentSong.myMark = null;
 
       /*{ _id: 1,
         name: "Drop The Pressure",
@@ -277,59 +281,144 @@ angular.module('frontendApp')
     };*/
 
   $scope.addComment = function(comment){
-    alert("addComment : " + comment);
-    feedbackService.addComment("56b4ee3845b766bd49eb5d64", comment).then(function(data){
-      //$scope.currentSong.feedbacks.push();
-      console.log(data.data);
+    console.log(data.data);
+    feedbackService.addComment($scope.currentSong._id, comment).then(function(data){
+      $scope.currentSong.comment.push(comment);
+      $scope.currentSong.myComment = comment;
+
     },function(msg){
       console.log('erreur promesses : ' + msg);
     });
   };
 
   $scope.addMark = function(mark){
-    feedbackService.addMark("56b4ee3845b766bd49eb5d64", mark).then(function(data){
-      //$scope.currentSong.myMark = mark;
-      //$scope.currentSong.markAvg = data.data;
+    feedbackService.addMark($scope.currentSong._id, mark).then(function(data){
       console.log(data.data);
+      $scope.currentSong.myMark = mark;
+      $scope.currentSong.markAvg = data.data;
+
     },function(msg){
       console.log('erreur promesses : ' + msg);
     });
   };
 
   $scope.test = function (mix) {
-    console.log("test");
-    console.log(mix);
-/*
-    bufferLoader = new bufferLoader() {
-      context,
-      tracks,
-      finishedLoading,
-      callbackFinishedLoading
-    };
-
-    bufferLoader.load();*/
-/*$http({
-      url: CONFIG.baseUrlApi + '/mix',
-      method: "GET",
-      data: {
-        uri: mix
-      },
-      responseType: 'blob'
-  }).success(function (data, status, headers, config) {
-      var blob = new Blob([data], { type: 'audio/mpeg' });
-      var fileName = headers('content-disposition');
-      saveAs(blob, fileName);
-  }).error(function (data, status, headers, config) {
-    console.log('Unable to download the file')
-  });*/
-    
+   
     currentMix.getMix(mix).then(function(data){
-      //$scope.currentSong.myMark = mark;
-      //$scope.currentSong.markAvg = data.data;
+      $scope.currentSong = data.data;
+      console.log(auth.id);
+      console.log(data.data.feedbacks[0]._id);
+      
+
+      $scope.currentSong.comment = data.data.feedbacks.map(function(currentValue, index, array) {
+          return currentValue.comment;
+      });
+
+      console.log($scope.currentSong.comment);
+
+
+
+      var element = data.data.feedbacks.map(function(x) { return x._id.toString(); }).indexOf(auth.id);
+      if(element === -1){
+        $scope.currentSong.myComment = "";
+        $scope.currentSong.myMark = null;
+      } else {
+        $scope.currentSong.myMark = data.data.feedbacks[element].mark;
+        $scope.currentSong.myComment = data.data.feedbacks[element].comment;
+      }
+
+      $scope.play('http://localhost:3000/' + data.data.path);
+      
       //console.log(data.data);
     },function(msg){
       console.log('erreur promesses : ' + msg);
     });
   }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    var activeUrl = null;
+
+    $scope.paused = true;
+
+    $scope.$on('wavesurferInit', function (e, wavesurfer) {
+        $scope.wavesurfer = wavesurfer;
+
+        $scope.wavesurfer.on('play', function () {
+            $scope.paused = false;
+        });
+
+        $scope.wavesurfer.on('pause', function () {
+            $scope.paused = true;
+        });
+
+        $scope.wavesurfer.on('finish', function () {
+            $scope.paused = true;
+            $scope.wavesurfer.seekTo(0);
+            $scope.$apply();
+        });
+    });
+
+    $scope.play = function (url) {
+      
+        if (!$scope.wavesurfer) {
+            return;
+        }
+
+        activeUrl = url;
+
+        $scope.wavesurfer.once('ready', function () {
+            $scope.wavesurfer.play();
+            $scope.$apply();
+        });
+
+        $scope.wavesurfer.load(activeUrl);
+    };
+
+    $scope.isPlaying = function (url) {
+        return url == activeUrl;
+    };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 });

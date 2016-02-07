@@ -8,7 +8,7 @@
  * Controller of the frontendApp
  */
 angular.module('frontendApp')
-  .controller('PlayerCtrl', function ($scope, currentMusicService) {
+  .controller('PlayerCtrl', function ($scope, $rootScope, currentMusicService, currentMix) {
 var activeUrl = null;
 
     $scope.title = null;
@@ -59,4 +59,26 @@ var activeUrl = null;
     $scope.$watch(function () { return currentMusicService.getFeedbacks(); }, function (newValue, oldValue) {
       if (newValue !== oldValue) $scope.commentTab = newValue;
     });
+
+    $scope.test = function (mix) {
+    console.log("test");
+    
+    currentMix.getMix(mix).then(function(data){
+      console.log(data);
+      $scope.currentSong = data;
+      var element = data.data.feedbacks.map(function(x) { return x._id.toString(); }).indexOf(auth._id);
+      if(element === -1){
+        $scope.currentSong.myComment = "";
+        $scope.currentSong.myMark = null;
+      } else {
+        $scope.currentSong.myMark = data.feedbacks[element].mark;
+        $scope.currentSong.myComment = data.feedbacks[element].comment;
+      }
+
+      //console.log(data.data);
+    },function(msg){
+      console.log('erreur promesses : ' + msg);
+    });
+  }
+
   });
