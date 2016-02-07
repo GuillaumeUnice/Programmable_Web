@@ -9,12 +9,6 @@
 
 ## Features
 
- Guillaume
-follow persons Youssef
-Loading Wav Guillaume
-Player transversal Guillaume
-Apply some audio effects Yuqi & Salah
-
 ### Backend
 * Authentification (Interceptor + JsonWebToken + middleware).
 * Social aspect : Comment & mark a mix and follow an user.
@@ -42,8 +36,14 @@ To run the application, you'll need: <br />
 
 
 
-First of all, import in your Mongo Database : /backend/database/databaseScript_V2.sql
+First of all, create a mongoDB database call "test".
+Then, import in your Mongo Database : /backend/dump_database/users.json and /backend/dump_database/songs.json for this make the following command in :<br />
+/backend/dump_database
 
+```
+mongoimport -d test -c songs -o songs.json
+mongoimport -d test -c users -o users.json
+```
 
 #### Downloading the Dependencies
 After cloning the source code from Git, you need to run the following command to download all the dependencies (express, mocha, etc.) in :<br />
@@ -87,4 +87,11 @@ password : azerty<br />
 
 ## Some UI
 
+### Login page
 ![alt tag](https://raw.github.com/GuillaumeUnice/Programmable_Web/master/readme_img/login.png)
+
+### Home page
+![alt tag](https://raw.github.com/GuillaumeUnice/Programmable_Web/master/readme_img/home.png)
+
+### Search page
+![alt tag](https://raw.github.com/GuillaumeUnice/Programmable_Web/master/readme_img/morphsearch.png.png)
