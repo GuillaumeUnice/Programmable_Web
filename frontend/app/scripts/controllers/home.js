@@ -21,10 +21,10 @@ angular.module('frontendApp')
     $scope.news = [];
     $scope.email = null;
     $scope.currentSong = {};
-    $scope.currentSong.comment = ["No comment Yet!"];
+    $scope.currentSong.comment = ["No comment yet!"];
     $scope.currentSong.myComment = "";
     $scope.currentSong.myMark = null;
-    
+
   /*  $scope.getMixedSongs = function(){
       var deferred = $q.defer();
       $http.get(CONFIG.baseUrlApi + '/getmixed')

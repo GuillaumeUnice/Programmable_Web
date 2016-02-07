@@ -20,28 +20,36 @@ exports.followSomeone = function(req,res){
 
             usersRepository.findUserById(req.db,idfollowing,function(result){
                 following = result;
-                usersRepository.addFollowing(req.db,idUser,following);
+                    usersRepository.addFollower(req.db,idfollowing,user,function(){
+                        usersRepository.addFollowing(req.db,idUser,following,function(){
+                            var event = {
+                                type: "social",
+                                name: "You",
+                                action: " are now following "+following.full_name,
+                                created_at: new Date().getTime()};
+                            usersRepository.writeEvent(req.db,idUser,event,function(){
+                                event = {
+                                    type: "social",
+                                    name: user.full_name,
+                                    action: " are now following "+following.full_name,
+                                    created_at: new Date().getTime()};
+                                usersRepository.notifyFollowers(req.db,idUser,event,
+                                    function(msg){
+                                        usersRepository.findUserById(req.db,idUser,function(user){
+                                            res.send({following: user.following, events : user.events});
+                                        })
+                                    },function(code,msg){
+                                        res.send(code,msg)
+                                    }
+                                )
+                            },function(code,msg){
+                                res.send(code,msg);
+                            });
+                        });
+                        });
 
-                usersRepository.addFollower(req.db,idfollowing,user);
+                    });
 
-                var event = {describ: "You are now following "+following.full_name, created_at: new Date().getTime()};
-                usersRepository.writeEvent(req.db,idUser,event);
-
-                event = {describ: user.full_name+" is now following "+following.full_name,
-                        created_at: new Date().getTime()};
-                usersRepository.notifyFollowers(req.db,idUser,event,
-                     function(msg){
-                         usersRepository.findUserById(req.db,idUser,function(user){
-                             res.send({following: user.following, events : user.events});
-                         })
-                     },function(code,msg){
-                            res.send(code,msg)
-                        }
-                )
-                },function(code,msg){
-                    res.send(code,msg);
-                }
-            );
         },function(code,msg){
             res.send(code,msg);
         }
@@ -65,9 +73,11 @@ exports.getFollowers = function(req,res){
 };
 
 exports.unfollow = function(req,res){
-    usersRepository.removeFollowing(req.db,ObjectId(req.body.idUser),ObjectId(req.body.idFollowing));
-    usersRepository.removeFollower(req.db,ObjectId(req.body.idFollowing),ObjectId(req.body.idUser));
-    usersRepository.findUserById(req.db,ObjectId(req.body.idUser),function(result){
+    usersRepository.removeFollowing(req.db,ObjectId(req.body.idUser),ObjectId(req.body.idFollowing),function(){
+        usersRepository.removeFollower(req.db,ObjectId(req.body.idFollowing),ObjectId(req.body.idUser),function(){
+            usersRepository.findUserById(req.db,ObjectId(req.body.idUser),function(result){
                 res.send(result.following);
+            });
+        });
     });
 };

@@ -124,17 +124,20 @@
                 <i class="iconList iconListTimeline glyphicon {{ new.glyphicon }} pull-right button-icon-link">
                 </i>
               </div>
-              <div class="cbp_tmlabel">
+              <div ng-if="new.type=='social'" class="cbp_tmlabel">
                 <h2 style="font-size: 17px !important;">
-                  {{ new.describ }}
+                  {{ new.name }}{{ new.action }}
                 </h2>
-                  <!--{{ new.action }} :
+              </div>
+              <div ng-if="new.type=='music'" class="cbp_tmlabel">
+                <h2 style="font-size: 17px !important;">
+                  {{ new.name }}{{ new.action }}
                 </h2>
                 <p>
                   <i style="cursor : initial !important;" class="iconList glyphicon glyphicon-headphones pull-left button-icon-link"></i>
                   <span>{{ new.author }} - {{ new.music }}</span>
                   <i title="play" class="iconList glyphicon glyphicon-play pull-right button-icon-link"></i>
-                </p>-->
+                </p>
               </div>
             </li>
 
