@@ -202,7 +202,7 @@ angular.module('frontendApp')
           );
         }
         $scope.searchResults = data;
-        
+
       },function(msg){
         console.log('erreur promesses : ' + msg);
       });
@@ -210,7 +210,9 @@ angular.module('frontendApp')
 
     $scope.follow = function(user) {
         follow.follow(auth.id, user._id).then(function(data){
-          $scope.following.push(user);
+          $scope.following = data.following;
+          $scope.news = data.events;
+          //$scope.following.push(user);
         },function(msg){
           console.log('erreur promesses : ' + msg);
         });
@@ -218,7 +220,8 @@ angular.module('frontendApp')
 
     $scope.unfollow = function(user) {
       follow.unfollow(auth.id, user._id).then(function(data){
-        $scope.following.splice($scope.following.indexOf(user), 1);
+        $scope.following = data;
+        //$scope.following.splice($scope.following.indexOf(user), 1);
       },function(msg){
         console.log('erreur promesses : ' + msg);
       });

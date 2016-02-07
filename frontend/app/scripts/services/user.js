@@ -91,6 +91,19 @@ angular.module('frontendApp')
          });
        return deferred.promise;
      },
+     getNews : function(id){
+       var deferred = $q.defer();
+       $http.get(CONFIG.baseUrlApi + '/account/'+ id+'/news')
+         .success(function (data) {
+           //notification.writeNotification(data);
+           deferred.resolve(data);
+           //console.log(data.message);
+         }).error(function (data) {
+           //notification.writeNotification(data);
+           deferred.reject(false);
+         });
+       return deferred.promise;
+     },
      myMix: function (userId) {
        var deferred = $q.defer();
        $http.get(CONFIG.baseUrlApi + '/manageMySongs/' + userId)

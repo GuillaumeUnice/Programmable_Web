@@ -123,7 +123,6 @@ app.get('/manageMySongs/:idUser',routess.manageMySongs.findMySongs);
 app.get('/account/:idUser',routess.account.getAccountInfo);
 
 
-
 app.use('/', routes);
 //app.use('/users', users);
 //app.use('/feedbacks', feedbacks);
