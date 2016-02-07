@@ -42,7 +42,7 @@ angular
         templateUrl: 'views/home.html',
         controller: 'HomeCtrl',
         controllerAs: 'home',
-        access: { requiredLogin: false }
+        access: { requiredLogin: true }
       })
       .when('/mix', {
         templateUrl: 'views/mix.html',

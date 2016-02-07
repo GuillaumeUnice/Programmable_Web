@@ -8,7 +8,7 @@
  * Controller of the frontendApp
  */
 angular.module('frontendApp')
-  .controller('UserCtrl', function ($scope, $location, $window, user, auth, notification) {
+  .controller('UserCtrl', function ($scope, $location, $window, user, auth, notification, CONFIG) {
 
     $scope.logIn = function logIn(login) {
         user.logIn(login)
@@ -30,7 +30,10 @@ angular.module('frontendApp')
     $scope.signUp = function signUp(register) {
         user.register(register)
             .then(function(data){
-                $location.path("/login");
+                console.log(data);
+                if(data.status === CONFIG.JSON_STATUS_SUCCESS) {
+                    $location.path("/login");    
+                }
             }, function(msg){
                 console.log('erreur promesses : ' + msg);
             });

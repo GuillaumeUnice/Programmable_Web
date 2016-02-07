@@ -19,6 +19,21 @@
             </span>
             <br>
             <br>
+            <label for="password">First Name</label>
+            <br>
+            <input type="text" name="first_name" placeholder="First Name" ng-model="user.first_name" required>
+            <span ng-show="register.first_name.$error.required" class="red">
+                <span class="glyphicon glyphicon-exclamation-sign"></span> A first name is required!
+            </span>
+            <br>
+            <label for="password">Name</label>
+            <br>
+            <input type="text" name="name" placeholder="Name" ng-model="user.name" required>
+            <span ng-show="register.name.$error.required" class="red">
+                <span class="glyphicon glyphicon-exclamation-sign"></span> A name is required!
+            </span>
+            <br>
+            <br>
             <label for="password">Password</label>
             <br>
             <input type="password" name="password" placeholder="Password" ng-model="user.password" required>
