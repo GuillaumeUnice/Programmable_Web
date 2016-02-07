@@ -1,194 +1,174 @@
+<div ng-show="displayLoading" style="width:350px;height:150px;position:absolute;left:50%;top:50%;margin:-75px 0 0 -135px;text-align: center">
+  <h1>Loading ...</h1>
+  <h4 id="songID"></h4>
+  <div id="progressbar"></div>
+</div>
 
-<div class="row" ng-init="init()" style="background-image: url('https://dl.dropboxusercontent.com/u/14898/Photos/NSTexturedFullScreenBackgroundColor.png');">
-<!--
-  <th-spinner  theme="'audio-wave'" display="displayLoading" size="'size-lg'"></th-spinner>
-  -->
-
-  <div ng-show="displayLoading" style="width:350px;
-	height:150px;
-	position:absolute;
-	left:50%;
-	top:50%;
-	margin:-75px 0 0 -135px;
-	text-align: center">
-    <h1>Loading .....</h1>
-    <h4 id="songID"></h4>
-    <div id="progressbar"></div>
+<div  ng-show="loadSong">
+  <div style="width:350px;height:150px;position:absolute;left:50%;top:50%;margin:-75px 0 0 -135px;text-align: center">
+    <h1>Charger ou uploader une/des musique(s)</h1>
+    <button type="button" class="btn btn-primary btn-lg" ng-click="showComplex()">Liste des musiques</button>
+    <a ng-href="#/upload">
+      <button type="submit" class="button btn-assertive  btn-lg">Uploader des fichiers</button>
+    </a>
   </div>
-
-  <div  ng-show="loadSong">
-    <div style="width:350px;
-	height:150px;
-	position:absolute;
-	left:50%;
-	top:50%;
-	margin:-75px 0 0 -135px;
-	text-align: center">
+</div>
 
 
-    <h1>Charger une musique</h1>
-    <button type="button" class="btn btn-primary btn-lg" ng-click="showComplex()">Liste des musique</button>
+<div class="row" ng-init="init()">
+  <!-- CENTER part -->
+  <div class="col-md-12" ng-show="mixTable">
+
+    <!-- TOP part -->
+    <div class="row" style="margin: 30px">
+      <div class="col-md-3">
+      </div>
+
+      <div class="col-md-6">
+        <div id="wave" class="panel panel-default">
+          <canvas id = "analyser" style="width: 100%; height : 20vh; display:table-row; background: #002D3C;"></canvas>
+        </div>
+      </div>
     </div>
-  </div>
 
-    <!-- CENTER part -->
-    <div class="col-md-12" ng-show="mixTable">
-      <!-- TOP part -->
-      <div class="row" style="padding-bottom: 30px">
 
-        <!-- CONSOLE -->
-        <div class="col-md-5">
 
-          <div class="row">
-            <div class="col-md-6">
-              <div class="thumbnail">
-                <img class="img-rounded" src="http://www.indiepoprock.fr/pandora/the-beatles.jpg">
-              </div>
-            </div>
-            <div class="col-md-3">
-              <div class="form-group">
-                <label style="margin-bottom: -3px; display: block">Artiste</label>
-                <span>Bonjour</span>
-              </div>
-              <div class="form-group">
-                <label style="margin-bottom: -3px; display: block">Titre</label>
-                <span>Bonjour</span>
-              </div>
-              <div class="form-group">
-                <label style="margin-bottom: -3px; display: block">Année</label>
-                <span>1996</span>
-              </div>
-            </div>
-            <div class="col-md-3">
-              <div class="form-group">
-                <label style="margin-bottom: -3px; display: block">Genre</label>
-                <span>Rock</span>
-              </div>
-              <div class="form-group">
-                <label style="margin-bottom: -3px; display: block">Album</label>
-                <span>ezfzefze</span>
-              </div>
-              <div class="form-group">
-                <label style="margin-bottom: -3px; display: block">Année</label>
-                <span>1996</span>
-              </div>
-            </div>
-          </div>
-        </div>
+    <!-- MIDDLE part -->
+    <!-- MIX part -->
 
-        <!-- CONSOLE -->
-        <div class="col-md-3">
-            <div id="console" class="panel panel-default">
-              <div class="panel-body">
 
-                  <!--<input type="range" id="masterVolume" min="0" max ="100" ng-model="maval" ng-change="changeMasterVolume(maval)">-->
-                  <input type="range" class="time-slider" min="-1" max ="1" step="0.1" ng-value="0" ng-model="slide" ng-change="setMasterGain(slide)">
+    <div class="row" style="padding-left: 20px;" ng-repeat="letter in listTracks.instruments track by $index" ng-if="$index%4==0">
+      <div class="col-md-3 letter-box"
+           ng-repeat="i in [$index,$index+1,$index+2,$index+3]"
+           ng-if="listTracks.instruments[i]!=null">
+        <div class="mmodule">
+          <div class="mcontent">
+            <h6>{{listTracks.instruments[i].name}}</h6>
+            <div>
 
-                  <input id="slide" type="range" class="time-slider" step="any" ng-value="0" ng-model="slide" ng-change="changerangeslide(slide)">
-                  <!-- BUTTONS -->
-                  <div class="row">
-                    <div id="pistess">
-                      <button type="button" class="btn btn-circle btn-raised ripple-effect btn-default" ng-click="stop()" ng-disabled="canStop">
-                        <span class="glyphicon glyphicon-stop"></span>
-                      </button>
-
-                      <button ng-show="showPlayButton" type="button" class="btn btn-circle btn-raised ripple-effect btn-default" ng-click="play(0)" ng-disabled="canPlay">
-                        <span class="glyphicon glyphicon-play"></span>
-                      </button>
-
-                      <button ng-show="!showPlayButton" type="button" class="btn btn-circle btn-raised ripple-effect btn-default" ng-click="pause()">
-                        <span class="glyphicon glyphicon-pause"></span>
-                      </button>
-                      <input type="text"  ng-model="savem"/>
-                      <button  type="button" class="btn btn-circle btn-raised ripple-effect btn-default" ng-click="savemixed(savem)">
-                        save
-                      </button>
-                    </div>
-                  </div>
+              <div>
+                <div class="slider-info">
+                  <label class="llabel">Compressor</label>
+                  <button ng-click="setCompressor(i)">ON</button>
                 </div>
-
               </div>
-            </div>
-        </div>
 
-        <!-- WAVE -->
-        <div class="col-md-4">
-          <div id="wave" class="panel panel-default">
-            <canvas id = "analyser" style="width: 100%; height : 20vh; display:table-row; background: #002D3C;"></canvas>
+              <!-- GAIN -->
+              <div>
+                <div class="slider-info">
+                  <span class="llabel">Gain</span>
+                  <span class="value" units="Db" style="color : red">{{data[i].gain}}</span>
+                </div>
+                <input type="range" min="0" max ="1" step="0.1" ng-model="data[i].gain" ng-change="setGain(i, data[i].gain)">
+              </div>
+
+
+              <!-- MONO L -->
+              <div>
+                <div class="slider-info">
+                  <span class="llabel">Left</span>
+                  <span class="value" units="">{{data[i].gainL}}</span>
+                </div>
+                <input type="range" class="time-slider" min="-2" max="0" step="any"  ng-model="data[i].gainL" ng-change="setMonoL(i, data[i].gainL)">
+              </div>
+
+              <!-- MONO R -->
+              <div>
+                <div class="slider-info">
+                  <span class="llabel">Right</span>
+                  <span class="value" units="">{{data[i].gainR}}</span>
+                </div>
+                <input type="range" class="time-slider" min="0" max="1" step="any" ng-model="data[i].gainR" ng-change="setMonoR(i, data[i].gainR)">
+              </div>
+
+
+              <!-- FREQUENCE -->
+              <div>
+                <div class="slider-info">
+                  <span class="llabel">Frequence</span>
+                  <span class="value" units="Hz">{{data[i].frequence}}</span>
+                </div>
+                <input type="range" min="0" max="22050" step="any" ng-model="data[i].frequence" ng-change="setFrequence(i, data[i].frequence)">
+              </div>
+
+
+            </div>
+
           </div>
         </div>
       </div>
-
-
-
-      <!-- MIDDLE part -->
-        <!-- MIX part -->
-
-
-          <div class="row" style="padding-left: 20px;" ng-repeat="letter in listTracks.instruments track by $index" ng-if="$index%4==0">
-            <div class="col-md-3 letter-box"
-                 ng-repeat="i in [$index,$index+1,$index+2,$index+3]"
-                 ng-if="listTracks.instruments[i]!=null">
-              <div class="module">
-                <div class="mcontent">
-                  <h6 class="module-title">{{listTracks.instruments[i].name}}</h6>
-                  <div>
-
-                  <div>
-                    <button ng-click="setCompressor(i)">Compressor</button>
-                  </div>
-
-                  <!-- GAIN -->
-                  <div>
-                    <div class="slider-info">
-                      <span class="llabel">Gain</span>
-                      <span class="value" units="Db">{{data[i].gain}}</span>
-                    </div>
-                    <input type="range" min="0" max ="1" step="0.1" ng-model="data[i].gain" ng-change="setGain(i, data[i].gain)">
-                  </div>
-
-
-                  <!-- MONO L -->
-                  <div>
-                    <div class="slider-info">
-                      <span class="llabel">Left</span>
-                      <span class="value" units="">{{data[i].gainL}}</span>
-                    </div>
-                    <input type="range" class="time-slider" min="-2" max="0" step="any"  ng-model="data[i].gainL" ng-change="setMonoL(i, data[i].gainL)">
-                  </div>
-
-                  <!-- MONO R -->
-                  <div>
-                    <div class="slider-info">
-                      <span class="llabel">Right</span>
-                      <span class="value" units="">{{data[i].gainR}}</span>
-                    </div>
-                    <input type="range" class="time-slider" min="0" max="1" step="any" ng-model="data[i].gainR" ng-change="setMonoR(i, data[i].gainR)">
-                  </div>
-
-
-                    <!-- FREQUENCE -->
-                  <div>
-                    <div class="slider-info">
-                      <span class="llabel">Frequence</span>
-                      <span class="value" units="Hz">{{data[i].frequence}}</span>
-                    </div>
-                    <input type="range" min="0" max="22050" step="any" ng-model="data[i].frequence" ng-change="setFrequence(i, data[i].frequence)">
-                  </div>
-
-
-                </div>
-
-              </div>
-            </div>
-        </div>
-            </div>
-
-
-
-      <!-- Bottom element --
-
-      -->
-
+    </div>
+  </div>
 </div>
 
+<!-- Bottom element -->
+<div id="demo" ng-show="mixTable">
+  <div class="row" style="background-color: gray; position: absolute; bottom: 0; left: 0; right: 0; margin: auto; border: none; z-index : 99; min-height: 120px !important;">
+    <div class="col-md-2">
+      <div>
+        <img class="img-rounded" src="images/{{selectedSong.titre}}.jpg" style="height: 100px; margin : 20px">
+      </div>
+    </div>
+
+    <div class="col-md-4" style="text-align: left; margin : 20px">
+      <div class="row">
+        <div class="col-md-4">
+          <form>
+            <div class="form-group">
+              <label style="color :black">Artiste</label>
+              <p>{{selectedSong.artiste}}</p>
+            </div>
+            <div class="form-group">
+              <label style="color :black">Titre</label>
+              <p>{{selectedSong.titre}}</p>
+            </div>
+          </form>
+        </div>
+        <div class="col-md-4">
+          <form>
+            <div class="form-group">
+              <label style="color :black">Album</label>
+              <p>{{selectedSong.album}}</p>
+            </div>
+            <div class="form-group">
+              <label style="color :black">Annee</label>
+              <p>{{selectedSong.annee}}</p>
+            </div>
+          </form>
+        </div>
+        <div class="col-md-4">
+          <form>
+            <div class="form-group">
+              <label style="color :black">Genre</label>
+              <p>{{selectedSong.genre}}</p>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-2" class="center-block">
+      <button type="button" class="btn btn-circle btn-raised ripple-effect btn-default" ng-click="stop()" ng-disabled="canStop">
+        <span class="glyphicon glyphicon-stop"></span>
+      </button>
+
+      <button ng-disabled="!showPlayButton" type="button" class="btn btn-circle btn-raised ripple-effect btn-default" ng-click="play(0)" ng-disabled="canPlay">
+        <span class="glyphicon glyphicon-play"></span>
+      </button>
+
+      <button ng-disabled="showPlayButton" type="button" class="btn btn-circle btn-raised ripple-effect btn-default" ng-click="pause()">
+        <span class="glyphicon glyphicon-pause"></span>
+      </button>
+
+      <input type="text"  ng-model="savem"/>
+      <button  type="button" class="btn btn-circle btn-raised ripple-effect btn-default" ng-click="savemixed(savem)">
+        save
+      </button>
+    </div>
+
+    <div class="col-md-3">
+      <input type="range" class="time-slider" min="-1" max ="1" step="0.1" ng-value="0" ng-model="slide" ng-change="setMasterGain(slide)">
+      <input id="slide" type="range" step="any" ng-value="0" ng-model="slide" ng-change="changerangeslide(slide)">
+    </div>
+  </div>
+</div>

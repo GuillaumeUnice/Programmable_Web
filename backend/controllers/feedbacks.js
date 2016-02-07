@@ -16,6 +16,56 @@ exports.getFeedbacks = function(req, res) {
 	})*/
 };
 
+
+exports.getMix = function(req, res) {
+	console.log(req.params.idMix);
+	var mixId = req.params.idMix;
+    songsRepository.getSongsById(req.db, mixId, function(err, result1){
+		if(err) {
+		  console.log(err);
+		  res.status(500);
+		  res.json({ status: constants.JSON_STATUS_ERROR,
+		  title: 'Error System',
+		  message: 'An error has been occured! Please try later or contact the administrator'});
+		  return;	
+		}
+	
+		songsRepository.getAverageMark(req.db, mixId, function(err, result2){
+
+			if(err) {
+			  console.log(err);
+			  res.status(500);
+			  res.json({ status: constants.JSON_STATUS_ERROR,
+			  title: 'Error System',
+			  message: 'An error has been occured! Please try later or contact the administrator'});
+			  return;	
+			}
+
+			var element = result2.map(function(x) { return x._id.toString(); }).indexOf(mixId);
+			console.log(mixId);
+			console.log(element);
+			var data = result1;
+			data.markAvg = result2[element].markAvg;
+			console.log(result2);
+			res.status(200);
+			res.json({ status: constants.JSON_STATUS_SUCCESS,
+			data : data,
+			title: 'Add Mix to player',
+			message: 'The mix is now in the player!'});
+			return;
+		});
+	  });
+
+
+			/*res.status(200);
+			res.json({ status: constants.JSON_STATUS_SUCCESS,
+			data : data,
+			title: 'Add Mix to player',
+			message: 'The mix is now in the player!'});
+			return;*/
+
+};
+
 exports.postFeedback = function(req, res) {
 
 	verifyRightToFeedback(req.db, req.body.songId, function(err, result) {

@@ -17,6 +17,7 @@ angular.module('frontendApp')
                 auth.isLogged = true;
                 auth.username = data.data.email;
                 auth.id = data.data._id;
+                auth.created_at = data.data.created_at;
                 auth.notifyObservers();
                 //auth.full_name = data.data.full_name;
                // auth.name = data.data.name;

@@ -31,10 +31,15 @@ angular
     JSON_STATUS_SUCCESS: 1,
     JSON_STATUS_WARNING: -1,
     JSON_STATUS_NOTICE: 0,
-    JSON_STATUS_ERROR: -2,
+    JSON_STATUS_ERROR: -2
 
   })
   .config(function ($routeProvider, $httpProvider) {
+
+
+
+        $httpProvider.defaults.useXDomain = true;
+        delete $httpProvider.defaults.headers.common['X-Requested-With'];
 
     $httpProvider.interceptors.push('tokenInterceptor');
     $routeProvider
@@ -49,6 +54,12 @@ angular
         controller: 'MixCtrl',
         controllerAs: 'mix',
         access: { requiredLogin: true }
+      })
+      .when('/upload', {
+        templateUrl: 'views/uploadSong.html',
+        controller: 'UploadCtrl',
+        controllerAs: 'upload',
+        access: {requiredLogin: true}
       })
       .when('/mix/:id', {
         templateUrl: 'views/mix.html',

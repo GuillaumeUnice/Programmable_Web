@@ -11,7 +11,7 @@
             <div class="contentSearch">
               <div class="borderTop border" ng-repeat="song in searchResults.songs">
                   <i  class="iconList glyphicon glyphicon-headphones pull-left button-icon-link"></i>
-                  <span>{{ song.author }} - {{ song.name }}</span>
+                  <span>{{ song.author.full_name }} - {{ song.name }}</span>
                   <i class="iconList glyphicon glyphicon-play pull-right button-icon-link"></i>
               </div>
             </div>
@@ -54,9 +54,9 @@
         <!--<input type="text" ng-model="searchInfo.motsCles">
         <button ng-click="sendKeyWords()">Rechercher</button>-->
         <div class="row borderTop">
-          <img class="avatar" src="images/logo.png" alt="avatar" />
+          <img class="avatar" src="http://localhost:3000/{{avatar}}" alt="avatar" />
           <p style="margin-top: 10px; text-align: left; font-size: 15px;"><i class="glyphicon glyphicon-envelope"></i> {{email}}</p>
-          <p style="text-align: left; font-size: 15px;"><i class="glyphicon glyphicon-time"></i> Joined on 15 Nov 2013</p>
+          <p style="text-align: left; font-size: 15px;"><i class="glyphicon glyphicon-time"></i> Joined on {{ created_at | date:"MM/dd/yyyy 'at' h:mma" }}<!--15 Nov 2013--></p>
 
           <form name="logoutForm" ng-submit="logout()" novalidate ng-controller="UserCtrl as user">
                <button type="submit"  ng-disabled="logoutForm.$invalid" class="button button-link button-logout">
@@ -168,32 +168,34 @@
         <form>
           <input type="text" placeholder="filter..." ng-model="filterMyMix"/>
         </form>
-        <button style="margin-top: 5px !important;" type="submit" class="button button-link glyphicon-plus"  ng-click="getMixedSongs()">
+        <!--<button style="margin-top: 5px !important;" type="submit" class="button button-link glyphicon-plus"  ng-click="getMixedSongs()">
           getmixed
-        </button>
+        </button>-->
         <div class="borderTop" ng-repeat="mix in myMix | orderBy:'created_at':true | filter:{ name:filterMyMix}">
           <i style="cursor : initial !important;" class="iconList glyphicon glyphicon-headphones pull-left button-icon-link"></i>
           <span>{{ mix.name }}</span>
           <!--<i title="play" class="iconList glyphicon glyphicon-play pull-right button-icon-link" ng-href="#/mix"></i>-->
-          <a ng-href="#/mix/{{mix.name_new}}">
-          <button type="submit" class="iconList glyphicon glyphicon-play pull-right button-icon-link" >play
+          <i ng-click="test(mix)" class="iconList glyphicon glyphicon-play pull-right button-icon-link" >
+          </i>
+          <!--<a ng-href="#/mix/{{mix.name_new}}">
+          <button type="submit" class="iconList glyphicon glyphicon-edit pull-right button-icon-link" >Edit
           </button>
-            </a>
+            </a>-->
         </div>
       </div>
     </div>
 
   </div>
 
-  <div id="demo" ng-controller="PlayerCtrl as player" >
-    <div class="row" style="background-color: gray; position: absolute; bottom: 0; left: 0; right: 0; margin: auto; border: none; z-index : 99; min-height: 120px !important;">
+  <div id="demo" >
+    <div ng-if="currentSong.name" class="row" style="background-color: gray; position: absolute; bottom: 0; left: 0; right: 0; margin: auto; border: none; z-index : 99; min-height: 120px !important;">
         <div class="col-sm-4">
-          <auto-scoll-text comments="commentTab"></auto-scoll-text>
+          <auto-scoll-text comments="currentSong.comment"></auto-scoll-text>
             <!-- A COMMENTER<span>
               Je pense que ce titre est a prendre avec des pincettes :D
             </span> A COMMENTER-->
             <form name="comment" ng-submit="addComment(myComment)" novalidate style="margin-top: 10px;">
-              <input type="text" placeholder="No comment already!" ng-model="myComment" style="float: left; float: left; bottom: -75px; position: absolute; width: 90%;     border: 3px solid #F57362;" required/>
+              <input type="text" placeholder="No comment already!" ng-model="currentSong.myComment" style="float: left; float: left; bottom: -75px; position: absolute; width: 90%;     border: 3px solid #F57362;" required/>
               <!--<button type="submit" class="button button-link button-player" ng-disabled="comment.$invalid"><span class="glyphicon glyphicon-send button-icon" style="font-size: 25px !important;"></span>Add
               </button>-->
             </form>
@@ -201,11 +203,11 @@
         <div class="col-sm-2" style="text-align: right;">
             <span>Mark : </span>
             <span class="rating">
-              <span>☆</span>
-              <span>☆</span>
-              <span>☆</span>
-              <span>☆</span>
-              <span>☆</span>
+              <span ng-class="{'marked' : currentSong.markAvg >= 5}">☆</span>
+              <span ng-class="{'marked' : currentSong.markAvg >= 4}">☆</span>
+              <span ng-class="{'marked' : currentSong.markAvg >= 3}">☆</span>
+              <span ng-class="{'marked' : currentSong.markAvg >= 2}">☆</span>
+              <span ng-class="{'marked' : currentSong.markAvg >= 1}">☆</span>
             </span>
             <br>
             <span>Your mark : </span>
@@ -219,13 +221,14 @@
             <!--<span ng-repeat="n in [].constructor(5) track by $index">{{$index}}</span> -->
         </div>
         <div class="col-sm-4">
-            <ng-wavesurfer url="./media/test.wav" wave-color="#337ab7" progress-color="#23527c" height="64">
+            <ng-wavesurfer url="./media/lol.wav" wave-color="#337ab7" progress-color="#23527c" height="64">
             </ng-wavesurfer>
+            <!--http://localhost:3000/images/lol.wav-->
+            <!-- ./media/lol.wav -->
             <span>
-              {{title}}
+              title : {{currentSong.name}} - author : {{currentSong.author.full_name}}
             </span>
         </div>
-
         <div class="col-sm-2">
             <!--<button class="btn btn-success btn-block" ng-click="wavesurfer.playPause()">
                 <span id="play" ng-show="paused">

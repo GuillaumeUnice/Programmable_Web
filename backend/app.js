@@ -109,6 +109,7 @@ function ensureAuthorized(req, res, next) {
     }
 }
 
+app.get('/mix/:idMix', ensureAuthorized, routess.feedbacks.getMix);
 app.post('/comment', ensureAuthorized, routess.feedbacks.postFeedback);
 app.post('/mark', ensureAuthorized, routess.feedbacks.postMark);
 app.post('/search', ensureAuthorized, routess.search.searchSongAndUser);

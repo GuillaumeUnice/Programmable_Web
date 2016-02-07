@@ -28,7 +28,7 @@ BufferLoader.prototype.loadBuffer = function(url,index) {
         loader.bufferList[index] = buffer;
         console.log("In bufferLoader.onload bufferList size is " + loader.bufferList.length + " index =" + index);
         $( "#progressbar" ).progressbar( "option", "value", loader.loadCount+1 );
-        $( '#songID' ).html("Chargement de : "+(loader.loadCount+1));
+        $( '#songID' ).html("Chargement de : "+loader.urlList[loader.loadCount]);
         if (++loader.loadCount == loader.urlList.length){
           loader.onload(loader.bufferList, loader.finishedLoading);
         }
