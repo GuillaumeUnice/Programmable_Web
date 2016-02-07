@@ -3,6 +3,8 @@
 angular.module('frontendApp')
   .controller('HomeCtrl', function ($scope, notification, CONFIG, ModalService, searchService,currentMusicService, feedbackService,auth, follow) {
     // initialisation
+
+   // $scope.
     $scope.followers = [];
     $scope.following = [];
 
@@ -55,8 +57,11 @@ angular.module('frontendApp')
         created_at: 1454616846
       }
     ];*/
+    $scope.news = [];
+    $scope.getNews = function(){
 
-    $scope.news = [
+    }
+    /*$scope.news = [
       { _id: 1,
         name: "Henry Dupont",
         action: "a commenté",
@@ -153,7 +158,7 @@ angular.module('frontendApp')
         //$scope.results = data;
         if((data.songs.length === 0) && (data.users.length === 0)) {
           notification.writeNotification(
-            { 
+            {
               status: CONFIG.JSON_STATUS_NOTICE,
               title: 'Search',
               message: 'There is no result!'
