@@ -2,7 +2,7 @@
 
 angular.module('frontendApp')
   .controller('HomeCtrl', function ($scope, notification, CONFIG, ModalService,
-                                    searchService,currentMusicService, feedbackService,auth, follow,$http,$q,$rootScope,user) {
+                                    searchService,currentMix, currentMusicService, feedbackService,auth, follow,$http,$q,$rootScope,user) {
 
     // initialisation
 
@@ -179,12 +179,13 @@ angular.module('frontendApp')
     },function(msg){
       console.log('erreur promesses : ' + msg);
     });
-
+*/
     user.myMix(auth.id).then(function(data){
+      console.log(data);
       $scope.myMix = data;
     },function(msg){
       console.log('erreur promesses : ' + msg);
-    });*/
+    });
 
     $scope.searchQuery = "";
     $scope.searchResults = {};
@@ -294,5 +295,41 @@ angular.module('frontendApp')
       console.log('erreur promesses : ' + msg);
     });
   };
+
+  $scope.test = function (mix) {
+    console.log("test");
+    console.log(mix);
+/*
+    bufferLoader = new bufferLoader() {
+      context,
+      tracks,
+      finishedLoading,
+      callbackFinishedLoading
+    };
+
+    bufferLoader.load();*/
+/*$http({
+      url: CONFIG.baseUrlApi + '/mix',
+      method: "GET",
+      data: {
+        uri: mix
+      },
+      responseType: 'blob'
+  }).success(function (data, status, headers, config) {
+      var blob = new Blob([data], { type: 'audio/mpeg' });
+      var fileName = headers('content-disposition');
+      saveAs(blob, fileName);
+  }).error(function (data, status, headers, config) {
+    console.log('Unable to download the file')
+  });*/
+    
+    currentMix.getMix(mix).then(function(data){
+      //$scope.currentSong.myMark = mark;
+      //$scope.currentSong.markAvg = data.data;
+      //console.log(data.data);
+    },function(msg){
+      console.log('erreur promesses : ' + msg);
+    });
+  }
 
 });

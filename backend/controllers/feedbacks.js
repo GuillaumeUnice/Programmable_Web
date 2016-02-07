@@ -16,6 +16,48 @@ exports.getFeedbacks = function(req, res) {
 	})*/
 };
 
+
+exports.getMix = function(req, res) {
+	console.log(req.body);
+
+	//var id = req.params[0];
+    //console.log('send songs');
+    //console.log('kk'+req.params[0] + '/' + req.params[1]);
+    
+    console.log(__dirname + '/../Mix/basse.mp3');
+    res.sendfile(path.resolve(__dirname + '/../Mix/basse.mp3'));
+/*
+	res.status(200);
+	res.json({ status: constants.JSON_STATUS_SUCCESS,
+	title: 'Add Mix to player',
+	message: 'The mix is now in the player!'});
+	return;*/
+
+/*	var filePath = path.join(__dirname + '/Mix/basse.mp3');
+    var stat = fileSystem.statSync(filePath);
+
+    response.writeHead(200, {
+        'Content-Type': 'audio/mpeg',
+        'Content-Length': stat.size
+    });
+
+    var readStream = fileSystem.createReadStream(filePath);
+    // We replaced all the event handlers with a simple call to readStream.pipe()
+    readStream.pipe(response);
+*/
+
+
+
+
+
+	/*var idSong = ObjectId(req.params.idSong);
+	songsRepository.getFeedbacks(req.db,idSong,function(data){
+		res.send(data);
+	},function(code,msg){
+		res.send(code,msg);
+	})*/
+};
+
 exports.postFeedback = function(req, res) {
 
 	verifyRightToFeedback(req.db, req.body.songId, function(err, result) {
