@@ -94,4 +94,4 @@ password : azerty<br />
 ![alt tag](https://raw.github.com/GuillaumeUnice/Programmable_Web/master/readme_img/home.png)
 
 ### Search page
-![alt tag](https://raw.github.com/GuillaumeUnice/Programmable_Web/master/readme_img/morphsearch.png.png)
+![alt tag](https://raw.github.com/GuillaumeUnice/Programmable_Web/master/readme_img/morphsearch.png)
