@@ -49,6 +49,7 @@ angular.module('frontendApp')
           $scope.followers = data.followers;
           $scope.following = data.following;
           $scope.email = data.email;
+          $scope.avatar = data.avatar;
           $scope.created_at = auth.created_at;
         }, function(msg){
           console.log('erreur promesses : ' + msg);

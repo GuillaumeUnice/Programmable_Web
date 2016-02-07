@@ -11,7 +11,7 @@
             <div class="contentSearch">
               <div class="borderTop border" ng-repeat="song in searchResults.songs">
                   <i  class="iconList glyphicon glyphicon-headphones pull-left button-icon-link"></i>
-                  <span>{{ song.author }} - {{ song.name }}</span>
+                  <span>{{ song.author.full_name }} - {{ song.name }}</span>
                   <i class="iconList glyphicon glyphicon-play pull-right button-icon-link"></i>
               </div>
             </div>
@@ -54,7 +54,7 @@
         <!--<input type="text" ng-model="searchInfo.motsCles">
         <button ng-click="sendKeyWords()">Rechercher</button>-->
         <div class="row borderTop">
-          <img class="avatar" src="images/logo.png" alt="avatar" />
+          <img class="avatar" src="http://localhost:3000/{{avatar}}" alt="avatar" />
           <p style="margin-top: 10px; text-align: left; font-size: 15px;"><i class="glyphicon glyphicon-envelope"></i> {{email}}</p>
           <p style="text-align: left; font-size: 15px;"><i class="glyphicon glyphicon-time"></i> Joined on {{ created_at | date:"MM/dd/yyyy 'at' h:mma" }}<!--15 Nov 2013--></p>
 
