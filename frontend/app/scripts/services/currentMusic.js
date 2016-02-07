@@ -9,7 +9,7 @@
  */
 angular.module('frontendApp')
   .factory('currentMusicService', function () {
-    var data = {
+    /*var data = {
       title: '',
       feedbacks: []
     };
@@ -26,6 +26,8 @@ angular.module('frontendApp')
       },
       setFeedbacks: function (feedbacks) {
         data.feedbacks = feedbacks;
-      }
+      }*/
+
+      
     };
   });

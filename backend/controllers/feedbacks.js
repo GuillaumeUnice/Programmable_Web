@@ -1,12 +1,8 @@
 var constants = require('../config/constants');
 var utils = require('../config/utils');
 
-<<<<<<< HEAD
-
 var ObjectID = require("bson-objectid");
-=======
-var ObjectId = require("bson-objectid");
->>>>>>> 8d315056decaea398f8a9d7c4ca2737531a7ceec
+
 
 var songsRepositoryModule = require('../repositories/songs');
 var songsRepository = new songsRepositoryModule.SongsRepository();
