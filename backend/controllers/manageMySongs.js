@@ -1,8 +1,7 @@
 var songsRepositoryModule = require('../repositories/songs');
 var songsRepository = new songsRepositoryModule.SongsRepository();
 
-var mongoose = require('mongoose');
-var ObjectId = mongoose.Types.ObjectId;
+var ObjectId = require("bson-objectid");
 
 exports.findMySongs = function(req,res){
     songsRepository.findSongs_by_user(req.db,ObjectId(req.params.idUser),function(data){

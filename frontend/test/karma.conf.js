@@ -36,8 +36,11 @@ module.exports = function(config) {
       'bower_components/bootstrap/dist/js/bootstrap.js',
       'bower_components/ngnotification/notification.js',
       'bower_components/angular-file-upload/angular-file-upload.js',
-      'bower_components/angular-modal-service/dst/angular-modal-service.js',
       'bower_components/async/lib/async.js',
+      'bower_components/angular-treasure-overlay-spinner/dist/treasure-overlay-spinner.min.js',
+      'bower_components/angular-modal-service/dst/angular-modal-service.js',
+      'bower_components/jquery-circle-progress/dist/circle-progress.js',
+      'bower_components/jquery-ui/jquery-ui.js',
       'bower_components/angular-mocks/angular-mocks.js',
       // endbower
       "app/scripts/**/*.js",
