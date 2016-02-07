@@ -5,7 +5,7 @@ var mime = require('mime');
 
 var fs = require('fs');       //File System - for file manipulation
 
-
+var dirCount = 0;
 function SongsRepository () {
 
 //{'secteur':'amy','name':'guitare','songname':'meistersinger.mp3'}
@@ -105,11 +105,15 @@ function SongsRepository () {
   this.uploadSong = function(req,res,callback) {
     var fstream;
     req.pipe(req.busboy);
+    var thedire = __dirname + '/../Musics/'+'dir'+dirCount;
+    if (!fs.existsSync(thedire)){
+      fs.mkdirSync(thedire);
+    }
     req.busboy.on('file', function (fieldname, file, filename) {
-      console.log("Uploading: " + filename);
+      console.log("Uploading: "+ filename);
 
       //Path where image will be uploaded  '/home/user/Bureau/programClient/Programmable_Web/backend'
-      fstream = fs.createWriteStream(__dirname + '/../Musics/' + filename);
+      fstream = fs.createWriteStream(thedire+'/'+ filename);
       file.pipe(fstream);
       fstream.on('close', function () {
         console.log("Upload Finished of " + filename);

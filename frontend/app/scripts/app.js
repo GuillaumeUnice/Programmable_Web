@@ -50,6 +50,12 @@ angular
         controllerAs: 'mix',
         access: { requiredLogin: true }
       })
+      .when('/upload', {
+        templateUrl: 'views/uploadSong.html',
+        controller: 'UploadCtrl',
+        controllerAs: 'upload',
+        access: { requiredLogin: true }
+      })
       .when('/register', {
         templateUrl: 'views/register.html',
         controller: 'UserCtrl',

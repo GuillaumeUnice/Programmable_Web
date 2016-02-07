@@ -41,6 +41,8 @@ module.exports = function(config) {
       'bower_components/angular-modal-service/dst/angular-modal-service.js',
       'bower_components/jquery-circle-progress/dist/circle-progress.js',
       'bower_components/jquery-ui/jquery-ui.js',
+      'bower_components/bootstrap-switch/dist/js/bootstrap-switch.js',
+      'bower_components/angular-bootstrap-switch/dist/angular-bootstrap-switch.js',
       'bower_components/angular-mocks/angular-mocks.js',
       // endbower
       "app/scripts/**/*.js",

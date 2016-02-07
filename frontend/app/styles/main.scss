@@ -70,14 +70,14 @@ $icon-font-path: "../bower_components/bootstrap-sass-official/assets/fonts/boots
 
 
 /* Modules */
-.module {
+.mmodule {
   border-radius: 5px;
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
   margin-bottom : 35px;
   display: block;
   //position: absolute;
 }
-.module .mcontent {
+.mmodule .mcontent {
   background: #fff;
   border-radius: 5px;
   min-width: 10em;
@@ -85,19 +85,21 @@ $icon-font-path: "../bower_components/bootstrap-sass-official/assets/fonts/boots
   padding: 1em 1.25em 1.25em 1.25em;
   position: relative;
 }
-.module .mcontent img {
+.mmodule .mcontent img {
   display: block;
   margin: 0 auto;
 }
-.module.has-footer .mcontent {
+.mmodule.has-footer .mcontent {
   border-bottom: 1px solid #dbdbdb;
   border-radius: 5px 5px 0 0;
 }
-.module h6 {
+.mmodule h6 {
   font-size: .75em;
   margin: 0 0 1em;
   text-align: center;
   text-transform: uppercase;
+  color : black;
+  font-weight: bold;
 }
 
 /* Module nodes */
@@ -194,6 +196,7 @@ $icon-font-path: "../bower_components/bootstrap-sass-official/assets/fonts/boots
   float: left;
   text-transform: uppercase;
   width: 49%;
+  color : red;
 }
 .slider-info .value {
   display: inline;
@@ -202,8 +205,9 @@ $icon-font-path: "../bower_components/bootstrap-sass-official/assets/fonts/boots
   text-align: right;
   text-transform: uppercase;
   width: 49%;
+  color : red;
 }
-.module .slider-info:last-child {
+.mmodule .slider-info:last-child {
   margin-bottom: 0;
 }
 
@@ -594,3 +598,10 @@ legend {
 .gi-3x{font-size: 3em;}
 .gi-4x{font-size: 4em;}
 .gi-5x{font-size: 5em;}
+
+
+/* Fund Styles */
+.active, .inactive {font-size:40px;cursor:pointer;}
+.active, .inactive {font-size:40px;cursor:pointer;}
+i.active { color: #5cb85c}
+i.inactive {color: #d9534f}

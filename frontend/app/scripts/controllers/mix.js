@@ -17,10 +17,45 @@ angular.module('frontendApp')
     $scope.buf = []; $scope.listSongs = []; $scope.listTracks = []; $scope.data = [];
     $scope.isPlaying = false; $scope.canPlay = false; $scope.canStop = true; $scope.showPlayButton = true;
     $scope.song = null;
+    $scope.selectedSong = null;
     $scope.mixTable = false;
     $scope.displayLoading = false;
     $scope.loadSong = true;
     $scope.filters = ["lowpass", "highpass", "bandpass", "lowshelf", "highshelf", "peaking", "notch", "allpass"];
+    $rootScope.allSongs = [
+      {
+        "titre" : "amy_rehab",
+        "artiste" : "Amy Winehouse",
+        "annee" : 2006,
+        "album" : "Back to Black",
+        "genre" : "Soul"
+      },{
+        "titre" : "bob_love",
+        "artiste" : "Bob Marley",
+        "annee" : 1971,
+        "album" : "Rastaman Vibration",
+        "genre" : "Reggae"
+      },
+      {
+        "titre" : "deep_smoke",
+        "artiste" : "Deep Purple",
+        "annee" : 1972,
+        "album" : "Machine Head",
+        "genre" : "Hard rock"
+      },{
+        "titre" : "jamesbrown_get",
+        "artiste" : "James Brown",
+        "annee" : 1970,
+        "album" : "Sex Machine",
+        "genre" : "Soul"
+      },{
+        "titre" : "queen_champions",
+        "artiste" : "Queen",
+        "annee" : 1977,
+        "album" : "News of the World",
+        "genre" : "Pop rock"
+      }
+    ];
 
     $( "#progressbar" ).progressbar({
       value: 0
@@ -29,7 +64,6 @@ angular.module('frontendApp')
     //** Modal
     /** =============== **/
     $scope.showComplex = function() {
-
       ModalService.showModal({
         templateUrl: "../views/selectSong.html",
         controller: "MixtCtrl",
@@ -39,14 +73,25 @@ angular.module('frontendApp')
       }).then(function(modal) {
         modal.element.modal();
         modal.close.then(function(result) {
+          findSongByName(result.name);
           $scope.loadSong = false;
           $scope.displayLoading = true;
           $scope.getAllTracks(result.name);
           $scope.song = result.name;
         });
       });
-
     };
+
+
+    function findSongByName (name) {
+      var myL = $rootScope.allSongs.length;
+      for(var i = 0; i < myL; i++){
+        if($rootScope.allSongs[i].titre == name){
+          $scope.selectedSong = $rootScope.allSongs[i];
+          break;
+        }
+      }
+    }
 
     $scope.init = function () {
       mix.init(function(b){
@@ -55,19 +100,18 @@ angular.module('frontendApp')
     };
 
     $scope.getAllTracks = function(name) {
-      //$scope.spinner = {active : true};
       mix.getAllTrackList(name, function(b){
         for(var i = 0; i < b.length; i++ ) {
           $scope.data[i] = {
             "gain" : 0.5,
             "gainL" : 0,
             "frequence" : 5000,
-            "gainR" : 0
+            "gainR" : 0,
+            "compressor" : false
           };
         }
         $scope.listTracks =b;
       }, function(a){
-        //$scope.spinner = {active : false};
         $scope.buf = a;
         $scope.displayLoading = false;
         $scope.mixTable = true;
@@ -129,6 +173,8 @@ angular.module('frontendApp')
     };
 
     $scope.setCompressor = function (i) {
+      var a = !$scope.data[i].compressor;
+      $scope.data[i].compressor = !a;
       mix.setCompressor(i);
     };
 
@@ -171,9 +217,50 @@ angular.module('frontendApp')
 
     /*** PAS COMPRIS **/
 
+
+    $scope.muteUnmuteTrack = function () {
+      console.log('muteUnmuteTrack');
+      mix.muteUnmuteTrack();
+    };
+
+    $scope.pppp = function(){
+      mix.combine($scope.buf);
+    };
+
+  })
+  .controller('MixtCtrl', function ($scope,$rootScope, $element, title, close, mix) {
+    $scope.title = title;
+    $scope.songs = $rootScope.allSongs;
+    $scope.canValid = false;
+
+    $scope.name = null;
+
+    $scope.setSelected = function (idSelectedVote) {
+      $scope.name = idSelectedVote;
+      $scope.canValid = true;
+    };
+
+    $scope.charger = function() {
+      close({
+        name: $scope.name
+      }, 500);
+    };
+  })
+
+  .controller('UploadCtrl', function ($scope,$rootScope, mix,user,CONFIG,FileUploader) {
+    $scope.data = {
+      "titre" : "",
+      "artiste" : "",
+      "annee" : 0,
+      "album" : "",
+      "genre" : ""
+    };
+
+    $scope.img = '';
+
+
     $scope.save = function save(str) {
       if (str !== undefined && str !=="" ) {
-        //console.log(uri);
         user.saveInfo(str);
       }else{
         alert("cann't be empty");
@@ -182,20 +269,17 @@ angular.module('frontendApp')
 
     $scope.get = function get(str) {
       if (str !== undefined && str !=="" ) {
-        //console.log(uri);
         user.getInfo(str);
       }else{
         alert("cann't be empty");
       }
     };
 
-    $scope.download = function download(uri) {
-      //user.download('kkk');
-    };
-
+    /** UPLOAD IMAGE **/
     $scope.uploader = new FileUploader({
       url: CONFIG.baseUrlApi + '/upload'
     });
+
     // Set file uploader music filter
     $scope.uploader.filters.push({
       name: 'soundFilter',
@@ -204,60 +288,73 @@ angular.module('frontendApp')
         return '|mp3|'.indexOf(type) !== -1;
       }
     });
+
     $scope.uploader.onAfterAddingFile = function(fileItem) {
       console.info('onAfterAddingFile', fileItem);
     };
 
     // Upload music
     $scope.upload = function () {
-      // Clear messages
-      console.log('update');
-      //$scope.success = $scope.error = null;
-      // Start upload
       $scope.uploader.upload();
     };
 
     // Cancel the upload process
     $scope.cancel = function () {
       $scope.uploader.cancel();
-      //$scope.imageURL = $scope.user.profileImageURL;
     };
 
     // Remove the upload process
     $scope.remove = function () {
       $scope.uploader.remove();
-      //$scope.imageURL = $scope.user.profileImageURL;
     };
 
-    $scope.muteUnmuteTrack = function () {
-      console.log('muteUnmuteTrack');
-      mix.muteUnmuteTrack();
-    };
-    $scope.loadOneSong = function (name) {
-      console.log('loadSong');
-      mix.loadOS(name);
-    };
-    $scope.pppp = function(){
-      mix.combine($scope.buf);
+    $scope.valid = function (file) {
+      $scope.uploader.uploadAll();
+      $rootScope.allSongs.push($scope.data);
+      console.log($rootScope.allSongs);
     };
 
-  })
-  .controller('MixtCtrl', function ($scope,$rootScope, $element, title, close, mix) {
-    $scope.title = title;
-    $scope.songs = $rootScope.listSongs;
+    /**
+    uploaderBis.onAfterAddingFile = function(item) {
+      var fileExtension = '.' + item.file.name.split('.').pop();
+      item.file.name = data.titre + fileExtension;
+    };**/
 
-    $scope.name = null;
 
-    $scope.setSelected = function (idSelectedVote) {
-      $scope.name = idSelectedVote;
+    $scope.lache = function () {
+      console.log("1 +"+$scope.uploader.getNotUploadedItems().length);
+      console.log("2 +"+$scope.data.titre);
+      console.log("3 +"+$scope.data.album);
+      console.log("4 +"+$scope.data.annee);
+      console.log("5 +"+$scope.data.genre);
+      console.log("6 +"+$scope.data.artiste);
     };
 
-    //  This close function doesn't need to use jQuery or bootstrap, because
-    //  the button has the 'data-dismiss' attribute.
-    $scope.charger = function() {
-      close({
-        name: $scope.name
-      }, 500); // close, but give 500ms for bootstrap to animate
+    $scope.canValid = function() {
+
+      return ( !$scope.uploader.getNotUploadedItems().length
+        && $scope.data.titre !== ""
+        && $scope.data.album !== ""
+        && $scope.data.annee !== 0
+        && $scope.data.genre !== ""
+        && $scope.data.artiste !== ""
+      );
     };
+
+    $(function () {
+      $(":file").change(function () {
+        if (this.files && this.files[0]) {
+          var reader = new FileReader();
+          reader.onload = imageIsLoaded;
+          reader.readAsDataURL(this.files[0]);
+          $scope.img = this.files[0];
+        }
+      });
+    });
+
+    function imageIsLoaded(e) {
+      $('#myImg').attr('src', e.target.result);
+    };
+
+
   });
-

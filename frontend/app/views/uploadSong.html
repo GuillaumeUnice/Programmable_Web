@@ -1,0 +1,103 @@
+<div style="margin: 20px;" class="panel panel-default">
+
+  <form class="form-horizontal"  name="myForm">
+    <div class="row">
+      <div class="md-4">
+        <img  class="img-thumbnail">
+      </div>
+      <div class="md-8">
+        <div class="form-group">
+          <label class="col-sm-2 control-label">Titre</label>
+          <div class="col-sm-8">
+            <input type="text" class="form-control" placeholder="Titre" ng-model="data.titre" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-2 control-label">Album</label>
+          <div class="col-sm-8">
+            <input type="text" class="form-control" placeholder="Artiste"  ng-model="data.album" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-2 control-label">Artiste</label>
+          <div class="col-sm-8">
+            <input type="text" class="form-control" placeholder="Email"  ng-model="data.artiste" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-2 control-label">Année</label>
+          <div class="col-sm-8">
+            <input type="number" class="form-control" placeholder="Email"  ng-model="data.annee" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-2 control-label">Genre</label>
+          <div class="col-sm-8">
+            <input type="text" class="form-control" placeholder="Email"  ng-model="data.genre" required>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <input type='file' />
+    <img id="myImg" src="#" alt="your image" />
+
+
+    <button type="submit" class="btn btn-default" ng-click="save(send.msg)">save</button>
+  <input type="file" nv-file-select uploader="uploader"  multiple>
+
+
+  <table class="table">
+    <thead>
+    <tr>
+      <th width="50%">Name</th>
+      <th ng-show="uploader.isHTML5">Size</th>
+      <th ng-show="uploader.isHTML5">Progress</th>
+      <th>Status</th>
+      <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="item in uploader.queue">
+      <td><strong>{{ item.file.name }}</strong></td>
+      <td ng-show="uploader.isHTML5" nowrap>{{ item.file.size/1024/1024|number:2 }} MB</td>
+      <td ng-show="uploader.isHTML5">
+        <div class="progress" style="margin-bottom: 0;">
+          <div class="progress-bar" role="progressbar" ng-style="{ 'width': item.progress + '%' }"></div>
+        </div>
+      </td>
+      <td class="text-center">
+        <span ng-show="item.isSuccess"><i class="glyphicon glyphicon-ok"></i></span>
+        <span ng-show="item.isCancel"><i class="glyphicon glyphicon-ban-circle"></i></span>
+        <span ng-show="item.isError"><i class="glyphicon glyphicon-remove"></i></span>
+      </td>
+      <td nowrap>
+        <button type="button" class="btn btn-danger btn-xs" ng-click="item.remove()">
+          <span class="glyphicon glyphicon-trash"></span> Remove
+        </button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+
+  <div>
+    <div>
+        Queue progress:
+        <div class="progress" style="">
+          <div class="progress-bar" role="progressbar" ng-style="{ 'width': uploader.progress + '%' }"></div>
+        </div>
+      </div>
+    <a ng-href="#/mix">
+      <button type="submit" class="button button-link glyphicon-plus"><span class="glyphicon glyphicon-plus button-icon-link"></span>Uploader des fichiers</button>
+    </a>
+    <button ng-click="lache()"></button>
+      <button type="button" class="btn btn-success btn-s" ng-click="valid(picFile)" ng-disabled="!uploader.getNotUploadedItems().length">
+        <span class="glyphicon glyphicon-upload"></span> Valider
+      </button>
+      <button type="button" class="btn btn-danger btn-s" ng-click="uploader.clearQueue()" ng-disabled="!uploader.queue.length">
+        <span class="glyphicon glyphicon-trash"></span> Remove all files
+      </button>
+    </div>
+  </form>
+
+</div>
