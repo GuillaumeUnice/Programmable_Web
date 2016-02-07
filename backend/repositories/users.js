@@ -35,13 +35,16 @@ function UsersRepository () {
 
   this.addUser = function(db, user, callback) {
     
-    if((user.password === undefined) || (user.email === undefined) || (user.full_name === undefined)) {
+    if((user.password === undefined) || (user.email === undefined) || (user.name === undefined) || (user.first_name === undefined)) {
       callback('Value is not true!', null);
     }
 
-    db.collection('users').insertOne({full_name : user.full_name,
+    db.collection('users').insertOne({
           email: user.email,
           password: user.password,
+          first_name: user.first_name,
+          name: user.name,
+          full_name : user.first_name + user.name,
           following: [],
           followers: [],
           events: []},

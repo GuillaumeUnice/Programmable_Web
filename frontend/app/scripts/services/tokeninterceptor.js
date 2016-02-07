@@ -33,7 +33,7 @@ angular.module('frontendApp')
  
         // Revoke client authentication if 401 is received 
         responseError: function(rejection) {
-            console.log("ici" + rejection.status + auth.isAuthenticated);
+            //console.log("ici" + rejection.status + auth.isAuthenticated);
             if (rejection !== null && rejection.status === 401 /*&& ($window.sessionStorage.token || auth.isAuthenticated)*/) {
                 delete $window.sessionStorage.token;
                 auth.isAuthenticated = false;

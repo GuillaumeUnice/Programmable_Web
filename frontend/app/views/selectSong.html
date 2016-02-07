@@ -1,0 +1,57 @@
+<div class="modal fade">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" ng-click="close()" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title">{{title}}</h4>
+      </div>
+      <div class="modal-body">
+
+        <div style="padding-bottom: 30px">
+          <i class="icon-search"></i>
+          <input type="search" class="form-control" placeholder="Rechercher par artiste" ng-model="query"/>
+        </div>
+
+        <table class="table table-hover table-striped nohover">
+          <tr>
+            <th><a href ng-click="sortBy('name')"></a></th>
+            <th><a href ng-click="sortBy('price')">Artiste {{sortIconFor('price')}}</a></th>
+            <th><a href ng-click="sortBy('price')">Titre {{sortIconFor('price')}}</a></th>
+            <th><a href ng-click="sortBy('price')">Album {{sortIconFor('price')}}</a></th>
+            <th><a href ng-click="sortBy('price')">Année {{sortIconFor('price')}}</a></th>
+            <th><a href ng-click="sortBy('rating')">Genre {{sortIconFor('rating')}}</a></th>
+          </tr>
+          <tbody>
+            <tr ng-repeat="s in songs | filter:query" ng-class="{selectedR: s === name}">
+              <td style="vertical-align: inherit"  ng-click="setSelected(s)">
+                <a href="" >
+                  <img style = " display: block; margin: 0 auto;" class="img-rounded" height="80" ng-src="../images/{{s}}.jpg">
+                </a>
+              </td>
+              <td style="vertical-align: inherit" ng-click="setSelected(s)">
+                <p>{{s}}</p>
+              </td>
+              <td style="vertical-align: inherit"  ng-click="setSelected(s)">
+                <p>{{s}}</p>
+              </td>
+              <td style="vertical-align: inherit"  ng-click="setSelected(s)">
+                <p>The album</p>
+              </td>
+              <td style="vertical-align: inherit"  ng-click="setSelected(s)">
+                <p>1986</p>
+              </td>
+              <td style="vertical-align: inherit"  ng-click="setSelected(s)">
+                <p>Rock and roll</p>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" ng-click="charger()" class="btn btn-primary" data-dismiss="modal">Charger</button>
+      </div>
+    </div>
+  </div>
+</div>
+

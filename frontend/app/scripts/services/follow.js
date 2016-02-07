@@ -33,7 +33,7 @@ angular.module('frontendApp')
      },
      follow: function (myUserId,userId) {
        var deferred = $q.defer();
-       $http.post(CONFIG.baseUrlApi + '/follow/', {idUser: myUserId, idFollowing:  userId})
+       $http.post(CONFIG.baseUrlApi + '/follow', {idUser: myUserId, idFollowing:  userId})
          .success(function (data) {
            //notification.writeNotification(data);
            deferred.resolve(data);
@@ -45,7 +45,7 @@ angular.module('frontendApp')
      },
      unfollow: function (myUserId, userId) {
        var deferred = $q.defer();
-       $http.delete(CONFIG.baseUrlApi + '/follow/', {idUser: myUserId, idFollowing: userId})
+       $http.delete(CONFIG.baseUrlApi + '/follow', {idUser: myUserId, idFollowing: userId})
          .success(function (data) {
            //notification.writeNotification(data);
            deferred.resolve(data);

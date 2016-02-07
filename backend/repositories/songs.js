@@ -4,7 +4,7 @@ var mongodb = require('mongodb');
 var mime = require('mime');
 
 var fs = require('fs');       //File System - for file manipulation
-
+var ObjectID = require("bson-objectid");
 
 function SongsRepository () {
 
@@ -57,6 +57,45 @@ function SongsRepository () {
        }
     });
  };
+
+  this.findAllMixedSongs = function(db,  callback) {
+    var cursor = db.collection('mixed').find( );
+    var i =0;
+    var ms =[];
+    cursor.each(function(err, doc) {
+      //assert.equal(err, null);
+      console.log(i++);
+      if (doc !== null) {
+        ms.push({name_new:doc.name_new,name:doc.name});
+        console.log("docname"+doc.name);
+        //callback(null,doc);
+      } else {
+        console.log("not found in the DB");
+        console.log("ms"+ms);
+        callback(null,ms);
+      }
+    });
+
+  };
+
+  this.findMixedSong = function(db, findby, content, callback) {
+    var cursor = db.collection('mixed').find({ name_new : content } );
+    var i =0;
+    var ms =[];
+    cursor.each(function(err, doc) {
+      //assert.equal(err, null);
+      console.log(i++);
+      if (doc !== null) {
+        ms.push(doc);
+        console.log("mixedname"+doc.name);
+        //callback(null,doc);
+      } else {
+        console.log("not found in the DB");
+        console.log("mixed ms "+ms[0].name);
+        callback(null,ms);
+      }
+    });
+  };
 
     //Pre-condition : creation des indexes dans la BD
     this.searchSongs_by_keywords = function(db,keywords,callback) {
@@ -197,6 +236,15 @@ function SongsRepository () {
 
   };
 
+    this.getSongsById = function(db, idSong, callback){
+        db.collection('songs').findOne({"_id" : ObjectID(idSong) },function(err,result){
+          /*if(err){
+            callback(err, null);
+          }*/
+          callback(null, result);
+        });
+    };
+
     this.getFeedbacks = function(db,idSong,successCB,errorCB){
         db.collection('songs').findOne({"_id" : idSong },function(err,result){
             if(result==null){
@@ -216,8 +264,88 @@ function SongsRepository () {
             db.collection('songs').updateOne({"_id" : idSong },{ $push: { "feedbacks": newFeedback } });
             successCB("Feedback added!");
         }
+    };
+
+    this.getAverageMark =  function(db,songId, callback) {
+
+      var res = db.collection('songs').aggregate(
+        [
+         {
+           $project: {
+             markAvg: { $avg: "$feedbacks.mark"},
+           }
+          }
+        ]
+      ).toArray(function(err, result) {
+        //console.log(result);
+        callback(null, result);
+      });
+    };
+
+    this.updateMark = function(db,songId, userId, mark, callback){
+        /*if(newFeedback.user==undefined || newFeedback.newMark==undefined ||newFeedback.comment==undefined){
+            callback(404,null);
+        }
+        else if(newFeedback.newMark==null||newFeedback.user==null||newFeedback.comment==null){
+            errorCB(400,"The message format is wrong");
+        }
+        else{*/
+          //console.log("oldMark : " + oldMark + " newMark : " + newMark);
+            db.collection('songs').updateOne(
+              {"_id" : ObjectID(songId), "feedbacks._id": ObjectID(userId) },
+              { 
+                $set: { "feedbacks.$.mark" : mark }
+              }
+            );
+        
+          callback(null,"Mark added!");
+        //}
+    };
+
+    this.postMark = function(db, songId, userId, mark, callback){
+      db.collection('songs').updateOne(
+        {"_id" : ObjectID(songId) },
+        {
+          $push: { "feedbacks": { _id: ObjectID(userId), mark: +mark, comment: null } }
+        }
+      );
+
+      callback(null,"Mark added!");
     }
 
+    this.updateComment = function(db,songId, userId, comment, callback){
+      db.collection('songs').updateOne(
+        {"_id" : ObjectID(songId), "feedbacks._id": ObjectID(userId) },
+        { 
+          $set: { "feedbacks.$.comment" : comment }
+        }
+      );
+        
+      callback(null,"Comment added!");
+    };
+
+    this.postComment = function(db, songId, userId, comment, callback){
+      db.collection('songs').updateOne(
+        {"_id" : ObjectID(songId) },
+        {
+          $push: { "feedbacks": { _id: ObjectID(userId), comment: comment, mark: null } }
+        }
+      );
+
+      callback(null,"Comment added!");
+    }
+
+
+    this.savemiedjson = function(db, input, callback) {
+      console.log('insertDocument');
+      console.log(input);
+      db.collection('mixed').insertOne(input,
+        function(err, result) {
+          //assert.equal(err, null);
+          console.log("Inserted a document into the songs collection.");
+          callback(null, result);
+        });
+    };
 };
 
 exports.SongsRepository = SongsRepository;

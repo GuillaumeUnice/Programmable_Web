@@ -11,7 +11,7 @@
  * Factory in the frontendApp.
  */
 angular.module('frontendApp')
-  .factory('feedbackService', function (CONFIG, $http, $q) {
+  .factory('feedbackService', function (CONFIG, $http, $q, notification) {
     return {
 
       sendComment: function (idMix,commentInfo) {
@@ -21,6 +21,30 @@ angular.module('frontendApp')
             console.log(data);
             deferred.resolve(data);
           }).error(function (data) {
+            deferred.reject(false);
+          });
+        return deferred.promise;
+      },
+      addMark: function (idMix,mark) {
+        var deferred = $q.defer();
+        $http.post(CONFIG.baseUrlApi + '/mark', {songId : idMix, mark: mark})
+          .success(function (data) {
+            notification.writeNotification(data);
+            deferred.resolve(data);
+          }).error(function (data) {
+            notification.writeNotification(data);
+            deferred.reject(false);
+          });
+        return deferred.promise;
+      },
+      addComment: function (idMix,comment) {
+        var deferred = $q.defer();
+        $http.post(CONFIG.baseUrlApi + '/comment', {songId : idMix, comment: comment})
+          .success(function (data) {
+            notification.writeNotification(data);
+            deferred.resolve(data);
+          }).error(function (data) {
+            notification.writeNotification(data);
             deferred.reject(false);
           });
         return deferred.promise;

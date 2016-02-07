@@ -337,4 +337,59 @@ router.route('/mixed')
     });
   });
 
+
+router.route('/savemixed')
+  .post(function(req, res) {
+    songsRepository.savemiedjson(req.db, req.body.mixed, function (err, result) {
+      if(err) {
+        console.log(err);
+        res.status(404);
+        res.json({ status: constants.JSON_STATUS_ERROR,
+          title: 'Erreur Système',
+          message: 'Une erreur inattendu c\'est produit! Veuillez contacter l\'administrateur'});
+        return;
+      }
+
+      // verify if correct password thank to BCrypt Hash
+      // resCompare = true if same password else false
+      if(utils.isEmpty(result)) {
+        res.status(201);
+        res.json({ status: constants.JSON_STATUS_ERROR,
+          title: 'Erreur connexion',
+          message: 'L\'utilisateur n\'existe pas! Email incorrect!'});
+      } else {
+
+      }
+    });
+    res.render('index', { title: 'Express' });
+
+  });
+
+router.route('/getmixed')
+  .get(function(req, res) {
+    //console.log('find'+req.query.name_find);
+    //var mixed = {names:[]};
+    songsRepository.findAllMixedSongs(req.db, function(err, result) {
+      //console.log(req.session.emailUser);
+      //mixed.names.push(result);
+      res.json({ status: constants.JSON_STATUS_SUCCESS,
+        title: 'Connexion',
+        message: result});
+    });
+  });
+
+
+router.route('/getMixedSongInfo')
+  .get(function(req, res) {
+    //console.log('find'+req.query.name_find);
+    //var mixed = {names:[]};
+    songsRepository.findMixedSong(req.db,'name' ,req.query.name_find, function(err, result) {
+      //console.log(req.session.emailUser);
+      //mixed.names.push(result);
+      res.json({ status: constants.JSON_STATUS_SUCCESS,
+        title: 'Connexion',
+        message: result});
+    });
+  });
+
 module.exports = router;

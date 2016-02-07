@@ -10,64 +10,223 @@
  */
 angular.module('frontendApp')
 
-  .controller('MixCtrl', function ($scope, user,mix, CONFIG,FileUploader) {
+  .controller('MixCtrl', function ($scope,$rootScope, user,mix, CONFIG,FileUploader,ModalService,$routeParams,$q,$http,notification) {
 
     //** Scope
     /**=========================**/
-    $scope.buf = [];
-    $scope.mixName = "";
-    $scope.listSongs = [];
-    $scope.listTracks = [];
-    $scope.priceSliders = [];
-    $scope.slider = {
-      value: 50,
-      options: {
-        floor: 0,
-        ceil: 100,
-        vertical: true
-      }
+    $scope.buf = []; $scope.listSongs = []; $scope.listTracks = []; $scope.data = [];
+    $scope.isPlaying = false; $scope.canPlay = false; $scope.canStop = true; $scope.showPlayButton = true;
+    $scope.song = null;
+    $scope.mixTable = false;
+    $scope.displayLoading = false;
+    $scope.loadSong = true;
+    $scope.filters = ["lowpass", "highpass", "bandpass", "lowshelf", "highshelf", "peaking", "notch", "allpass"];
+
+    $( "#progressbar" ).progressbar({
+      value: 0
+    });
+
+    //** Modal
+    /** =============== **/
+    $scope.showComplex = function() {
+
+      ModalService.showModal({
+        templateUrl: "../views/selectSong.html",
+        controller: "MixtCtrl",
+        inputs: {
+          title: "Selectionnez une musique"
+        }
+      }).then(function(modal) {
+        modal.element.modal();
+        modal.close.then(function(result) {
+          $scope.loadSong = false;
+          $scope.displayLoading = true;
+          $scope.getAllTracks(result.name);
+          $scope.song = result.name;
+        });
+      });
+
     };
 
+    $scope.getMixedSongInfo = function(str){
+      var deferred = $q.defer();
+      $http.get(CONFIG.baseUrlApi + '/getMixedSongInfo', {params: {name_find: str}})
+        .success(function (data) {
+          //notification.writeNotification(data);
+          deferred.resolve(data);
+          //config = data.message;
+          console.log(data.message);
+        }).error(function (data) {
+          //notification.writeNotification(data);
+          deferred.reject(false);
+        });
+      return deferred.promise;
+    };
     $scope.init = function () {
-      mix.init($scope.buf, function(b){
-        $scope.listSongs =b;
+      console.log("id "+$routeParams.id );
+      mix.init(function(b){
+        $rootScope.listSongs =b;
       });
+      if($routeParams.id){
+        $scope.loadSong = false;
+        $scope.displayLoading = true;
+
+        $scope.song = $routeParams.id;
+        $scope.getMixedSongInfo($routeParams.id)
+          .then(function(data){
+            $scope.getAllTracks2(data.message[0].name, data.message);
+            //console.log("data"+data.message[0].name);
+          },function(msg){
+            console.log('erreur promesses : ' + msg);
+          });
+      } else{
+        console.log("new mix");
+      }
+
     };
 
     $scope.getAllTracks = function(name) {
+      //$scope.spinner = {active : true};
       mix.getAllTrackList(name, function(b){
+        for(var i = 0; i < b.length; i++ ) {
+          $scope.data[i] = {
+            "gain" : 0.5,
+            "gainL" : 0,
+            "frequence" : 5000,
+            "gainR" : 0
+          };
+        }
         $scope.listTracks =b;
+      }, function(a){
+        //$scope.spinner = {active : false};
+        $scope.buf = a;
+        $scope.displayLoading = false;
+        $scope.mixTable = true;
+        $scope.$apply();
+        console.log("Finis de charger");
+      });
+    };
+    $scope.getAllTracks2 = function(name,conf) {
+      //$scope.spinner = {active : true};
+      //console.log("conf  "+conf[0]);
+      mix.getAllTrackList(name, function(b){
+        console.log("kkkkk"+ b.instruments.length);
+        for(var i = 0; i < b.instruments.length; i++ ) {
+          console.log("kkkkk");
+          $scope.data[i] = {
+            "gain" : 0.5,
+            "gainL" : conf[0].info[i].left,
+            "frequence" : conf[0].info[i].frequancy,
+            "gainR" : conf[0].info[i].right
+          };
+          console.log("scopedata"+ $scope.data[i].frequence);
+        }
+        $scope.listTracks =b;
+      }, function(a){
+        //$scope.spinner = {active : false};
+        $scope.buf = a;
+        $scope.displayLoading = false;
+        $scope.mixTable = true;
+        $scope.$apply();
+        console.log("Finis de charger");
+        return conf[0];
       });
     };
 
     $scope.play = function(n) {
-      $scope.buf = mix.playAT(n);
+      $scope.showPlayButton = false;
+      if($scope.isPlaying){
+        mix.pauseReplayAllTracks($scope.buf);
+      }else{
+        $scope.isPlaying = true;
+        mix.playAT($scope.buf,n);
+      }
     };
 
-    $scope.pause = function () { // marche pas
+    $scope.pause = function () {
+      $scope.showPlayButton = true;
       mix.pauseAT($scope.buf);
     };
 
-    $scope.stop = function () { // marche pas
+    $scope.stop = function () {
       mix.stopAT($scope.buf);
     };
 
+    $scope.savemixed = function (s) {
+      mix.savemixed(s);
+    };
 
-    def();
-    function def() {
-      var l = 6;
-      for( var i = 0 ; i < l ; i ++ ) {
-        $scope.priceSliders.push(
-          {
-          value: 50,
-          options: {
-            floor: 0,
-            ceil: 100,
-            vertical: true
-          }
-          }
-        );
+    $scope.changerangeslide = function (num) {
+      console.log('changerangeslide');
+      mix.changeRS(num);
+    };
+
+    /*****************/
+
+    $scope.setMasterGain = function (val) {
+      mix.setMasterGain(val);
+      setAllGain(val);
+    };
+
+    $scope.setMasterStereo = function (val) {
+      mix.setMasterStereo(val);
+      setAllStereo(val);
+    };
+
+    $scope.setGain = function (i, val) {
+      mix.setGain(i, val);
+    };
+
+    $scope.setMonoR = function (i, val) {
+      mix.setMonoR(i, val);
+    };
+
+    $scope.setMonoL = function (i, val) {
+      mix.setMonoL(i, val);
+    };
+
+    $scope.setFrequence = function (i,val) {
+      mix.setFilterFrequency(i,val);
+    };
+
+    $scope.setCompressor = function (i) {
+      mix.setCompressor(i);
+    };
+
+
+
+    $scope.setDetune = function (i,val) {
+      mix.setFilterDetune(i,val);
+    };
+
+    $scope.setQuality = function (i,val) {
+      mix.setFilterQuality(i,val);
+    };
+
+    $scope.setType = function (val) {
+      mix.setFilterType(val);
+    };
+
+    function setAllGain(val) {
+      var myL = $scope.data.length;
+      for(var i = 0; i < myL; i++ ){
+        $scope.data[i].gain = val;
       }
+    }
+
+    function setAllStereo(val) {
+      var myL = $scope.data.length;
+      for(var i = 0; i < myL; i++ ){
+        $scope.data[i].stereo = val;
+      }
+    }
+
+    /*************************/
+
+
+    $scope.mute = function(i, val){
+      var a = $scope.data[i].mute;
+      $scope.data[i].mute = !a;
     };
 
 
@@ -131,19 +290,9 @@ angular.module('frontendApp')
       //$scope.imageURL = $scope.user.profileImageURL;
     };
 
-    $scope.changeMasterVolume = function () {
-      console.log('kk');
-      mix.changeMasterVolume();
-    };
-
     $scope.muteUnmuteTrack = function () {
       console.log('muteUnmuteTrack');
       mix.muteUnmuteTrack();
-    };
-
-    $scope.changerangeslide = function (num) {
-      console.log('changerangeslide');
-      mix.changeRS(num);
     };
     $scope.loadOneSong = function (name) {
       console.log('loadSong');
@@ -153,5 +302,23 @@ angular.module('frontendApp')
       mix.combine($scope.buf);
     };
 
+  })
+  .controller('MixtCtrl', function ($scope,$rootScope, $element, title, close, mix) {
+    $scope.title = title;
+    $scope.songs = $rootScope.listSongs;
+
+    $scope.name = null;
+
+    $scope.setSelected = function (idSelectedVote) {
+      $scope.name = idSelectedVote;
+    };
+
+    //  This close function doesn't need to use jQuery or bootstrap, because
+    //  the button has the 'data-dismiss' attribute.
+    $scope.charger = function() {
+      close({
+        name: $scope.name
+      }, 500); // close, but give 500ms for bootstrap to animate
+    };
   });
 

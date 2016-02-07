@@ -8,6 +8,7 @@
  *
  * Main module of the application.
  */
+
 angular
   .module('frontendApp', [
     'ngAnimate',
@@ -41,9 +42,15 @@ angular
         templateUrl: 'views/home.html',
         controller: 'HomeCtrl',
         controllerAs: 'home',
-        access: { requiredLogin: false }
+        access: { requiredLogin: true }
       })
       .when('/mix', {
+        templateUrl: 'views/mix.html',
+        controller: 'MixCtrl',
+        controllerAs: 'mix',
+        access: { requiredLogin: true }
+      })
+      .when('/mix/:id', {
         templateUrl: 'views/mix.html',
         controller: 'MixCtrl',
         controllerAs: 'mix',

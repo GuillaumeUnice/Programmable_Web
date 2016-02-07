@@ -1,7 +1,8 @@
 'use strict';
 
 angular.module('frontendApp')
-  .controller('HomeCtrl', function ($scope, notification, CONFIG, ModalService, searchService,currentMusicService, feedbackService,auth, follow) {
+  .controller('HomeCtrl', function ($scope, notification, CONFIG, ModalService, searchService,currentMusicService, feedbackService,auth, follow,$http,$q,$rootScope) {
+
     // initialisation
 
    // $scope.
@@ -9,7 +10,7 @@ angular.module('frontendApp')
     $scope.following = [];
 
     $scope.myMix = [
-      { _id: 1,
+      /*{ _id: 1,
         name: "Drop The Pressure",
         created_at: 1454616841
       },
@@ -36,9 +37,25 @@ angular.module('frontendApp')
       { _id: 7,
         name: "Turn The World On 2",
         created_at: 1454616847
-      },
+      },*/
     ];
 
+    $scope.getMixedSongs = function(){
+      var deferred = $q.defer();
+      $http.get(CONFIG.baseUrlApi + '/getmixed')
+        .success(function (data) {
+          //notification.writeNotification(data);
+          deferred.resolve(data);
+          for(var i =0; i<data.message.length;i++) {
+            $scope.myMix.push({_id :i,name_new : data.message[i].name_new, name: data.message[i].name,created_at: 1454616846});
+          }
+            console.log(data.message);
+        }).error(function (data) {
+          //notification.writeNotification(data);
+          deferred.reject(false);
+        });
+      return deferred.promise;
+    };
     /*$scope.followers = [
       { _id: 1,
         name: "Henry Dupont",
@@ -138,14 +155,20 @@ angular.module('frontendApp')
 
     $scope.isTabMenuNewsSelected = true;
 
-    follow.getFollowing("56b4e07045b766bd49eb5d63").then(function(data){
+    follow.getFollowing(auth.id).then(function(data){
       $scope.following = data;
     },function(msg){
       console.log('erreur promesses : ' + msg);
     });
 
-    follow.getFollowers("56b4e07045b766bd49eb5d63").then(function(data){
+    follow.getFollowers(auth.id).then(function(data){
       $scope.followers = data;
+    },function(msg){
+      console.log('erreur promesses : ' + msg);
+    });
+
+    user.myMix(auth.id).then(function(data){
+      $scope.myMix = data;
     },function(msg){
       console.log('erreur promesses : ' + msg);
     });
@@ -173,15 +196,15 @@ angular.module('frontendApp')
 
     $scope.follow = function(user) {
         follow.follow(auth.id, user._id).then(function(data){
-          $scope.following.push(data);
+          $scope.following.push(user);
         },function(msg){
           console.log('erreur promesses : ' + msg);
         });
     }
 
     $scope.unfollow = function(user) {
-      follow.unFollow(auth.id, user._id).then(function(data){
-        $scope.followers.splice($scope.followers.indexOf(user), 1);
+      follow.unfollow(auth.id, user._id).then(function(data){
+        $scope.following.splice($scope.following.indexOf(user), 1);
       },function(msg){
         console.log('erreur promesses : ' + msg);
       });
@@ -235,7 +258,24 @@ angular.module('frontendApp')
         });
     };*/
 
-  $scope.addComment = function(){
-    alert("addComment");
+  $scope.addComment = function(comment){
+    alert("addComment : " + comment);
+    feedbackService.addComment("56b4ee3845b766bd49eb5d64", comment).then(function(data){
+      //$scope.currentSong.feedbacks.push();
+      console.log(data.data);
+    },function(msg){
+      console.log('erreur promesses : ' + msg);
+    });
   };
+
+  $scope.addMark = function(mark){
+    feedbackService.addMark("56b4ee3845b766bd49eb5d64", mark).then(function(data){
+      //$scope.currentSong.myMark = mark;
+      //$scope.currentSong.markAvg = data.data;
+      console.log(data.data);
+    },function(msg){
+      console.log('erreur promesses : ' + msg);
+    });
+  };
+
 });
