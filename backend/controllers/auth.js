@@ -77,13 +77,15 @@ exports.login = function(req, res) {
 		    }
 		  
 		    if(resCompare) {
-		      var token = jwt.sign(result, constants.JWT_SECRET, { expiresInMinutes: 1/*60*5*/ });
+		      delete result.password;
+		      var token = jwt.sign(result, constants.JWT_SECRET, { expiresInMinutes: 60 });
+		      console.log(token);
 		      // TODO ADD
 		      /*req.session.idUser = result._id;
 		      req.session.emailUser = result.email;
 		      */
 		      //console.log(req.session);
-		      delete result.password;
+		      
 		      res.status(200);
 		      res.json({ status: constants.JSON_STATUS_SUCCESS,
 		        title: 'Connexion',

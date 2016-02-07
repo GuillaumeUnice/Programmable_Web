@@ -65,7 +65,6 @@ angular.module('frontendApp')
          });
        return deferred.promise;
      },
-
      getInfo: function (str) {
        var deferred = $q.defer();
        $http.get(CONFIG.baseUrlApi + '/get', {params: {name_find: str}})
@@ -78,7 +77,20 @@ angular.module('frontendApp')
            deferred.reject(false);
          });
        return deferred.promise;
-     }
+     },
+     myMix: function (userId) {
+       var deferred = $q.defer();
+       $http.get(CONFIG.baseUrlApi + '/manageMySongs/' + userId)
+         .success(function (data) {
+           deferred.resolve(data);
+           console.log(data.message);
+         }).error(function (data) {
+           notification.writeNotification(data);
+           deferred.reject(false);
+         });
+       return deferred.promise;
+     },
+     
 
    };
 });
