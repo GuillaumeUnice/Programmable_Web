@@ -136,17 +136,20 @@ angular.module('frontendApp')
 
         filter[i] = context.createBiquadFilter();
         filter[i].type = filter[i].LOWPASS;
-        filter[i].frequency.value = conf.info[i].frequancy;
         trackVolumeNodes[i] = context.createGain();
         trackVolumeNodesL[i] = context.createGain();
-        trackVolumeNodes[i].gain.value = conf.info[i].right;
-        trackVolumeNodesL[i].gain.value = conf.info[i].left;
+
         compressor[i] = context.createDynamicsCompressor();
         analyser[i] = context.createAnalyser();
         // Connect the sound sample to its volume node
 
         //sources[i].connect(trackVolumeNodes[i]);
         merger[i] = context.createChannelMerger(2);
+        if(conf) {
+          filter[i].frequency.value = conf.info[i].frequancy;
+          trackVolumeNodes[i].gain.value = conf.info[i].right;
+          trackVolumeNodesL[i].gain.value = conf.info[i].left;
+        }
       });
     };
 

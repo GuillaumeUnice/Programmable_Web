@@ -5,7 +5,7 @@ var mime = require('mime');
 
 var fs = require('fs');       //File System - for file manipulation
 
-var dirCount = 0;
+var dirCount = "";
 var ObjectID = require("bson-objectid");
 
 function SongsRepository () {
@@ -99,6 +99,11 @@ function SongsRepository () {
     });
   };
 
+    this.folderName = function(findby, callback) {
+        dirCount = findby;
+        callback(null,dirCount);
+    };
+
     //Pre-condition : creation des indexes dans la BD
     this.searchSongs_by_keywords = function(db,keywords,callback) {
         var cursor = db.collection('songs').find({ name: { $regex: keywords, $options: "i"  }  } );
@@ -146,7 +151,7 @@ function SongsRepository () {
   this.uploadSong = function(req,res,callback) {
     var fstream;
     req.pipe(req.busboy);
-    var thedire = __dirname + '/../Musics/'+'dir'+dirCount;
+    var thedire = __dirname + '/../Musics/'+dirCount;
     if (!fs.existsSync(thedire)){
       fs.mkdirSync(thedire);
     }

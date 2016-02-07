@@ -14,15 +14,15 @@
 
         <table class="table table-hover table-striped nohover">
           <tr>
-            <th><a href ng-click="sortBy('name')"></a></th>
-            <th><a href ng-click="sortBy('price')">Artiste {{sortIconFor('price')}}</a></th>
-            <th><a href ng-click="sortBy('price')">Titre {{sortIconFor('price')}}</a></th>
-            <th><a href ng-click="sortBy('price')">Album {{sortIconFor('price')}}</a></th>
-            <th><a href ng-click="sortBy('price')">Année {{sortIconFor('price')}}</a></th>
-            <th><a href ng-click="sortBy('rating')">Genre {{sortIconFor('rating')}}</a></th>
+            <th><a href ng-click="predicate = 'titre'; reverse=!reverse"></a></th>
+            <th><a href ng-click="predicate = 'artiste'; reverse=!reverse">Artiste {{sortIconFor('price')}}</a></th>
+            <th><a href ng-click="predicate = 'titre'; reverse=!reverse">Titre {{sortIconFor('price')}}</a></th>
+            <th><a href ng-click="predicate = 'album'; reverse=!reverse">Album {{sortIconFor('price')}}</a></th>
+            <th><a href ng-click="predicate = 'annee'; reverse=!reverse">Année {{sortIconFor('price')}}</a></th>
+            <th><a href ng-click="predicate = 'genre'; reverse=!reverse">Genre {{sortIconFor('rating')}}</a></th>
           </tr>
           <tbody>
-            <tr ng-repeat="s in songs | filter:query" ng-class="{selectedR: s.titre === name}">
+            <tr ng-repeat="s in songs | filter:query | orderBy : predicate:reverse" ng-class="{selectedR: s.titre === name}">
               <td style="vertical-align: inherit"  ng-click="setSelected(s.titer)">
                 <a href="" >
                   <img style = " display: block; margin: 0 auto;" class="img-rounded" height="80" ng-src="../images/{{s.titre}}.jpg">

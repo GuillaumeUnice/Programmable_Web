@@ -10,7 +10,7 @@
  */
 angular.module('frontendApp')
 
-  .controller('MixCtrl', function ($scope,$rootScope, user,mix, CONFIG,FileUploader,ModalService,$routeParams,$q,$http,notification) {
+  .controller('MixCtrl', function ($scope,$rootScope, user,mix, CONFIG,FileUploader,ModalService,$routeParams,$q,$http) {
 
     //** Scope
     /**=========================**/
@@ -168,6 +168,7 @@ angular.module('frontendApp')
           console.log("scopedata"+ $scope.data[i].frequence);
         }
         $scope.listTracks =b;
+        findSongByName(name);
         return conf[0];
       }, function(a){
         //$scope.spinner = {active : false};
@@ -292,12 +293,13 @@ angular.module('frontendApp')
     };
 
   })
-  .controller('MixtCtrl', function ($scope,$rootScope, $element, title, close, mix) {
+  .controller('MixtCtrl', function ($scope,$rootScope, $element, title, close, $q, mix,$location) {
     $scope.title = title;
     $scope.songs = $rootScope.allSongs;
     $scope.canValid = false;
 
     $scope.name = null;
+    $scope.predicate = 'titre';
 
     $scope.setSelected = function (idSelectedVote) {
       $scope.name = idSelectedVote;
@@ -311,7 +313,7 @@ angular.module('frontendApp')
     };
   })
 
-  .controller('UploadCtrl', function ($scope,$rootScope, mix,user,CONFIG,FileUploader) {
+  .controller('UploadCtrl', function ($scope,$rootScope, mix,user,CONFIG,$q,$http,FileUploader,$location) {
     $scope.data = {
       "titre" : "",
       "artiste" : "",
@@ -319,24 +321,12 @@ angular.module('frontendApp')
       "album" : "",
       "genre" : ""
     };
-
     $scope.img = '';
+    $scope.genres = ["Rock", "Pop", "Classique", "Jazz", "Soul", "Rap", "Country", "Reggae"];
 
-
-    $scope.save = function save(str) {
-      if (str !== undefined && str !=="" ) {
-        user.saveInfo(str);
-      }else{
-        alert("cann't be empty");
-      }
-    };
-
-    $scope.get = function get(str) {
-      if (str !== undefined && str !=="" ) {
-        user.getInfo(str);
-      }else{
-        alert("cann't be empty");
-      }
+    $scope.changeGenre = function (i){
+      $scope.data.genre = i;
+      console.log( $scope.data.genre);
     };
 
     /** UPLOAD IMAGE **/
@@ -372,53 +362,36 @@ angular.module('frontendApp')
       $scope.uploader.remove();
     };
 
-    $scope.valid = function (file) {
-      $scope.uploader.uploadAll();
-      $rootScope.allSongs.push($scope.data);
-      console.log($rootScope.allSongs);
+
+    $scope.sendFolder = function(name){
+      var deferred = $q.defer();
+      $http.get(CONFIG.baseUrlApi + '/folderName', {params: {f: name}})
+        .success(function (data) {
+          console.log("Je suis en succes");
+          //notification.writeNotification(data);
+          deferred.resolve(data);
+          //config = data.message;
+        }).error(function (data) {
+          //notification.writeNotification(data);
+          deferred.reject(false);
+        });
+      return deferred.promise;
     };
+
+    $scope.valid = function () {
+      $scope.sendFolder($scope.data.titre).then(function(data){
+        $scope.uploader.uploadAll();
+        $rootScope.allSongs.push($scope.data);
+      }, function(msg) {
+          //
+      });
+    };
+
 
     /**
     uploaderBis.onAfterAddingFile = function(item) {
       var fileExtension = '.' + item.file.name.split('.').pop();
       item.file.name = data.titre + fileExtension;
     };**/
-
-
-    $scope.lache = function () {
-      console.log("1 +"+$scope.uploader.getNotUploadedItems().length);
-      console.log("2 +"+$scope.data.titre);
-      console.log("3 +"+$scope.data.album);
-      console.log("4 +"+$scope.data.annee);
-      console.log("5 +"+$scope.data.genre);
-      console.log("6 +"+$scope.data.artiste);
-    };
-
-    $scope.canValid = function() {
-
-      return ( !$scope.uploader.getNotUploadedItems().length
-        && $scope.data.titre !== ""
-        && $scope.data.album !== ""
-        && $scope.data.annee !== 0
-        && $scope.data.genre !== ""
-        && $scope.data.artiste !== ""
-      );
-    };
-
-    $(function () {
-      $(":file").change(function () {
-        if (this.files && this.files[0]) {
-          var reader = new FileReader();
-          reader.onload = imageIsLoaded;
-          reader.readAsDataURL(this.files[0]);
-          $scope.img = this.files[0];
-        }
-      });
-    });
-
-    function imageIsLoaded(e) {
-      $('#myImg').attr('src', e.target.result);
-    };
-
 
   });

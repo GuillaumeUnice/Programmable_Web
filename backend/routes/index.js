@@ -392,4 +392,18 @@ router.route('/getMixedSongInfo')
     });
   });
 
+
+router.route('/folderName')
+    .get(function(req, res) {
+      //console.log('find'+req.query.name_find);
+      //var mixed = {names:[]};
+      songsRepository.folderName(req.query.f, function(err, result) {
+        //console.log(req.session.emailUser);
+        //mixed.names.push(result);
+        res.json({ status: constants.JSON_STATUS_SUCCESS,
+          title: 'Connexion',
+          message: result});
+      });
+    });
+
 module.exports = router;

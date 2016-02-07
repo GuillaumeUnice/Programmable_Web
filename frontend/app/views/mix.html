@@ -5,11 +5,12 @@
 </div>
 
 <div  ng-show="loadSong">
-  <div style="width:350px;height:150px;position:absolute;left:50%;top:50%;margin:-75px 0 0 -135px;text-align: center">
+  <div style="position:absolute;left:45%;top:50%;margin:-75px 0 0 -135px;text-align: center">
     <h1>Charger ou uploader une/des musique(s)</h1>
-    <button type="button" class="btn btn-primary btn-lg" ng-click="showComplex()">Liste des musiques</button>
+    <button type="submit" class="button button-assertive btn-lg"  ng-click="showComplex()">Liste des musiques</button>
+
     <a ng-href="#/upload">
-      <button type="submit" class="button btn-assertive  btn-lg">Uploader des fichiers</button>
+      <button type="submit" class="button btn-red  btn-lg">Uploader des fichiers</button>
     </a>
   </div>
 </div>
@@ -102,8 +103,8 @@
 </div>
 
 <!-- Bottom element -->
-<div id="demo" ng-show="mixTable">
-  <div class="row" style="background-color: gray; position: absolute; bottom: 0; left: 0; right: 0; margin: auto; border: none; z-index : 99; min-height: 120px !important;">
+<div id="demo" ng-show="mixTable" style="margin-top: 150px">
+  <div class="row" style="background-color: gray; position: fixed; bottom: 0; left: 0; right: 0; margin: auto; border: none; z-index : 99; min-height: 120px !important;">
     <div class="col-md-2">
       <div>
         <img class="img-rounded" src="images/{{selectedSong.titre}}.jpg" style="height: 100px; margin : 20px">
@@ -148,26 +149,28 @@
     </div>
 
     <div class="col-md-2" class="center-block">
-      <button type="button" class="btn btn-circle btn-raised ripple-effect btn-default" ng-click="stop()" ng-disabled="canStop">
-        <span class="glyphicon glyphicon-stop"></span>
-      </button>
+      <div class="row">
+        <button type="button" class="btn btn-circle btn-raised ripple-effect btn-default" ng-click="stop()" ng-disabled="canStop">
+          <span class="glyphicon glyphicon-stop"></span>
+        </button>
 
-      <button ng-disabled="!showPlayButton" type="button" class="btn btn-circle btn-raised ripple-effect btn-default" ng-click="play(0)" ng-disabled="canPlay">
-        <span class="glyphicon glyphicon-play"></span>
-      </button>
+        <button ng-disabled="!showPlayButton" type="button" class="btn btn-circle btn-raised ripple-effect btn-default" ng-click="play(0)" ng-disabled="canPlay">
+          <span class="glyphicon glyphicon-play"></span>
+        </button>
 
-      <button ng-disabled="showPlayButton" type="button" class="btn btn-circle btn-raised ripple-effect btn-default" ng-click="pause()">
-        <span class="glyphicon glyphicon-pause"></span>
-      </button>
-
-      <input type="text"  ng-model="savem"/>
-      <button  type="button" class="btn btn-circle btn-raised ripple-effect btn-default" ng-click="savemixed(savem)">
-        save
-      </button>
+        <button ng-disabled="showPlayButton" type="button" class="btn btn-circle btn-raised ripple-effect btn-default" ng-click="pause()">
+          <span class="glyphicon glyphicon-pause"></span>
+        </button>
+      </div>
+      <div class="row">
+        <input ng-disabled="!showPlayButton" type="text"  ng-model="savem"/>
+        <button ng-disabled="!showPlayButton" type="button" class="btn btn-circle btn-raised ripple-effect btn-default" ng-click="savemixed(savem)">
+          Save
+        </button>
+      </div>
     </div>
 
     <div class="col-md-3">
-      <input type="range" class="time-slider" min="-1" max ="1" step="0.1" ng-value="0" ng-model="slide" ng-change="setMasterGain(slide)">
       <input id="slide" type="range" step="any" ng-value="0" ng-model="slide" ng-change="changerangeslide(slide)">
     </div>
   </div>
