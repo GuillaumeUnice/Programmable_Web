@@ -1,7 +1,7 @@
 var constants = require('../config/constants');
 var utils = require('../config/utils');
 
-var ObjectID = require("bson-objectid");
+var ObjectId = require("bson-objectid");
 
 
 var songsRepositoryModule = require('../repositories/songs');
@@ -27,7 +27,7 @@ exports.postFeedback = function(req, res) {
 				  res.status(500);
 				  res.json({ status: constants.JSON_STATUS_ERROR,
 				  title: 'Error System',
-				  message: 'An error has been occured! Please try later or contact the administrator'});
+				  message: 'An error has occured! Please try later or contact the administrator'});
 				  return;	
 				}
 			    res.status(200);
@@ -44,7 +44,7 @@ exports.postFeedback = function(req, res) {
 				  res.status(500);
 				  res.json({ status: constants.JSON_STATUS_ERROR,
 				  title: 'Error System',
-				  message: 'An error has been occured! Please try later or contact the administrator'});
+				  message: 'An error has occured! Please try later or contact the administrator'});
 				  return;	
 				}
 
@@ -78,7 +78,7 @@ exports.postMark = function(req, res) {
 				  res.status(500);
 				  res.json({ status: constants.JSON_STATUS_ERROR,
 				  title: 'Error System',
-				  message: 'An error has been occured! Please try later or contact the administrator'});
+				  message: 'An error has occured! Please try later or contact the administrator'});
 				  return;	
 				}
 			    res.status(200);
@@ -96,7 +96,7 @@ exports.postMark = function(req, res) {
 				  res.status(500);
 				  res.json({ status: constants.JSON_STATUS_ERROR,
 				  title: 'Error System',
-				  message: 'An error has been occured! Please try later or contact the administrator'});
+				  message: 'An error has occured! Please try later or contact the administrator'});
 				  return;	
 				}
 
@@ -130,7 +130,7 @@ var verifyRightToFeedback = function(db, songId, callback) {
 		if(err) {
 		  callback({ status: constants.JSON_STATUS_ERROR,
 		    title: 'Error System',
-		    message: 'An error has been occured! Please try later or contact the administrator'}, null);
+		    message: 'An error has occured! Please try later or contact the administrator'}, null);
 		  return;
 		}
 

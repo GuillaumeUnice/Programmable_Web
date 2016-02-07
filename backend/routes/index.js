@@ -340,7 +340,7 @@ router.route('/mixed')
 
 router.route('/savemixed')
   .post(function(req, res) {
-    songsRepository.savemiedjson(req.db, req.body.mixed, function (err, result) {
+    songsRepository.savemixedjson(req.db, req.body.mixed, function (err, result) {
       if(err) {
         console.log(err);
         res.status(404);

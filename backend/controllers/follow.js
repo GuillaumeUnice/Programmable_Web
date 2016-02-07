@@ -20,15 +20,12 @@ exports.followSomeone = function(req,res){
 
             usersRepository.findUserById(req.db,idfollowing,function(result){
                 following = result;
-                req.db.collection('users').updateOne({_id : idUser},{ $push: { following: {_id: idfollowing,
-                full_name: following.full_name} } });
+                usersRepository.addFollowing(req.db,idUser,following);
 
-                req.db.collection('users').updateOne({_id : idfollowing},{ $push: { followers: {_id: idUser,
-                    full_name: user.full_name} } });
+                usersRepository.addFollowing(req.db,idfollowing,user);
 
                 var event = {describ: "You are now following "+following.full_name, created_at: new Date().getTime()};
-                 req.db.collection('users').updateOne({_id : idUser},{ $push: { events: event}});
-
+                usersRepository.writeEvent(req.db,idUser,event);
 
                 event = {describ: user.full_name+" is now following "+following.full_name,
                         created_at: new Date().getTime()};
@@ -68,8 +65,8 @@ exports.getFollowers = function(req,res){
 };
 
 exports.unfollow = function(req,res){
-    req.db.collection('users').updateOne({"_id" : ObjectId(req.body.idUser) },{ $pull: { following :
-    {_id: ObjectId(req.body.idFollowing)} } });
+    usersRepository.removeFollowing(req.db,ObjectId(req.body.idUser),ObjectId(req.body.idFollowing));
+
     usersRepository.findUserById(req.db,ObjectId(req.body.idUser),function(result){
         res.send(result.following);
     })

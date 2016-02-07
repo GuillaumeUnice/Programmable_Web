@@ -47,10 +47,30 @@ function UsersRepository () {
           full_name : user.first_name + user.name,
           following: [],
           followers: [],
-          events: []},
+          events: [],
+          songs: []},
       function(err, result) {
           callback(null, result);
       });
+  };
+
+  this.addSong = function(db,idUser,song,successCB,errorCB){
+    db.collection('users').updateOne({_id: idUser},{$push: {songs: song}},function(err,result){
+      if(err){
+        errorCB(500,"Error!");
+      }
+      else successCB(result);
+    });
+  };
+
+  this.removeFollowing = function(db,idUser,idFollowing){
+    db.collection('users').updateOne({"_id" : idUser },{ $pull: { following :
+    {_id: idFollowing} } });
+  };
+
+  this.addFollowing = function(db,idUser,following){
+    db.collection('users').updateOne({_id : idUser},{ $push: { following: {_id: following._id,
+      full_name: following.full_name} } });
   };
 
   this.writeEvent = function(db,idUser,event){
