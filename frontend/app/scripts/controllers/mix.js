@@ -168,6 +168,7 @@ angular.module('frontendApp')
           console.log("scopedata"+ $scope.data[i].frequence);
         }
         $scope.listTracks =b;
+        return conf[0];
       }, function(a){
         //$scope.spinner = {active : false};
         $scope.buf = a;
