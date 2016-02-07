@@ -1,11 +1,24 @@
 function UsersRepository () {
 
+  /**
+   * find a user with his email
+   * @param  {Object}   db        database
+   * @param  {String}   userEmail user's email
+   * @param  {Function} callback  return err and result who contains all user's document
+   */
   this.findUserByPseudo = function(db, userEmail, callback) {
     db.collection('users').findOne( { 'email': userEmail },   function(err, result) {
         callback(null, result);
       });
   };
 
+  /**
+   * find a user with his _id document
+   * @param  {Object} db        database
+   * @param  {String} idUser    user's _id
+   * @param  {Function} successCB callback success
+   * @param  {Function} errorCB   callback error
+   */
   this.findUserById = function(db, idUser, successCB, errorCB) {
     db.collection('users').findOne( { '_id': idUser },   function(err, result) {
       if(err){
@@ -20,6 +33,13 @@ function UsersRepository () {
     });
   };
 
+  /**
+   * search a user with keywords contains in the user name or first name.
+   * This is an insensitive case search
+   * @param  {Object}   db       database
+   * @param  {String}   keywords simple String who contains substring match
+   * @param  {Function} callback return err and result who contains all users who match with this search
+   */
   this.searchUserByKeywords = function(db, keywords, callback) {
     var cursor = db.collection('users').find( { full_name: { $regex: keywords, $options: "i" } } );
     var result = [];
@@ -33,6 +53,12 @@ function UsersRepository () {
     });
   };
 
+  /**
+   * Add an user in database so create a new document in "users collection"
+   * @param {Object}   db       database
+   * @param {Object}   user     Object who represente user's data
+   * @param {Function} callback Callback return err and result who contains the user data
+   */
   this.addUser = function(db, user, callback) {
     
     if((user.password === undefined) || (user.email === undefined) || (user.name === undefined) || (user.first_name === undefined)) {
