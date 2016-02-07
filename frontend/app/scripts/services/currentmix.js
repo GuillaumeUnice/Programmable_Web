@@ -13,9 +13,23 @@ angular.module('frontendApp')
      getMix: function (mixName) {
       console.log(mixName);
        var deferred = $q.defer();
-       $http.get(CONFIG.baseUrlApi + '/images/basse.mp3')
+       $http.get(CONFIG.baseUrlApi + '/mix/' + mixName._id)
          .success(function (data) {
            console.log(data)
+           //notification.writeNotification(data);
+           deferred.resolve(data);
+         }).error(function (data) {
+           notification.writeNotification(data);
+           deferred.reject(false);
+         });
+       return deferred.promise;
+     },
+      getMixPlay: function (mixName) {
+      console.log(mixName);
+       var deferred = $q.defer();
+       $http.get(CONFIG.baseUrlApi + '/images/test.wav')
+         .success(function (data) {
+           //console.log(data)
            //notification.writeNotification(data);
            deferred.resolve(data);
          }).error(function (data) {

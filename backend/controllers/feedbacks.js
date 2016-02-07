@@ -1,7 +1,7 @@
 var constants = require('../config/constants');
 var utils = require('../config/utils');
 
-var ObjectID = require("bson-objectid");
+var ObjectId = require("bson-objectid");
 
 
 var songsRepositoryModule = require('../repositories/songs');
@@ -18,44 +18,52 @@ exports.getFeedbacks = function(req, res) {
 
 
 exports.getMix = function(req, res) {
-	console.log(req.body);
+	console.log(req.params.idMix);
+	var mixId = req.params.idMix;
+    songsRepository.getSongsById(req.db, mixId, function(err, result1){
+		if(err) {
+		  console.log(err);
+		  res.status(500);
+		  res.json({ status: constants.JSON_STATUS_ERROR,
+		  title: 'Error System',
+		  message: 'An error has been occured! Please try later or contact the administrator'});
+		  return;	
+		}
+	
+		songsRepository.getAverageMark(req.db, mixId, function(err, result2){
 
-	//var id = req.params[0];
-    //console.log('send songs');
-    //console.log('kk'+req.params[0] + '/' + req.params[1]);
-    
-    console.log(__dirname + '/../Mix/basse.mp3');
-    res.sendfile(path.resolve(__dirname + '/../Mix/basse.mp3'));
-/*
-	res.status(200);
-	res.json({ status: constants.JSON_STATUS_SUCCESS,
-	title: 'Add Mix to player',
-	message: 'The mix is now in the player!'});
-	return;*/
+			if(err) {
+			  console.log(err);
+			  res.status(500);
+			  res.json({ status: constants.JSON_STATUS_ERROR,
+			  title: 'Error System',
+			  message: 'An error has been occured! Please try later or contact the administrator'});
+			  return;	
+			}
 
-/*	var filePath = path.join(__dirname + '/Mix/basse.mp3');
-    var stat = fileSystem.statSync(filePath);
-
-    response.writeHead(200, {
-        'Content-Type': 'audio/mpeg',
-        'Content-Length': stat.size
-    });
-
-    var readStream = fileSystem.createReadStream(filePath);
-    // We replaced all the event handlers with a simple call to readStream.pipe()
-    readStream.pipe(response);
-*/
+			var element = result2.map(function(x) { return x._id.toString(); }).indexOf(mixId);
+			console.log(mixId);
+			console.log(element);
+			var data = result1;
+			data.markAvg = result2[element].markAvg;
+			console.log(result2);
+			res.status(200);
+			res.json({ status: constants.JSON_STATUS_SUCCESS,
+			data : data,
+			title: 'Add Mix to player',
+			message: 'The mix is now in the player!'});
+			return;
+		});
+	  });
 
 
+			/*res.status(200);
+			res.json({ status: constants.JSON_STATUS_SUCCESS,
+			data : data,
+			title: 'Add Mix to player',
+			message: 'The mix is now in the player!'});
+			return;*/
 
-
-
-	/*var idSong = ObjectId(req.params.idSong);
-	songsRepository.getFeedbacks(req.db,idSong,function(data){
-		res.send(data);
-	},function(code,msg){
-		res.send(code,msg);
-	})*/
 };
 
 exports.postFeedback = function(req, res) {
@@ -69,7 +77,7 @@ exports.postFeedback = function(req, res) {
 				  res.status(500);
 				  res.json({ status: constants.JSON_STATUS_ERROR,
 				  title: 'Error System',
-				  message: 'An error has been occured! Please try later or contact the administrator'});
+				  message: 'An error has occured! Please try later or contact the administrator'});
 				  return;	
 				}
 			    res.status(200);
@@ -86,7 +94,7 @@ exports.postFeedback = function(req, res) {
 				  res.status(500);
 				  res.json({ status: constants.JSON_STATUS_ERROR,
 				  title: 'Error System',
-				  message: 'An error has been occured! Please try later or contact the administrator'});
+				  message: 'An error has occured! Please try later or contact the administrator'});
 				  return;	
 				}
 
@@ -120,7 +128,7 @@ exports.postMark = function(req, res) {
 				  res.status(500);
 				  res.json({ status: constants.JSON_STATUS_ERROR,
 				  title: 'Error System',
-				  message: 'An error has been occured! Please try later or contact the administrator'});
+				  message: 'An error has occured! Please try later or contact the administrator'});
 				  return;	
 				}
 			    res.status(200);
@@ -138,7 +146,7 @@ exports.postMark = function(req, res) {
 				  res.status(500);
 				  res.json({ status: constants.JSON_STATUS_ERROR,
 				  title: 'Error System',
-				  message: 'An error has been occured! Please try later or contact the administrator'});
+				  message: 'An error has occured! Please try later or contact the administrator'});
 				  return;	
 				}
 
@@ -172,7 +180,7 @@ var verifyRightToFeedback = function(db, songId, callback) {
 		if(err) {
 		  callback({ status: constants.JSON_STATUS_ERROR,
 		    title: 'Error System',
-		    message: 'An error has been occured! Please try later or contact the administrator'}, null);
+		    message: 'An error has occured! Please try later or contact the administrator'}, null);
 		  return;
 		}
 

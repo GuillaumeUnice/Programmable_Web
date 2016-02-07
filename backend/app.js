@@ -109,19 +109,19 @@ function ensureAuthorized(req, res, next) {
     }
 }
 
-app.get('/mix', ensureAuthorized, routess.feedbacks.getMix);
+app.get('/mix/:idMix', ensureAuthorized, routess.feedbacks.getMix);
 app.post('/comment', ensureAuthorized, routess.feedbacks.postFeedback);
 app.post('/mark', ensureAuthorized, routess.feedbacks.postMark);
 app.post('/search', ensureAuthorized, routess.search.searchSongAndUser);
 
-app.post('/follow',routess.follow.followSomeone);
+app.post('/follow',ensureAuthorized,routess.follow.followSomeone);
 app.get('/follow/followers/:idUser',routess.follow.getFollowers);
 app.get('/follow/following/:idUser',routess.follow.getFollowing);
-app.post('/unfollow/',routess.follow.unfollow);
+app.post('/unfollow',ensureAuthorized,routess.follow.unfollow);
 
-app.get('/manageMySongs/:idUser',routess.manageMySongs.findMySongs);
+app.get('/manageMySongs/:idUser',ensureAuthorized,routess.manageMySongs.getMySongs);
 
-app.get('/account/:idUser',routess.account.getAccountInfo);
+app.get('/account/:idUser',ensureAuthorized,routess.account.getAccountInfo);
 
 
 app.use('/', routes);

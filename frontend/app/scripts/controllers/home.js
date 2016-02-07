@@ -20,35 +20,10 @@ angular.module('frontendApp')
     $scope.followers = [];
     $scope.news = [];
     $scope.email = null;
-
-      /*{ _id: 1,
-        name: "Drop The Pressure",
-        created_at: 1454616841
-      },
-      { _id: 2,
-        name: "Metronome",
-        created_at: 1454616842
-      },
-      { _id: 3,
-        name: "Freaky Voice",
-        created_at: 1454616843
-      },
-      { _id: 6,
-        name: "Turn The World On",
-        created_at: 1454616846
-      },
-      { _id: 4,
-        name: "Close Encounter",
-        created_at: 1454616844
-      },
-      { _id: 5,
-        name: "Pumped Up Kicks",
-        created_at: 1454616845
-      },
-      { _id: 7,
-        name: "Turn The World On 2",
-        created_at: 1454616847
-      },*/
+    $scope.currentSong = {};
+    $scope.currentSong.comment = ["No comment yet!"];
+    $scope.currentSong.myComment = "";
+    $scope.currentSong.myMark = null;
 
   /*  $scope.getMixedSongs = function(){
       var deferred = $q.defer();
@@ -67,104 +42,18 @@ angular.module('frontendApp')
       return deferred.promise;
     };*/
 
-      /*{ _id: 1,
-        name: "Henry Dupont",
-        created_at: 1454616841
-      },
-      { _id: 2,
-        name: "Henry Durant",
-        created_at: 1454616842
-      },
-      { _id: 3,
-        name: "Butch Clancy",
-        created_at: 1454616843
-      },
-      { _id: 6,
-        name: "Jhon Smith",
-        created_at: 1454616846
-      }*/
-
     user.getUserById(auth.id).then(function(data){
           $scope.news = data.events;
           $scope.followers = data.followers;
           $scope.following = data.following;
           $scope.email = data.email;
+          $scope.myMix = data.songs;
+          $scope.avatar = data.avatar;
+          $scope.created_at = auth.created_at;
         }, function(msg){
           console.log('erreur promesses : ' + msg);
         });
 
-     /* { _id: 1,
-        name: "Henry Dupont",
-        action: "a commenté",
-        music: "Pumped Up Kicks",
-        author: "Jhon Doe",
-        created_at: 1454616841,
-        glyphicon: 'glyphicon-comment'
-      },
-      { _id: 2,
-        name: "Henry Durant",
-        action: "a édité commentaire",
-        music: "Pumped Up Kicks",
-        author: "Jhon Doe",
-        created_at: 1454616842,
-        glyphicon: 'glyphicon-comment'
-      },
-      { _id: 3,
-        name: "Butch Clancy",
-        action: "a noté",
-        music: "Close Encounter",
-        author: "Mylo",
-        created_at: 1454616843,
-        glyphicon: 'glyphicon-certificate'
-      },
-      { _id: 4,
-        name: "Butch Clancy",
-        action: "a modifié sa note",
-        music: "Close Encounter",
-        author: "Mylo",
-        created_at: 1454616844,
-        glyphicon: 'glyphicon-certificate'
-      },
-      { _id: 5,
-        name: "Butch Clancy",
-        action: "a follow",
-        music: "",
-        author: "Mylo",
-        created_at: 1454616845,
-        glyphicon: 'glyphicon-thumbs-up'
-      },
-      { _id: 6,
-        name: "Butch Clancy",
-        action: "ne follow plus",
-        music: "Close Encounter",
-        author: "Mylo",
-        created_at: 1454616846,
-        glyphicon: 'glyphicon-thumbs-down'
-      },
-      { _id: 7,
-        name: "Mylo",
-        action: "a ajouté un mix",
-        music: "Close Encounter",
-        author: "Mylo",
-        created_at: 1454616847,
-        glyphicon: 'glyphicon-volume-up'
-      },
-      { _id: 8,
-        name: "Mylo",
-        action: "a édité un mix",
-        music: "Close Encounter",
-        author: "Mylo",
-        created_at: 1454616848,
-        glyphicon: 'glyphicon-volume-up'
-      },
-      { _id: 9,
-        name: "Mylo",
-        action: "a supprimé un mix",
-        music: "Close Encounter",
-        author: "Mylo",
-        created_at: 1454616849,
-        glyphicon: 'glyphicon-volume-up'
-      }*/
 
     $scope.isTabMenuNewsSelected = true;
 
@@ -277,59 +166,144 @@ angular.module('frontendApp')
     };*/
 
   $scope.addComment = function(comment){
-    alert("addComment : " + comment);
-    feedbackService.addComment("56b4ee3845b766bd49eb5d64", comment).then(function(data){
-      //$scope.currentSong.feedbacks.push();
-      console.log(data.data);
+    console.log(data.data);
+    feedbackService.addComment($scope.currentSong._id, comment).then(function(data){
+      $scope.currentSong.comment.push(comment);
+      $scope.currentSong.myComment = comment;
+
     },function(msg){
       console.log('erreur promesses : ' + msg);
     });
   };
 
   $scope.addMark = function(mark){
-    feedbackService.addMark("56b4ee3845b766bd49eb5d64", mark).then(function(data){
-      //$scope.currentSong.myMark = mark;
-      //$scope.currentSong.markAvg = data.data;
+    feedbackService.addMark($scope.currentSong._id, mark).then(function(data){
       console.log(data.data);
+      $scope.currentSong.myMark = mark;
+      $scope.currentSong.markAvg = data.data;
+
     },function(msg){
       console.log('erreur promesses : ' + msg);
     });
   };
 
   $scope.test = function (mix) {
-    console.log("test");
-    console.log(mix);
-/*
-    bufferLoader = new bufferLoader() {
-      context,
-      tracks,
-      finishedLoading,
-      callbackFinishedLoading
-    };
 
-    bufferLoader.load();*/
-/*$http({
-      url: CONFIG.baseUrlApi + '/mix',
-      method: "GET",
-      data: {
-        uri: mix
-      },
-      responseType: 'blob'
-  }).success(function (data, status, headers, config) {
-      var blob = new Blob([data], { type: 'audio/mpeg' });
-      var fileName = headers('content-disposition');
-      saveAs(blob, fileName);
-  }).error(function (data, status, headers, config) {
-    console.log('Unable to download the file')
-  });*/
-    
     currentMix.getMix(mix).then(function(data){
-      //$scope.currentSong.myMark = mark;
-      //$scope.currentSong.markAvg = data.data;
+      $scope.currentSong = data.data;
+      console.log(auth.id);
+      console.log(data.data.feedbacks[0]._id);
+
+
+      $scope.currentSong.comment = data.data.feedbacks.map(function(currentValue, index, array) {
+          return currentValue.comment;
+      });
+
+      console.log($scope.currentSong.comment);
+
+
+
+      var element = data.data.feedbacks.map(function(x) { return x._id.toString(); }).indexOf(auth.id);
+      if(element === -1){
+        $scope.currentSong.myComment = "";
+        $scope.currentSong.myMark = null;
+      } else {
+        $scope.currentSong.myMark = data.data.feedbacks[element].mark;
+        $scope.currentSong.myComment = data.data.feedbacks[element].comment;
+      }
+
+      $scope.play('http://localhost:3000/' + data.data.path);
+
       //console.log(data.data);
     },function(msg){
       console.log('erreur promesses : ' + msg);
     });
   }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    var activeUrl = null;
+
+    $scope.paused = true;
+
+    $scope.$on('wavesurferInit', function (e, wavesurfer) {
+        $scope.wavesurfer = wavesurfer;
+
+        $scope.wavesurfer.on('play', function () {
+            $scope.paused = false;
+        });
+
+        $scope.wavesurfer.on('pause', function () {
+            $scope.paused = true;
+        });
+
+        $scope.wavesurfer.on('finish', function () {
+            $scope.paused = true;
+            $scope.wavesurfer.seekTo(0);
+            $scope.$apply();
+        });
+    });
+
+    $scope.play = function (url) {
+
+        if (!$scope.wavesurfer) {
+            return;
+        }
+
+        activeUrl = url;
+
+        $scope.wavesurfer.once('ready', function () {
+            $scope.wavesurfer.play();
+            $scope.$apply();
+        });
+
+        $scope.wavesurfer.load(activeUrl);
+    };
+
+    $scope.isPlaying = function (url) {
+        return url == activeUrl;
+    };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 });

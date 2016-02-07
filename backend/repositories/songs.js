@@ -264,19 +264,6 @@ function SongsRepository () {
         });
     };
 
-    this.postFeedback = function(db,idSong,newFeedback,successCB,errorCB){
-        if(newFeedback.user==undefined || newFeedback.mark==undefined ||newFeedback.comment==undefined){
-            errorCB(400,"The message format is wrong");
-        }
-        else if(newFeedback.mark==null||newFeedback.user==null||newFeedback.comment==null){
-            errorCB(400,"The message format is wrong");
-        }
-        else{
-            db.collection('songs').updateOne({"_id" : idSong },{ $push: { "feedbacks": newFeedback } });
-            successCB("Feedback added!");
-        }
-    };
-
     this.getAverageMark =  function(db,songId, callback) {
 
       var res = db.collection('songs').aggregate(
@@ -288,7 +275,7 @@ function SongsRepository () {
           }
         ]
       ).toArray(function(err, result) {
-        //console.log(result);
+        console.log(result);
         callback(null, result);
       });
     };
@@ -347,7 +334,7 @@ function SongsRepository () {
     }
 
 
-    this.savemiedjson = function(db, input, callback) {
+    this.savemixedjson = function(db, input, callback) {
       console.log('insertDocument');
       console.log(input);
       db.collection('mixed').insertOne(input,

@@ -47,14 +47,43 @@ function UsersRepository () {
           full_name : user.first_name + user.name,
           following: [],
           followers: [],
-          events: []},
+          events: [],
+          songs: []},
       function(err, result) {
           callback(null, result);
       });
   };
 
-  this.writeEvent = function(db,idUser,event){
-    db.collection('users').updateOne({"_id" : idUser },{ $push: { "events": event } });
+  this.addSong = function(db,idUser,song,successCB,errorCB){
+    db.collection('users').updateOne({_id: idUser},{$push: {songs:
+    {_id: song._id, name: song.name, created_at : song.created_at}}},function(err,result){
+      if(err){
+        errorCB(500,"Error!");
+      }
+      else successCB(result);
+    });
+  };
+
+  this.removeFollowing = function(db,idUser,idFollowing,callback){
+    db.collection('users').updateOne({"_id" : idUser },{ $pull: { following : {_id: idFollowing} } },callback);
+  };
+
+  this.removeFollower = function(db,idUser,idFollower,callback){
+    db.collection('users').updateOne({"_id" : idUser },{ $pull: { followers : {_id: idFollower} } },callback);
+  };
+
+  this.addFollowing = function(db,idUser,following,callback){
+    db.collection('users').updateOne({_id : idUser},{ $push: { following: {_id: following._id,
+      full_name: following.full_name} } },callback);
+  };
+
+  this.addFollower = function(db,idUser,follower,callback){
+    db.collection('users').updateOne({_id : idUser},{ $push: { followers: {_id: follower._id,
+      full_name: follower.full_name} } },callback);
+  };
+
+  this.writeEvent = function(db,idUser,event,callback){
+    db.collection('users').updateOne({"_id" : idUser },{ $push: { "events": event } },callback);
   };
 
 
