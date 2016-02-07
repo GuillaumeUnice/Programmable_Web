@@ -45,7 +45,7 @@ angular.module('frontendApp')
      },
      unfollow: function (myUserId, userId) {
        var deferred = $q.defer();
-       $http.delete(CONFIG.baseUrlApi + '/follow', {idUser: myUserId, idFollowing: userId})
+       $http.post(CONFIG.baseUrlApi + '/unfollow', {idUser: myUserId, idFollowing: userId})
          .success(function (data) {
            //notification.writeNotification(data);
            deferred.resolve(data);

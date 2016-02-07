@@ -1,15 +1,26 @@
 'use strict';
 
 angular.module('frontendApp')
-  .controller('HomeCtrl', function ($scope, notification, CONFIG, ModalService, searchService,currentMusicService, feedbackService,auth, follow,$http,$q,$rootScope) {
+  .controller('HomeCtrl', function ($scope, notification, CONFIG, ModalService,
+                                    searchService,currentMusicService, feedbackService,auth, follow,$http,$q,$rootScope,user) {
 
     // initialisation
 
    // $scope.
-    $scope.followers = [];
-    $scope.following = [];
+    /*$scope.isLogged = false;
+    $scope.updateAuth = function(){
+      $scope.isLogged = auth.isLogged;
+      $scope.idUser = auth.id;
+    };
+    auth.registerObserverCallback(updateAuth);*/
 
-    $scope.myMix = [
+    //User Info:
+    $scope.following = [];
+    $scope.myMix = [];
+    $scope.followers = [];
+    $scope.news = [];
+    $scope.email = null;
+
       /*{ _id: 1,
         name: "Drop The Pressure",
         created_at: 1454616841
@@ -38,9 +49,8 @@ angular.module('frontendApp')
         name: "Turn The World On 2",
         created_at: 1454616847
       },*/
-    ];
 
-    $scope.getMixedSongs = function(){
+  /*  $scope.getMixedSongs = function(){
       var deferred = $q.defer();
       $http.get(CONFIG.baseUrlApi + '/getmixed')
         .success(function (data) {
@@ -55,9 +65,9 @@ angular.module('frontendApp')
           deferred.reject(false);
         });
       return deferred.promise;
-    };
-    /*$scope.followers = [
-      { _id: 1,
+    };*/
+
+      /*{ _id: 1,
         name: "Henry Dupont",
         created_at: 1454616841
       },
@@ -72,14 +82,18 @@ angular.module('frontendApp')
       { _id: 6,
         name: "Jhon Smith",
         created_at: 1454616846
-      }
-    ];*/
-    $scope.news = [];
-    $scope.getNews = function(){
+      }*/
 
-    }
-    /*$scope.news = [
-      { _id: 1,
+    user.getUserById(auth.id).then(function(data){
+          $scope.news = data.events;
+          $scope.followers = data.followers;
+          $scope.following = data.following;
+          $scope.email = data.email;
+        }, function(msg){
+          console.log('erreur promesses : ' + msg);
+        });
+
+     /* { _id: 1,
         name: "Henry Dupont",
         action: "a commenté",
         music: "Pumped Up Kicks",
@@ -150,12 +164,11 @@ angular.module('frontendApp')
         author: "Mylo",
         created_at: 1454616849,
         glyphicon: 'glyphicon-volume-up'
-      }
-    ];
+      }*/
 
     $scope.isTabMenuNewsSelected = true;
 
-    follow.getFollowing(auth.id).then(function(data){
+    /*follow.getFollowing(auth.id).then(function(data){
       $scope.following = data;
     },function(msg){
       console.log('erreur promesses : ' + msg);
@@ -171,7 +184,7 @@ angular.module('frontendApp')
       $scope.myMix = data;
     },function(msg){
       console.log('erreur promesses : ' + msg);
-    });
+    });*/
 
     $scope.searchQuery = "";
     $scope.searchResults = {};
@@ -189,6 +202,7 @@ angular.module('frontendApp')
           );
         }
         $scope.searchResults = data;
+        
       },function(msg){
         console.log('erreur promesses : ' + msg);
       });
@@ -200,7 +214,7 @@ angular.module('frontendApp')
         },function(msg){
           console.log('erreur promesses : ' + msg);
         });
-    }
+    };
 
     $scope.unfollow = function(user) {
       follow.unfollow(auth.id, user._id).then(function(data){
@@ -208,7 +222,7 @@ angular.module('frontendApp')
       },function(msg){
         console.log('erreur promesses : ' + msg);
       });
-    }
+    };
 
     $scope.seeProfil = function(userId) {
       alert("seeProfil : " + userId);

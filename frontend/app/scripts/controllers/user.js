@@ -17,9 +17,11 @@ angular.module('frontendApp')
                 auth.isLogged = true;
                 auth.username = data.data.email;
                 auth.id = data.data._id;
-                auth.full_name = data.data.full_name;
-                auth.name = data.data.name;
-                auth.first_name = data.data.first_name;
+                auth.notifyObservers();
+                //auth.full_name = data.data.full_name;
+               // auth.name = data.data.name;
+               // auth.first_name = data.data.first_name;
+
                 $window.sessionStorage.token = data.token;
                 $location.path("/");
             }, function(msg){
@@ -32,7 +34,7 @@ angular.module('frontendApp')
             .then(function(data){
                 console.log(data);
                 if(data.status === CONFIG.JSON_STATUS_SUCCESS) {
-                    $location.path("/login");    
+                    $location.path("/login");
                 }
             }, function(msg){
                 console.log('erreur promesses : ' + msg);

@@ -78,6 +78,19 @@ angular.module('frontendApp')
          });
        return deferred.promise;
      },
+     getUserById : function(id){
+       var deferred = $q.defer();
+       $http.get(CONFIG.baseUrlApi + '/account/'+ id)
+         .success(function (data) {
+           //notification.writeNotification(data);
+           deferred.resolve(data);
+           //console.log(data.message);
+         }).error(function (data) {
+           //notification.writeNotification(data);
+           deferred.reject(false);
+         });
+       return deferred.promise;
+     },
      myMix: function (userId) {
        var deferred = $q.defer();
        $http.get(CONFIG.baseUrlApi + '/manageMySongs/' + userId)
@@ -90,7 +103,7 @@ angular.module('frontendApp')
          });
        return deferred.promise;
      },
-     
+
 
    };
 });
