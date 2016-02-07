@@ -64,26 +64,26 @@ function UsersRepository () {
     });
   };
 
-  this.removeFollowing = function(db,idUser,idFollowing){
-    db.collection('users').updateOne({"_id" : idUser },{ $pull: { following : {_id: idFollowing} } });
+  this.removeFollowing = function(db,idUser,idFollowing,callback){
+    db.collection('users').updateOne({"_id" : idUser },{ $pull: { following : {_id: idFollowing} } },callback);
   };
 
-  this.removeFollower = function(db,idUser,idFollower){
-    db.collection('users').updateOne({"_id" : idUser },{ $pull: { followers : {_id: idFollower} } });
+  this.removeFollower = function(db,idUser,idFollower,callback){
+    db.collection('users').updateOne({"_id" : idUser },{ $pull: { followers : {_id: idFollower} } },callback);
   };
 
-  this.addFollowing = function(db,idUser,following){
+  this.addFollowing = function(db,idUser,following,callback){
     db.collection('users').updateOne({_id : idUser},{ $push: { following: {_id: following._id,
-      full_name: following.full_name} } });
+      full_name: following.full_name} } },callback);
   };
 
-  this.addFollower = function(db,idUser,follower){
+  this.addFollower = function(db,idUser,follower,callback){
     db.collection('users').updateOne({_id : idUser},{ $push: { followers: {_id: follower._id,
-      full_name: follower.full_name} } });
+      full_name: follower.full_name} } },callback);
   };
 
-  this.writeEvent = function(db,idUser,event){
-    db.collection('users').updateOne({"_id" : idUser },{ $push: { "events": event } });
+  this.writeEvent = function(db,idUser,event,callback){
+    db.collection('users').updateOne({"_id" : idUser },{ $push: { "events": event } },callback);
   };
 
 

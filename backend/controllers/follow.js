@@ -67,8 +67,7 @@ exports.getFollowers = function(req,res){
 exports.unfollow = function(req,res){
     usersRepository.removeFollowing(req.db,ObjectId(req.body.idUser),ObjectId(req.body.idFollowing));
     usersRepository.removeFollower(req.db,ObjectId(req.body.idFollowing),ObjectId(req.body.idUser));
-
     usersRepository.findUserById(req.db,ObjectId(req.body.idUser),function(result){
-        res.send(result.following);
-    })
+                res.send(result.following);
+    });
 };
