@@ -164,14 +164,19 @@
       </div>
       <div class="row">
         <input ng-disabled="!showPlayButton" type="text"  ng-model="savem"/>
-        <button ng-disabled="!showPlayButton" type="button" class="btn btn-circle btn-raised ripple-effect btn-default" ng-click="savemixed(savem)">
-          Save
+        <button type="button" class="btn btn-success" aria-label="Left Align" ng-disabled="!showPlayButton" ng-click="savemixed(savem)">
+          <span class="glyphicon glyphicon-floppy-save" aria-hidden="true">  Save</span>
         </button>
       </div>
     </div>
 
     <div class="col-md-3">
       <input id="slide" type="range" step="any" ng-value="0" ng-model="slide" ng-change="changerangeslide(slide)">
+      <a ng-href="#/home">
+        <button type="button" class="btn btn-danger" aria-label="Left Align">
+          <span class="glyphicon glyphicon-log-in" aria-hidden="true">  Quitter</span>
+        </button>
+      </a>
     </div>
   </div>
 </div>
