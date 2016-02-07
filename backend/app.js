@@ -119,7 +119,6 @@ app.get('/follow/following/:idUser',routess.follow.getFollowing);
 app.post('/unfollow',ensureAuthorized,routess.follow.unfollow);
 
 app.get('/manageMySongs/:idUser',ensureAuthorized,routess.manageMySongs.getMySongs);
-app.post('/manageMySongs/:idUser',routess.manageMySongs.postMySong);
 
 app.get('/account/:idUser',ensureAuthorized,routess.account.getAccountInfo);
 

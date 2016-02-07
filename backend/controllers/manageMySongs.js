@@ -13,12 +13,3 @@ exports.getMySongs = function(req,res){
         res.send(code,msg);
     })
 };
-
-exports.postMySong = function(req,res){
-    var song = {name: "Mon nouveau mix", created_at : new Date().getTime()};
-    usersRepository.addSong(req.db,ObjectId(req.params.idUser),song,function(data){
-        res.send("C'est fait");
-    },function(code,msg){
-        res.send(code,msg);
-    })
-};

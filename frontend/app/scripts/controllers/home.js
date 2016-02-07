@@ -21,35 +21,6 @@ angular.module('frontendApp')
     $scope.news = [];
     $scope.email = null;
 
-      /*{ _id: 1,
-        name: "Drop The Pressure",
-        created_at: 1454616841
-      },
-      { _id: 2,
-        name: "Metronome",
-        created_at: 1454616842
-      },
-      { _id: 3,
-        name: "Freaky Voice",
-        created_at: 1454616843
-      },
-      { _id: 6,
-        name: "Turn The World On",
-        created_at: 1454616846
-      },
-      { _id: 4,
-        name: "Close Encounter",
-        created_at: 1454616844
-      },
-      { _id: 5,
-        name: "Pumped Up Kicks",
-        created_at: 1454616845
-      },
-      { _id: 7,
-        name: "Turn The World On 2",
-        created_at: 1454616847
-      },*/
-
   /*  $scope.getMixedSongs = function(){
       var deferred = $q.defer();
       $http.get(CONFIG.baseUrlApi + '/getmixed')
@@ -66,23 +37,6 @@ angular.module('frontendApp')
         });
       return deferred.promise;
     };*/
-
-      /*{ _id: 1,
-        name: "Henry Dupont",
-        created_at: 1454616841
-      },
-      { _id: 2,
-        name: "Henry Durant",
-        created_at: 1454616842
-      },
-      { _id: 3,
-        name: "Butch Clancy",
-        created_at: 1454616843
-      },
-      { _id: 6,
-        name: "Jhon Smith",
-        created_at: 1454616846
-      }*/
 
     user.getUserById(auth.id).then(function(data){
           $scope.news = data.events;

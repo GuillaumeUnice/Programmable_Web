@@ -22,7 +22,7 @@ exports.followSomeone = function(req,res){
                 following = result;
                 usersRepository.addFollowing(req.db,idUser,following);
 
-                usersRepository.addFollowing(req.db,idfollowing,user);
+                usersRepository.addFollower(req.db,idfollowing,user);
 
                 var event = {describ: "You are now following "+following.full_name, created_at: new Date().getTime()};
                 usersRepository.writeEvent(req.db,idUser,event);
@@ -66,6 +66,7 @@ exports.getFollowers = function(req,res){
 
 exports.unfollow = function(req,res){
     usersRepository.removeFollowing(req.db,ObjectId(req.body.idUser),ObjectId(req.body.idFollowing));
+    usersRepository.removeFollower(req.db,ObjectId(req.body.idFollowing),ObjectId(req.body.idUser));
 
     usersRepository.findUserById(req.db,ObjectId(req.body.idUser),function(result){
         res.send(result.following);
