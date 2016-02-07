@@ -25,34 +25,6 @@ angular.module('frontendApp')
     $scope.currentSong.myComment = "";
     $scope.currentSong.myMark = null;
 
-      /*{ _id: 1,
-        name: "Drop The Pressure",
-        created_at: 1454616841
-      },
-      { _id: 2,
-        name: "Metronome",
-        created_at: 1454616842
-      },
-      { _id: 3,
-        name: "Freaky Voice",
-        created_at: 1454616843
-      },
-      { _id: 6,
-        name: "Turn The World On",
-        created_at: 1454616846
-      },
-      { _id: 4,
-        name: "Close Encounter",
-        created_at: 1454616844
-      },
-      { _id: 5,
-        name: "Pumped Up Kicks",
-        created_at: 1454616845
-      },
-      { _id: 7,
-        name: "Turn The World On 2",
-        created_at: 1454616847
-      },*/
 
   /*  $scope.getMixedSongs = function(){
       var deferred = $q.defer();
@@ -71,104 +43,17 @@ angular.module('frontendApp')
       return deferred.promise;
     };*/
 
-      /*{ _id: 1,
-        name: "Henry Dupont",
-        created_at: 1454616841
-      },
-      { _id: 2,
-        name: "Henry Durant",
-        created_at: 1454616842
-      },
-      { _id: 3,
-        name: "Butch Clancy",
-        created_at: 1454616843
-      },
-      { _id: 6,
-        name: "Jhon Smith",
-        created_at: 1454616846
-      }*/
 
     user.getUserById(auth.id).then(function(data){
           $scope.news = data.events;
           $scope.followers = data.followers;
           $scope.following = data.following;
           $scope.email = data.email;
+          $scope.created_at = auth.created_at;
         }, function(msg){
           console.log('erreur promesses : ' + msg);
         });
 
-     /* { _id: 1,
-        name: "Henry Dupont",
-        action: "a commenté",
-        music: "Pumped Up Kicks",
-        author: "Jhon Doe",
-        created_at: 1454616841,
-        glyphicon: 'glyphicon-comment'
-      },
-      { _id: 2,
-        name: "Henry Durant",
-        action: "a édité commentaire",
-        music: "Pumped Up Kicks",
-        author: "Jhon Doe",
-        created_at: 1454616842,
-        glyphicon: 'glyphicon-comment'
-      },
-      { _id: 3,
-        name: "Butch Clancy",
-        action: "a noté",
-        music: "Close Encounter",
-        author: "Mylo",
-        created_at: 1454616843,
-        glyphicon: 'glyphicon-certificate'
-      },
-      { _id: 4,
-        name: "Butch Clancy",
-        action: "a modifié sa note",
-        music: "Close Encounter",
-        author: "Mylo",
-        created_at: 1454616844,
-        glyphicon: 'glyphicon-certificate'
-      },
-      { _id: 5,
-        name: "Butch Clancy",
-        action: "a follow",
-        music: "",
-        author: "Mylo",
-        created_at: 1454616845,
-        glyphicon: 'glyphicon-thumbs-up'
-      },
-      { _id: 6,
-        name: "Butch Clancy",
-        action: "ne follow plus",
-        music: "Close Encounter",
-        author: "Mylo",
-        created_at: 1454616846,
-        glyphicon: 'glyphicon-thumbs-down'
-      },
-      { _id: 7,
-        name: "Mylo",
-        action: "a ajouté un mix",
-        music: "Close Encounter",
-        author: "Mylo",
-        created_at: 1454616847,
-        glyphicon: 'glyphicon-volume-up'
-      },
-      { _id: 8,
-        name: "Mylo",
-        action: "a édité un mix",
-        music: "Close Encounter",
-        author: "Mylo",
-        created_at: 1454616848,
-        glyphicon: 'glyphicon-volume-up'
-      },
-      { _id: 9,
-        name: "Mylo",
-        action: "a supprimé un mix",
-        music: "Close Encounter",
-        author: "Mylo",
-        created_at: 1454616849,
-        glyphicon: 'glyphicon-volume-up'
-      }*/
 
     $scope.isTabMenuNewsSelected = true;
 

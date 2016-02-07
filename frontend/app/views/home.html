@@ -56,7 +56,7 @@
         <div class="row borderTop">
           <img class="avatar" src="images/logo.png" alt="avatar" />
           <p style="margin-top: 10px; text-align: left; font-size: 15px;"><i class="glyphicon glyphicon-envelope"></i> {{email}}</p>
-          <p style="text-align: left; font-size: 15px;"><i class="glyphicon glyphicon-time"></i> Joined on 15 Nov 2013</p>
+          <p style="text-align: left; font-size: 15px;"><i class="glyphicon glyphicon-time"></i> Joined on {{ created_at | date:"MM/dd/yyyy 'at' h:mma" }}<!--15 Nov 2013--></p>
 
           <form name="logoutForm" ng-submit="logout()" novalidate ng-controller="UserCtrl as user">
                <button type="submit"  ng-disabled="logoutForm.$invalid" class="button button-link button-logout">
@@ -188,7 +188,7 @@
   </div>
 
   <div id="demo" >
-    <div class="row" style="background-color: gray; position: absolute; bottom: 0; left: 0; right: 0; margin: auto; border: none; z-index : 99; min-height: 120px !important;">
+    <div ng-if="currentSong.name" class="row" style="background-color: gray; position: absolute; bottom: 0; left: 0; right: 0; margin: auto; border: none; z-index : 99; min-height: 120px !important;">
         <div class="col-sm-4">
           <auto-scoll-text comments="currentSong.comment"></auto-scoll-text>
             <!-- A COMMENTER<span>
@@ -229,40 +229,6 @@
               title : {{currentSong.name}} - author : {{currentSong.author.full_name}}
             </span>
         </div>
-
-
-
-
-
-
-
- <div class="list-group" id="playlist">
-  
-
-                    <a href=""
-                       ng-class="{ 'list-group-item': true, active: isPlaying('./media/test.wav') }"
-                       ng-click="play('./media/test.wav')">
-                        <i class="glyphicon glyphicon-play"></i>
-                        zdqdqz
-                        <span class="badge">1:04</span>
-                    </a>
-
-                </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         <div class="col-sm-2">
             <!--<button class="btn btn-success btn-block" ng-click="wavesurfer.playPause()">
                 <span id="play" ng-show="paused">

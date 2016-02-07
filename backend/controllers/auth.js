@@ -1,6 +1,8 @@
 var constants = require('../config/constants');
 var utils = require('../config/utils');
 
+var ObjectID = require("bson-objectid");
+
 
 var usersRepositoryModule = require('../repositories/users');
 var usersRepository = new usersRepositoryModule.UsersRepository();
@@ -85,7 +87,8 @@ exports.login = function(req, res) {
 		      /*req.session.idUser = result._id;
 		      req.session.emailUser = result.email;
 		      */
-		      //console.log(req.session);
+		      
+		      result.created_at = ObjectID(result._id).getTimestamp();
 		      
 		      res.status(200);
 		      res.json({ status: constants.JSON_STATUS_SUCCESS,
