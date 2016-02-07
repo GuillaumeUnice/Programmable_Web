@@ -27,9 +27,9 @@
               <div class="borderTop border" ng-repeat="user in searchResults.users">
                 <img style="width : 40px !important;" class="avatar avatarList" src="images/logo.png" alt="avatar" />
                 <span>{{ user.full_name }}</span>
-                <i title="look profile" class="iconList glyphicon glyphicon-user pull-right button-icon-link"></i>
-                <i ng-if="(user._id | follow:followers)" title="unfollow" class="iconList glyphicon glyphicon-star pull-right button-icon-link button-icon-unfollow" ng-click="unfollow(user)"></i>
-                <i ng-if="!(user._id | follow:followers)" title="follow" class="iconList glyphicon glyphicon-star pull-right button-icon-link" ng-click="follow(user)"></i>
+                <!--<i title="look profile" class="iconList glyphicon glyphicon-user pull-right button-icon-link"></i>-->
+                <i ng-if="(user._id | follow:following)" title="unfollow" class="iconList glyphicon glyphicon-star pull-right button-icon-link button-icon-unfollow" ng-click="unfollow(user)"></i>
+                <i ng-if="!(user._id | follow:following)" title="follow" class="iconList glyphicon glyphicon-star pull-right button-icon-link" ng-click="follow(user)"></i>
               </div>
             </div>
           </div>
@@ -55,7 +55,7 @@
         <button ng-click="sendKeyWords()">Rechercher</button>-->
         <div class="row borderTop">
           <img class="avatar" src="images/logo.png" alt="avatar" />
-          <p style="margin-top: 10px; text-align: left; font-size: 15px;"><i class="glyphicon glyphicon-envelope"></i> test@gmail.com</p>
+          <p style="margin-top: 10px; text-align: left; font-size: 15px;"><i class="glyphicon glyphicon-envelope"></i> {{email}}</p>
           <p style="text-align: left; font-size: 15px;"><i class="glyphicon glyphicon-time"></i> Joined on 15 Nov 2013</p>
 
           <form name="logoutForm" ng-submit="logout()" novalidate ng-controller="UserCtrl as user">
@@ -110,9 +110,9 @@
           </form>
           <div class="borderTop" ng-repeat="followed in following | orderBy:'created_at':true | filter:{ full_name:filterFollower }">
             <img style="width : 40px !important;" class="avatar avatarList" src="images/logo.png" alt="avatar" />
-            <span>{{ followed.full_name }} {{ followed._id | follow:followers }}</span>
-            <i title="look profile" class="iconList glyphicon glyphicon-user pull-right button-icon-link" ng-click="follow(followed)"></i>
-            <i title="unfollowed" class="iconList glyphicon glyphicon-star pull-right button-icon-link" ng-click="seeProfil(followed)"></i>
+            <span>{{ followed.full_name }}</span>
+            <!--<i title="look profile" class="iconList glyphicon glyphicon-user pull-right button-icon-link" ng-click="follow(followed)"></i>-->
+            <i title="unfollow" class="iconList glyphicon glyphicon-star pull-right button-icon-link button-icon-unfollow" ng-click="unfollow(followed)"></i>
           </div>
         </div>
 
@@ -126,13 +126,15 @@
               </div>
               <div class="cbp_tmlabel">
                 <h2 style="font-size: 17px !important;">
-                  {{ new.name }} {{ new.action }} :
+                  {{ new.describ }}
+                </h2>
+                  <!--{{ new.action }} :
                 </h2>
                 <p>
                   <i style="cursor : initial !important;" class="iconList glyphicon glyphicon-headphones pull-left button-icon-link"></i>
                   <span>{{ new.author }} - {{ new.music }}</span>
                   <i title="play" class="iconList glyphicon glyphicon-play pull-right button-icon-link"></i>
-                </p>
+                </p>-->
               </div>
             </li>
 
@@ -166,11 +168,17 @@
         <form>
           <input type="text" placeholder="filter..." ng-model="filterMyMix"/>
         </form>
-
+        <button style="margin-top: 5px !important;" type="submit" class="button button-link glyphicon-plus"  ng-click="getMixedSongs()">
+          getmixed
+        </button>
         <div class="borderTop" ng-repeat="mix in myMix | orderBy:'created_at':true | filter:{ name:filterMyMix}">
           <i style="cursor : initial !important;" class="iconList glyphicon glyphicon-headphones pull-left button-icon-link"></i>
-          <span>{{ mix.name }}</span>
-          <i title="play" class="iconList glyphicon glyphicon-play pull-right button-icon-link"></i>
+          <span>{{ mix.name_new }}</span>
+          <!--<i title="play" class="iconList glyphicon glyphicon-play pull-right button-icon-link" ng-href="#/mix"></i>-->
+          <a ng-href="#/mix/{{mix.name_new}}">
+          <button type="submit" class="iconList glyphicon glyphicon-play pull-right button-icon-link" >play
+          </button>
+            </a>
         </div>
       </div>
     </div>
@@ -184,7 +192,7 @@
             <!-- A COMMENTER<span>
               Je pense que ce titre est a prendre avec des pincettes :D
             </span> A COMMENTER-->
-            <form name="comment" ng-submit="addComment()" novalidate style="margin-top: 10px;">
+            <form name="comment" ng-submit="addComment(myComment)" novalidate style="margin-top: 10px;">
               <input type="text" placeholder="No comment already!" ng-model="myComment" style="float: left; float: left; bottom: -75px; position: absolute; width: 90%;     border: 3px solid #F57362;" required/>
               <!--<button type="submit" class="button button-link button-player" ng-disabled="comment.$invalid"><span class="glyphicon glyphicon-send button-icon" style="font-size: 25px !important;"></span>Add
               </button>-->
@@ -202,12 +210,13 @@
             <br>
             <span>Votre note : </span>
             <span class="rating">
-              <span>☆</span>
-              <span>☆</span>
-              <span>☆</span>
-              <span>☆</span>
-              <span class="marked">☆</span>
+              <span ng-class="{'marked' : currentSong.myMark >= 5}" ng-click="addMark(5);">☆</span>
+              <span ng-class="{'marked' : currentSong.myMark >= 4}" ng-click="addMark(4);">☆</span>
+              <span ng-class="{'marked' : currentSong.myMark >= 3}" ng-click="addMark(3);">☆</span>
+              <span ng-class="{'marked' : currentSong.myMark >= 2}" ng-click="addMark(2);">☆</span>
+              <span ng-class="{'marked' : currentSong.myMark >= 1}" ng-click="addMark(1);">☆</span>
             </span>
+            <!--<span ng-repeat="n in [].constructor(5) track by $index">{{$index}}</span> -->
         </div>
         <div class="col-sm-4">
             <ng-wavesurfer url="./media/test.wav" wave-color="#337ab7" progress-color="#23527c" height="64">
@@ -232,13 +241,12 @@
             <button class="button button-link button-player" ng-click="wavesurfer.playPause()">
               <span ng-if="paused" class="glyphicon glyphicon-play button-icon" style="font-size: 25px !important;"></span>
               <span ng-if="!paused" class="glyphicon glyphicon-pause button-icon" style="font-size: 25px !important;"></span>
-              <span ng-if="paused">Play</span>
-              <span ng-if="!paused">Pause</span>
+              <span>Play</span>
             </button>
-            <button class="button button-link button-player">
+            <!--<button class="button button-link button-player">
               <span class="glyphicon glyphicon-send button-icon" style="font-size: 25px !important;"></span>
               Queue
-            </button>
+            </button>-->
             <!--<button class="btn btn-success btn-block" ng-click="wavesurfer.playPause()">
               Queue
             </button>

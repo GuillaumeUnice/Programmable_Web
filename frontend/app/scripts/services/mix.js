@@ -16,7 +16,13 @@ angular.module('frontendApp')
     var compressorNode = [];
     var filter = [];
     var sources = [];
+    var mixedInfo = {
+      'name_new' : '',
+      'name' : '',
+      'info' : {
 
+      }
+    };
     //================================================================================
     // INIT
     //================================================================================
@@ -109,7 +115,39 @@ angular.module('frontendApp')
 
     function finishedLoading(bufferList, callback) {
       buffers = bufferList;
-      callback(buffers);
+      var conf= callback(buffers);
+      sources = [];
+      trackVolumeNodes= [];
+      trackVolumeNodesL= [];
+      compressor=[];
+      filter=[];
+      // Create a single gain node for master volume
+      masterVolumeNode = context.createGain();
+      masterSlideNode = context.createGain();
+      samples = [];
+      //var splitter =[];
+      merger=[];
+      buffers.forEach(function(sample, i) {
+        // each sound sample is the  source of a graph
+        console.log("buffers " + i);
+
+        //sources[i].connect(filter[i]);
+        // connect each sound sample to a vomume node
+
+        filter[i] = context.createBiquadFilter();
+        filter[i].type = filter[i].LOWPASS;
+        filter[i].frequency.value = conf.info[i].frequancy;
+        trackVolumeNodes[i] = context.createGain();
+        trackVolumeNodesL[i] = context.createGain();
+        trackVolumeNodes[i].gain.value = conf.info[i].right;
+        trackVolumeNodesL[i].gain.value = conf.info[i].left;
+        compressor[i] = context.createDynamicsCompressor();
+        analyser[i] = context.createAnalyser();
+        // Connect the sound sample to its volume node
+
+        //sources[i].connect(trackVolumeNodes[i]);
+        merger[i] = context.createChannelMerger(2);
+      });
     };
 
 
@@ -117,20 +155,25 @@ angular.module('frontendApp')
 
       resetAllBeforeLoadingANewSong(); // stop all tracks
 
+      mixedInfo.name= songName;
       console.log('NOM ' +songName);
 
       var xhr = new XMLHttpRequest();
       xhr.open('GET', CONFIG.baseUrlApi +"/track/" + songName, true);
       xhr.onload = function(e) {
-
+        var infos =[];
         var i = 0;
         var track = JSON.parse(this.response);
+        //console.log("track"+track.instruments.length);
         track.instruments.forEach(function(instrument) {
           var url = CONFIG.baseUrlApi + "/track/" + songName + "/sound/" + instrument.sound;
           tracks.push(url);
+
+          infos.push({'name': ""+instrument.sound, 'left' : -2, 'right' : 1, 'frequancy' : 5000});
           i++;
         });
-
+        mixedInfo.info= infos;
+        //console.log("track"+track.instruments.length);
         callback(track);
 
         // resize canvas depending on number of samples
@@ -153,7 +196,22 @@ angular.module('frontendApp')
       buildGraph(buffers);
       playFrom(startTime);
     }
+    function disconn(){
+      buffers.forEach(function(sample, i) {
+        sources[i].disconnect(trackVolumeNodes[i]);
+        sources[i].disconnect(trackVolumeNodesL[i]);
+        sources[i].disconnect(analyser[i]);
 
+        trackVolumeNodes[i].disconnect(merger[i], 0, 0);
+        trackVolumeNodesL[i].disconnect(merger[i], 0, 1);
+        sources[i].disconnect(merger[i]);
+        analyser[i].disconnect(merger[i]);
+
+        merger[i].disconnect(filter[i]);
+        filter[i].disconnect(context.destination);
+        samples =sources;
+      });
+    }
 
     function pauseAllTracks() {
         // Then stop playing
@@ -161,6 +219,8 @@ angular.module('frontendApp')
           // destroy the nodes
           s.stop(0);
         });
+      disconn();
+
         paused = true;
     }
 
@@ -190,7 +250,7 @@ angular.module('frontendApp')
       },
 
       playAT :function (b,startTime) {
-        buffers = b;
+        //buffers = b;
         playAllTracks(startTime);
         console.log("plyAT= " + buffers.length);
         //return buffers;
@@ -211,6 +271,16 @@ angular.module('frontendApp')
         buffers = b;
         stopAllTracks();
         console.log("pauAT= " + buffers.length);
+      },
+
+      savemixed: function (s) {
+        console.log("s"+s);
+        if(s==''||s==undefined){
+          alert("please input the name");
+        }else {
+          savemixedInfo(s);
+          console.log("pauAT= " + buffers.length);
+        }
       },
 
       getAllTrackList : function(songName, callback, callbackFinishedLoading) {
@@ -267,31 +337,50 @@ angular.module('frontendApp')
         setFilterType(i,val);
       }**/
     };
-
+    function savemixedInfo(s) {
+      mixedInfo.name_new = s;
+      var deferred = $q.defer();
+      $http.post(CONFIG.baseUrlApi + '/savemixed', {mixed: mixedInfo})
+        .success(function (data) {
+          //notification.writeNotification(data);
+          deferred.resolve(data);
+        }).error(function (data) {
+          //notification.writeNotification(data);
+          deferred.reject(false);
+        });
+      return deferred.promise;
+    }
 
     function setGain(i , val) {
-      var fraction = parseInt(masterVolumeSlider.value) / parseInt(masterVolumeSlider.max);
+      /*var fraction = parseInt(masterVolumeSlider.value) / parseInt(masterVolumeSlider.max);
       // Let's use an x*x curve (x-squared) since simple linear (x) does not
       // sound as good.
       if( masterVolumeNode != undefined)
-        masterVolumeNode.gain.value = fraction * fraction;
+        masterVolumeNode.gain.value = fraction * fraction;*/
+      trackVolumeNodes[i].gain.value = val;
+      trackVolumeNodesL[i].gain.value = val;
     }
 
     function setMonoL(i,val) {
       trackVolumeNodes[i].gain.value = val;
+      //filter[i].frequency.value = val;
+      mixedInfo.info[i].left=val;
       console.log("volume "+trackVolumeNodes[i].gain.value);
 
     }
 
     function setMonoR(i,val) {
       trackVolumeNodesL[i].gain.value = val;
+      //filter[i].frequency.value = val;
+      mixedInfo.info[i].right=val;
       console.log("volumeL "+trackVolumeNodes[i].gain.value);
     }
 
     function setFilterFrequency(i,val) {
       //filter[i].frequency.value = parseFloat(val);
-      filter[i].gain.value = val;
-      console.log("Freq "+filter[i].gain.value);
+      filter[i].frequency.value = val;
+      mixedInfo.info[i].frequancy=val;
+      console.log("Freq "+filter[i].frequency.value);
     }
 
 
@@ -362,9 +451,9 @@ angular.module('frontendApp')
 
     var merger=[];
     var trackVolumeNodes= [];
-
+    var sources = [];
     function buildGraph(bufferList) {
-      var sources = [];
+      /*sources = [];
       trackVolumeNodes= [];
       trackVolumeNodesL= [];
       compressor=[];
@@ -375,14 +464,13 @@ angular.module('frontendApp')
       //var leftDelay = context.createDelayNode();
       //var rightDelay = context.createDelayNode();
       samples = [];
-      var b = bufferList.concat();
-      var splitter =[];
-      merger=[];
+      //var splitter =[];
+      merger=[];*/
       console.log("in build graph, bufferList.size = " + bufferList.length);
 
       buffers.forEach(function(sample, i) {
         // each sound sample is the  source of a graph
-        console.log("buffers "+i);
+        /**********console.log("buffers "+i);
         sources[i] = context.createBufferSource();
         sources[i].buffer = sample;
         //var trackVolumeNodes2 = [];
@@ -399,10 +487,12 @@ angular.module('frontendApp')
         // Connect the sound sample to its volume node
 
         //sources[i].connect(trackVolumeNodes[i]);
-        merger[i] = context.createChannelMerger(2);
+        merger[i] = context.createChannelMerger(2);*********/
 
-        splitter[i] = context.createChannelSplitter(2);
+        //splitter[i] = context.createChannelSplitter(2);
         //sources[i].connect(splitter[i],0,0);
+        sources[i] = context.createBufferSource();
+        sources[i].buffer = sample;
         sources[i].connect(trackVolumeNodes[i]);
         sources[i].connect(trackVolumeNodesL[i]);
         sources[i].connect(analyser[i]);

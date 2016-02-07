@@ -27,5 +27,7 @@ angular.module('frontendApp')
       setFeedbacks: function (feedbacks) {
         data.feedbacks = feedbacks;
       }
+
+      
     };
   });

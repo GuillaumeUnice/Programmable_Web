@@ -6,7 +6,7 @@
   <div class="modal-body">
     <div class="container">
       <div class="row">
-        <dv class="col-md-6 col-md-offset-1">
+        <div class="col-md-6 col-md-offset-1">
           <form class="form-horizontal"  name="register" ng-submit="signUp(user)" novalidate>
             <label for="email">Email</label>
             <br>
@@ -16,6 +16,21 @@
             </span>
             <span ng-show="register.email.$error.required" class="red">
                 <span class="glyphicon glyphicon-exclamation-sign"></span> email is required!
+            </span>
+            <br>
+            <br>
+            <label for="password">First Name</label>
+            <br>
+            <input type="text" name="first_name" placeholder="First Name" ng-model="user.first_name" required>
+            <span ng-show="register.first_name.$error.required" class="red">
+                <span class="glyphicon glyphicon-exclamation-sign"></span> A first name is required!
+            </span>
+            <br>
+            <label for="password">Name</label>
+            <br>
+            <input type="text" name="name" placeholder="Name" ng-model="user.name" required>
+            <span ng-show="register.name.$error.required" class="red">
+                <span class="glyphicon glyphicon-exclamation-sign"></span> A name is required!
             </span>
             <br>
             <br>
@@ -51,4 +66,5 @@
   </div>
   <div class="modal-footer">
   </div>
+</div>
 </div>

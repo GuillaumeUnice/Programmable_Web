@@ -17,7 +17,7 @@ exports.register = function(req, res) {
 	usersRepository.findUserByPseudo(req.db, req.body.email, function(err, result) {
       if(err) {
         console.log(err);
-        res.status(404);
+        res.status(500);
         res.json({ status: constants.JSON_STATUS_ERROR,
           title: 'Erreur Système',
           message: 'Une erreur inattendue s\'est produite ! Veuillez contacter l\'administrateur'});
@@ -28,7 +28,7 @@ exports.register = function(req, res) {
         usersRepository.addUser(req.db, req.body, function(err, result) {
           if(err) {
             console.log(err);
-            res.status(404);
+            res.status(500);
             res.json({ status: constants.JSON_STATUS_ERROR,
               title: 'Erreur Système',
               message: 'Une erreur inattendue s\'est produite ! Veuillez contacter l\'administrateur'});
@@ -40,8 +40,8 @@ exports.register = function(req, res) {
             message: 'Vous êtes à présent inscrit !'});
         });
       } else {
-        res.status(401);
-        res.json({ status: constants.JSON_STATUS_SUCCESS,
+        res.status(403);
+        res.json({ status: constants.JSON_STATUS_WARNING,
           title: 'Connexion',
           message: 'Un compte avec cet email existe déjà !'});
       }
@@ -77,13 +77,16 @@ exports.login = function(req, res) {
 		    }
 		  
 		    if(resCompare) {
-		      var token = jwt.sign(result, constants.JWT_SECRET, { expiresInMinutes: 60*5 });
+		      delete result.password;
+		      var token = jwt.sign(result, constants.JWT_SECRET, { expiresInMinutes: 60 });
+		      //console.log(token);
+
 		      // TODO ADD
 		      /*req.session.idUser = result._id;
 		      req.session.emailUser = result.email;
 		      */
 		      //console.log(req.session);
-		      delete result.password;
+		      
 		      res.status(200);
 		      res.json({ status: constants.JSON_STATUS_SUCCESS,
 		        title: 'Connexion',

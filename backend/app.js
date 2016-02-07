@@ -7,6 +7,10 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var busboy = require('connect-busboy');
 
+var jwt = require('jsonwebtoken');
+var constants = require('./config/constants');
+var authMiddelware = require('./config/authMiddleware');
+
 /** TODO ADD **/
 //var session = require('express-session');
 
@@ -55,6 +59,7 @@ routess.search = require('./controllers/search.js');
 routess.feedbacks = require('./controllers/feedbacks.js');
 routess.follow = require('./controllers/follow.js');
 routess.manageMySongs = require('./controllers/manageMySongs.js');
+routess.account = require('./controllers/account.js');
 
 
 app.use(function(req, res, next) {
@@ -82,18 +87,40 @@ app.post('/login', routess.auth.login);
 app.post('/logout', routess.auth.logout);
 
 app.get('/feedbacks/:idSong', routess.feedbacks.getFeedbacks);
-app.post('/feedbacks/:idSong', routess.feedbacks.postFeedback);
 
-app.post('/search', routess.search.searchSongAndUser);
+function ensureAuthorized(req, res, next) {
+    var bearerToken;
+    var bearerHeader = req.headers["authorization"];
+    //console.log(jwt.decode(bearerHeader));
+    if (typeof bearerHeader !== 'undefined') {
+        var bearer = bearerHeader.split(" ");
+        bearerToken = bearer[1];
+        jwt.verify(bearerToken, constants.JWT_SECRET, function(err, decoded) {
+          if(err) {
+            res.send(401);
+            return;
+          }
+          req.token = decoded;
+          console.log(req.token);
+          next();
+        });
+    } else {
+        res.send(401);
+    }
+}
+
+app.post('/comment', ensureAuthorized, routess.feedbacks.postFeedback);
+app.post('/mark', ensureAuthorized, routess.feedbacks.postMark);
+app.post('/search', ensureAuthorized, routess.search.searchSongAndUser);
 
 app.post('/follow',routess.follow.followSomeone);
 app.get('/follow/followers/:idUser',routess.follow.getFollowers);
 app.get('/follow/following/:idUser',routess.follow.getFollowing);
-app.delete('/follow/',routess.follow.unfollow);
+app.post('/unfollow/',routess.follow.unfollow);
 
 app.get('/manageMySongs/:idUser',routess.manageMySongs.findMySongs);
 
-
+app.get('/account/:idUser',routess.account.getAccountInfo);
 
 
 app.use('/', routes);
