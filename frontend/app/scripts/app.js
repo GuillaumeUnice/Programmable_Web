@@ -50,6 +50,12 @@ angular
         controllerAs: 'mix',
         access: { requiredLogin: true }
       })
+      .when('/mix/:id', {
+        templateUrl: 'views/mix.html',
+        controller: 'MixCtrl',
+        controllerAs: 'mix',
+        access: { requiredLogin: true }
+      })
       .when('/register', {
         templateUrl: 'views/register.html',
         controller: 'UserCtrl',

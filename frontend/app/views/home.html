@@ -166,11 +166,17 @@
         <form>
           <input type="text" placeholder="filter..." ng-model="filterMyMix"/>
         </form>
-
+        <button style="margin-top: 5px !important;" type="submit" class="button button-link glyphicon-plus"  ng-click="getMixedSongs()">
+          getmixed
+        </button>
         <div class="borderTop" ng-repeat="mix in myMix | orderBy:'created_at':true | filter:{ name:filterMyMix}">
           <i style="cursor : initial !important;" class="iconList glyphicon glyphicon-headphones pull-left button-icon-link"></i>
-          <span>{{ mix.name }}</span>
-          <i title="play" class="iconList glyphicon glyphicon-play pull-right button-icon-link"></i>
+          <span>{{ mix.name_new }}</span>
+          <!--<i title="play" class="iconList glyphicon glyphicon-play pull-right button-icon-link" ng-href="#/mix"></i>-->
+          <a ng-href="#/mix/{{mix.name_new}}">
+          <button type="submit" class="iconList glyphicon glyphicon-play pull-right button-icon-link" >play
+          </button>
+            </a>
         </div>
       </div>
     </div>

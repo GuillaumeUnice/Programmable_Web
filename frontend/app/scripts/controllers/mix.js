@@ -10,7 +10,7 @@
  */
 angular.module('frontendApp')
 
-  .controller('MixCtrl', function ($scope,$rootScope, user,mix, CONFIG,FileUploader,ModalService) {
+  .controller('MixCtrl', function ($scope,$rootScope, user,mix, CONFIG,FileUploader,ModalService,$routeParams,$q,$http,notification) {
 
     //** Scope
     /**=========================**/
@@ -48,10 +48,41 @@ angular.module('frontendApp')
 
     };
 
+    $scope.getMixedSongInfo = function(str){
+      var deferred = $q.defer();
+      $http.get(CONFIG.baseUrlApi + '/getMixedSongInfo', {params: {name_find: str}})
+        .success(function (data) {
+          //notification.writeNotification(data);
+          deferred.resolve(data);
+          //config = data.message;
+          console.log(data.message);
+        }).error(function (data) {
+          //notification.writeNotification(data);
+          deferred.reject(false);
+        });
+      return deferred.promise;
+    };
     $scope.init = function () {
+      console.log("id "+$routeParams.id );
       mix.init(function(b){
         $rootScope.listSongs =b;
       });
+      if($routeParams.id){
+        $scope.loadSong = false;
+        $scope.displayLoading = true;
+
+        $scope.song = $routeParams.id;
+        $scope.getMixedSongInfo($routeParams.id)
+          .then(function(data){
+            $scope.getAllTracks2(data.message[0].name, data.message);
+            //console.log("data"+data.message[0].name);
+          },function(msg){
+            console.log('erreur promesses : ' + msg);
+          });
+      } else{
+        console.log("new mix");
+      }
+
     };
 
     $scope.getAllTracks = function(name) {
@@ -75,6 +106,32 @@ angular.module('frontendApp')
         console.log("Finis de charger");
       });
     };
+    $scope.getAllTracks2 = function(name,conf) {
+      //$scope.spinner = {active : true};
+      //console.log("conf  "+conf[0]);
+      mix.getAllTrackList(name, function(b){
+        console.log("kkkkk"+ b.instruments.length);
+        for(var i = 0; i < b.instruments.length; i++ ) {
+          console.log("kkkkk");
+          $scope.data[i] = {
+            "gain" : 0.5,
+            "gainL" : conf[0].info[i].left,
+            "frequence" : conf[0].info[i].frequancy,
+            "gainR" : conf[0].info[i].right
+          };
+          console.log("scopedata"+ $scope.data[i].frequence);
+        }
+        $scope.listTracks =b;
+      }, function(a){
+        //$scope.spinner = {active : false};
+        $scope.buf = a;
+        $scope.displayLoading = false;
+        $scope.mixTable = true;
+        $scope.$apply();
+        console.log("Finis de charger");
+        return conf[0];
+      });
+    };
 
     $scope.play = function(n) {
       $scope.showPlayButton = false;
@@ -93,6 +150,10 @@ angular.module('frontendApp')
 
     $scope.stop = function () {
       mix.stopAT($scope.buf);
+    };
+
+    $scope.savemixed = function (s) {
+      mix.savemixed(s);
     };
 
     $scope.changerangeslide = function (num) {

@@ -1,13 +1,13 @@
 'use strict';
 
 angular.module('frontendApp')
-  .controller('HomeCtrl', function ($scope, notification, CONFIG, ModalService, searchService,currentMusicService, feedbackService,auth, follow) {
+  .controller('HomeCtrl', function ($scope, notification, CONFIG, ModalService, searchService,currentMusicService, feedbackService,auth, follow,$http,$q,$rootScope) {
     // initialisation
     $scope.followers = [];
     $scope.following = [];
 
     $scope.myMix = [
-      { _id: 1,
+      /*{ _id: 1,
         name: "Drop The Pressure",
         created_at: 1454616841
       },
@@ -34,9 +34,25 @@ angular.module('frontendApp')
       { _id: 7,
         name: "Turn The World On 2",
         created_at: 1454616847
-      },
+      },*/
     ];
 
+    $scope.getMixedSongs = function(){
+      var deferred = $q.defer();
+      $http.get(CONFIG.baseUrlApi + '/getmixed')
+        .success(function (data) {
+          //notification.writeNotification(data);
+          deferred.resolve(data);
+          for(var i =0; i<data.message.length;i++) {
+            $scope.myMix.push({_id :i,name_new : data.message[i].name_new, name: data.message[i].name,created_at: 1454616846});
+          }
+            console.log(data.message);
+        }).error(function (data) {
+          //notification.writeNotification(data);
+          deferred.reject(false);
+        });
+      return deferred.promise;
+    };
     /*$scope.followers = [
       { _id: 1,
         name: "Henry Dupont",
@@ -153,7 +169,7 @@ angular.module('frontendApp')
         //$scope.results = data;
         if((data.songs.length === 0) && (data.users.length === 0)) {
           notification.writeNotification(
-            { 
+            {
               status: CONFIG.JSON_STATUS_NOTICE,
               title: 'Search',
               message: 'There is no result!'

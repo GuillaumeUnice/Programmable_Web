@@ -58,6 +58,45 @@ function SongsRepository () {
     });
  };
 
+  this.findAllMixedSongs = function(db,  callback) {
+    var cursor = db.collection('mixed').find( );
+    var i =0;
+    var ms =[];
+    cursor.each(function(err, doc) {
+      //assert.equal(err, null);
+      console.log(i++);
+      if (doc !== null) {
+        ms.push({name_new:doc.name_new,name:doc.name});
+        console.log("docname"+doc.name);
+        //callback(null,doc);
+      } else {
+        console.log("not found in the DB");
+        console.log("ms"+ms);
+        callback(null,ms);
+      }
+    });
+
+  };
+
+  this.findMixedSong = function(db, findby, content, callback) {
+    var cursor = db.collection('mixed').find({ name_new : content } );
+    var i =0;
+    var ms =[];
+    cursor.each(function(err, doc) {
+      //assert.equal(err, null);
+      console.log(i++);
+      if (doc !== null) {
+        ms.push(doc);
+        console.log("mixedname"+doc.name);
+        //callback(null,doc);
+      } else {
+        console.log("not found in the DB");
+        console.log("mixed ms "+ms[0].name);
+        callback(null,ms);
+      }
+    });
+  };
+
     //Pre-condition : creation des indexes dans la BD
     this.searchSongs_by_keywords = function(db,keywords,callback) {
         var cursor = db.collection('songs').find({ name: { $regex: keywords, $options: "i"  }  } );
@@ -221,6 +260,7 @@ function SongsRepository () {
 
     this.savemiedjson = function(db, input, callback) {
       console.log('insertDocument');
+      console.log(input);
       db.collection('mixed').insertOne(input,
         function(err, result) {
           //assert.equal(err, null);
