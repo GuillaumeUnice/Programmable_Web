@@ -2,6 +2,7 @@
 
 angular.module('frontendApp')
   .controller('HomeCtrl', function ($scope, notification, CONFIG, ModalService, searchService,currentMusicService, feedbackService,auth, follow,$http,$q,$rootScope) {
+
     // initialisation
     $scope.followers = [];
     $scope.following = [];
@@ -149,14 +150,20 @@ angular.module('frontendApp')
 
     $scope.isTabMenuNewsSelected = true;
 
-    follow.getFollowing("56b4e07045b766bd49eb5d63").then(function(data){
+    follow.getFollowing(auth.id).then(function(data){
       $scope.following = data;
     },function(msg){
       console.log('erreur promesses : ' + msg);
     });
 
-    follow.getFollowers("56b4e07045b766bd49eb5d63").then(function(data){
+    follow.getFollowers(auth.id).then(function(data){
       $scope.followers = data;
+    },function(msg){
+      console.log('erreur promesses : ' + msg);
+    });
+
+    user.myMix(auth.id).then(function(data){
+      $scope.myMix = data;
     },function(msg){
       console.log('erreur promesses : ' + msg);
     });
@@ -184,15 +191,15 @@ angular.module('frontendApp')
 
     $scope.follow = function(user) {
         follow.follow(auth.id, user._id).then(function(data){
-          $scope.following.push(data);
+          $scope.following.push(user);
         },function(msg){
           console.log('erreur promesses : ' + msg);
         });
     }
 
     $scope.unfollow = function(user) {
-      follow.unFollow(auth.id, user._id).then(function(data){
-        $scope.followers.splice($scope.followers.indexOf(user), 1);
+      follow.unfollow(auth.id, user._id).then(function(data){
+        $scope.following.splice($scope.following.indexOf(user), 1);
       },function(msg){
         console.log('erreur promesses : ' + msg);
       });
@@ -246,7 +253,24 @@ angular.module('frontendApp')
         });
     };*/
 
-  $scope.addComment = function(){
-    alert("addComment");
+  $scope.addComment = function(comment){
+    alert("addComment : " + comment);
+    feedbackService.addComment("56b4ee3845b766bd49eb5d64", comment).then(function(data){
+      //$scope.currentSong.feedbacks.push();
+      console.log(data.data);
+    },function(msg){
+      console.log('erreur promesses : ' + msg);
+    });
   };
+
+  $scope.addMark = function(mark){
+    feedbackService.addMark("56b4ee3845b766bd49eb5d64", mark).then(function(data){
+      //$scope.currentSong.myMark = mark;
+      //$scope.currentSong.markAvg = data.data;
+      console.log(data.data);
+    },function(msg){
+      console.log('erreur promesses : ' + msg);
+    });
+  };
+
 });

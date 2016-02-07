@@ -7,6 +7,10 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var busboy = require('connect-busboy');
 
+var jwt = require('jsonwebtoken');
+var constants = require('./config/constants');
+var authMiddelware = require('./config/authMiddleware');
+
 /** TODO ADD **/
 //var session = require('express-session');
 
@@ -82,9 +86,31 @@ app.post('/login', routess.auth.login);
 app.post('/logout', routess.auth.logout);
 
 app.get('/feedbacks/:idSong', routess.feedbacks.getFeedbacks);
-app.post('/feedbacks/:idSong', routess.feedbacks.postFeedback);
 
-app.post('/search', routess.search.searchSongAndUser);
+function ensureAuthorized(req, res, next) {
+    var bearerToken;
+    var bearerHeader = req.headers["authorization"];
+    //console.log(jwt.decode(bearerHeader));
+    if (typeof bearerHeader !== 'undefined') {
+        var bearer = bearerHeader.split(" ");
+        bearerToken = bearer[1];
+        jwt.verify(bearerToken, constants.JWT_SECRET, function(err, decoded) {
+          if(err) {
+            res.send(401);
+            return;
+          }
+          req.token = decoded;
+          console.log(req.token);
+          next();
+        });
+    } else {
+        res.send(401);
+    }
+}
+
+app.post('/comment', ensureAuthorized, routess.feedbacks.postFeedback);
+app.post('/mark', ensureAuthorized, routess.feedbacks.postMark);
+app.post('/search', ensureAuthorized, routess.search.searchSongAndUser);
 
 app.post('/follow',routess.follow.followSomeone);
 app.get('/follow/followers/:idUser',routess.follow.getFollowers);
