@@ -349,16 +349,8 @@ router.route('/savemixed')
           message: 'Une erreur inattendu c\'est produit! Veuillez contacter l\'administrateur'});
         return;
       }
-
-      // verify if correct password thank to BCrypt Hash
-      // resCompare = true if same password else false
-      if(utils.isEmpty(result)) {
-        res.status(201);
-        res.json({ status: constants.JSON_STATUS_ERROR,
-          title: 'Erreur connexion',
-          message: 'L\'utilisateur n\'existe pas! Email incorrect!'});
-      } else {
-
+      else{
+        console.log(result);
       }
     });
     res.render('index', { title: 'Express' });

@@ -331,13 +331,21 @@ function SongsRepository () {
       );
 
       callback(null,"Comment added!");
-    }
+    };
 
 
     this.savemixedjson = function(db, input, callback) {
       console.log('insertDocument');
       console.log(input);
-      db.collection('mixed').insertOne(input,
+      db.collection('songs').insertOne(
+          {name: input.name_new,
+          info: input.info,
+          path: "", //A modifier d'urgence
+          feedbacks: [],
+           author: input.author,
+           created_at: new Date().getTime(),
+           isPublic: true
+          },
         function(err, result) {
           //assert.equal(err, null);
           console.log("Inserted a document into the songs collection.");

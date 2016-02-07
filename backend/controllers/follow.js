@@ -28,11 +28,8 @@ exports.followSomeone = function(req,res){
                                 action: " are now following "+following.full_name,
                                 created_at: new Date().getTime()};
                             usersRepository.writeEvent(req.db,idUser,event,function(){
-                                event = {
-                                    type: "social",
-                                    name: user.full_name,
-                                    action: " are now following "+following.full_name,
-                                    created_at: new Date().getTime()};
+                                event.name = user.full_name;
+                                event.action = " is now following "+following.full_name;
                                 usersRepository.notifyFollowers(req.db,idUser,event,
                                     function(msg){
                                         usersRepository.findUserById(req.db,idUser,function(user){

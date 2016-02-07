@@ -38,20 +38,22 @@ function UsersRepository () {
     if((user.password === undefined) || (user.email === undefined) || (user.name === undefined) || (user.first_name === undefined)) {
       callback('Value is not true!', null);
     }
-
-    db.collection('users').insertOne({
-          email: user.email,
-          password: user.password,
-          first_name: user.first_name,
-          name: user.name,
-          full_name : user.first_name + user.name,
-          following: [],
-          followers: [],
-          events: [],
-          songs: []},
-      function(err, result) {
-          callback(null, result);
-      });
+    else{
+      db.collection('users').insertOne({
+            email: user.email,
+            password: user.password,
+            first_name: user.first_name,
+            name: user.name,
+            full_name : user.first_name +" "+ user.name,
+            following: [],
+            followers: [],
+            events: [],
+            songs: []},
+          function(err, result) {
+            console.log(result);
+            callback(null, result);
+          });
+    }
   };
 
   this.addSong = function(db,idUser,song,successCB,errorCB){
