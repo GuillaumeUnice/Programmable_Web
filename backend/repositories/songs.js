@@ -290,26 +290,26 @@ function SongsRepository () {
         else{*/
           //console.log("oldMark : " + oldMark + " newMark : " + newMark);
             db.collection('songs').updateOne(
-              {"_id" : ObjectID(songId), "feedbacks._id": ObjectID(userId) },
-              { 
-                $set: { "feedbacks.$.mark" : mark }
-              }
-            );
-        
-          callback(null,"Mark added!");
-        //}
+                    {"_id" : ObjectID(songId), "feedbacks._id": ObjectID(userId) },
+                    {
+                        $set: { "feedbacks.$.mark" : +mark }
+                    }
+                );
+
+        callback(null,"Mark added!");
+
     };
 
     this.postMark = function(db, songId, userId, mark, callback){
       db.collection('songs').updateOne(
         {"_id" : ObjectID(songId) },
-        {
-          $push: { "feedbacks": { _id: ObjectID(userId), mark: +mark, comment: null } }
-        }
+          {
+              $push: {"feedbacks": {_id: ObjectID(userId), mark: +mark, comment: null}}
+          }
       );
 
       callback(null,"Mark added!");
-    }
+    };
 
     this.updateComment = function(db,songId, userId, comment, callback){
       db.collection('songs').updateOne(
@@ -344,7 +344,8 @@ function SongsRepository () {
           feedbacks: [],
            author: input.author,
            created_at: input.created_at,
-           isPublic: true
+           isPublic: true,
+              sumMarks: 0
           },
         function(err, result) {
           //assert.equal(err, null);
