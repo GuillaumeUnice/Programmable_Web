@@ -71,6 +71,7 @@ function UsersRepository () {
           first_name: user.first_name,
           name: user.name,
           full_name : user.first_name + user.name,
+          avatar : "avatars/default.png",
           following: [],
           followers: [],
           events: [],
