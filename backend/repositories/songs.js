@@ -290,26 +290,26 @@ function SongsRepository () {
         else{*/
           //console.log("oldMark : " + oldMark + " newMark : " + newMark);
             db.collection('songs').updateOne(
-              {"_id" : ObjectID(songId), "feedbacks._id": ObjectID(userId) },
-              { 
-                $set: { "feedbacks.$.mark" : mark }
-              }
-            );
-        
-          callback(null,"Mark added!");
-        //}
+                    {"_id" : ObjectID(songId), "feedbacks._id": ObjectID(userId) },
+                    {
+                        $set: { "feedbacks.$.mark" : +mark }
+                    }
+                );
+
+        callback(null,"Mark added!");
+
     };
 
     this.postMark = function(db, songId, userId, mark, callback){
       db.collection('songs').updateOne(
         {"_id" : ObjectID(songId) },
-        {
-          $push: { "feedbacks": { _id: ObjectID(userId), mark: +mark, comment: null } }
-        }
+          {
+              $push: {"feedbacks": {_id: ObjectID(userId), mark: +mark, comment: null}}
+          }
       );
 
       callback(null,"Mark added!");
-    }
+    };
 
     this.updateComment = function(db,songId, userId, comment, callback){
       db.collection('songs').updateOne(
@@ -331,13 +331,22 @@ function SongsRepository () {
       );
 
       callback(null,"Comment added!");
-    }
+    };
 
 
     this.savemixedjson = function(db, input, callback) {
       console.log('insertDocument');
       console.log(input);
-      db.collection('mixed').insertOne(input,
+      db.collection('songs').insertOne(
+          {name: input.name_new,
+          info: input.info,
+          path: "", //A modifier d'urgence
+          feedbacks: [],
+           author: input.author,
+           created_at: input.created_at,
+           isPublic: true,
+              sumMarks: 0
+          },
         function(err, result) {
           //assert.equal(err, null);
           console.log("Inserted a document into the songs collection.");

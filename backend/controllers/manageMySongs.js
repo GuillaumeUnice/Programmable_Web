@@ -19,3 +19,11 @@ exports.getMySongs = function(req,res){
         res.send(code,msg);
     })
 };
+
+exports.getMySongs2 = function(req,res){
+    usersRepository.findUserById(req.db,ObjectId(req.params.idUser),function(data){
+        res.send(data.songs);
+    },function(code,msg){
+        res.send(code,msg);
+    })
+};

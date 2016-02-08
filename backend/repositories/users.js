@@ -64,7 +64,7 @@ function UsersRepository () {
     if((user.password === undefined) || (user.email === undefined) || (user.name === undefined) || (user.first_name === undefined)) {
       callback('Value is not true!', null);
     }
-
+    
     db.collection('users').insertOne({
           email: user.email,
           password: user.password,
@@ -79,11 +79,12 @@ function UsersRepository () {
       function(err, result) {
           callback(null, result);
       });
+
   };
 
   this.addSong = function(db,idUser,song,successCB,errorCB){
     db.collection('users').updateOne({_id: idUser},{$push: {songs:
-    {_id: song._id, name: song.name, created_at : song.created_at}}},function(err,result){
+    {_id: song._id, name: song.name_new, created_at : song.created_at}}},function(err,result){
       if(err){
         errorCB(500,"Error!");
       }

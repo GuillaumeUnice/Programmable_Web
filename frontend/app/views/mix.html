@@ -12,6 +12,15 @@
     <a ng-href="#/upload">
       <button type="submit" class="button btn-red  btn-lg">Uploader des fichiers</button>
     </a>
+
+    <div class="row">
+      <div class="col-sm-4"></div>
+      <div class="col-sm-3">
+        <a ng-href="#/home">
+            <p> Back to home</p>
+        </a>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -148,7 +157,7 @@
       </div>
     </div>
 
-    <div class="col-md-2" class="center-block">
+    <div class="col-md-2" style="margin : 20px">
       <div class="row">
         <button type="button" class="btn btn-circle btn-raised ripple-effect btn-default" ng-click="stop()" ng-disabled="canStop">
           <span class="glyphicon glyphicon-stop"></span>
@@ -162,16 +171,22 @@
           <span class="glyphicon glyphicon-pause"></span>
         </button>
       </div>
-      <div class="row">
-        <input ng-disabled="!showPlayButton" type="text"  ng-model="savem"/>
+
+      <div class="row" style="margin-top : 10px">
+        <input placeholder="Nom" ng-disabled="!showPlayButton" type="text"  ng-model="savem"/>
         <button type="button" class="btn btn-success" aria-label="Left Align" ng-disabled="!showPlayButton" ng-click="savemixed(savem)">
           <span class="glyphicon glyphicon-floppy-save" aria-hidden="true">  Save</span>
         </button>
       </div>
     </div>
 
-    <div class="col-md-3">
-      <input id="slide" type="range" step="any" ng-value="0" ng-model="slide" ng-change="changerangeslide(slide)">
+    <div class="col-md-3"  style="margin-top : 20px">
+      <form>
+        <div class="form-group">
+          <label>Track time :</label>
+          <input id="slide" type="range" step="any" ng-value="0" ng-model="slide" ng-change="changerangeslide(slide)">
+        </div>
+      </form>
       <a ng-href="#/home">
         <button type="button" class="btn btn-danger" aria-label="Left Align">
           <span class="glyphicon glyphicon-log-in" aria-hidden="true">  Quitter</span>

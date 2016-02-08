@@ -16,6 +16,8 @@ var jwtMid = require('express-jwt');
 var bcrypt = require('bcryptjs');
 var salt = bcrypt.genSaltSync(10); // salage
 
+var ObjectId = require("bson-objectid");
+
 /**********************************************************************************
  * 					  Middleware ➜ to use for all requests
  **********************************************************************************/
@@ -48,7 +50,7 @@ router.get('/', function(req, res, next) {
       res.status(404);
       res.json({ status: constants.JSON_STATUS_ERROR,
         title: 'Erreur Système',
-        message: 'Une erreur inattendu c\'est produit! Veuillez contacter l\'administrateur'});
+        message: 'Une erreur inattendue s\'est produite! Veuillez contacter l\'administrateur'});
       return;
     }
 
@@ -63,7 +65,6 @@ router.get('/', function(req, res, next) {
 
     }
   });
-  res.render('index', { title: 'Express' });
 
 });
 
@@ -80,7 +81,7 @@ router.route('/login')
           res.status(404);
           res.json({ status: constants.JSON_STATUS_ERROR,
             title: 'Erreur Système',
-            message: 'Une erreur inattendu c\'est produit! Veuillez contacter l\'administrateur'});
+            message: 'Une erreur inattendue s\'est produite! Veuillez contacter l\'administrateur'});
           return;
         }
 
@@ -131,7 +132,7 @@ router.route('/auth/register')
         res.json({
           status: constants.JSON_STATUS_ERROR,
           title: 'Erreur Système',
-          message: 'Une erreur inattendu c\'est produit! Veuillez contacter l\'administrateur'
+          message: 'Une erreur inattendue s\'est produite! Veuillez contacter l\'administrateur'
         });
         return;
       }
@@ -145,7 +146,7 @@ router.route('/auth/register')
             res.json({
               status: constants.JSON_STATUS_ERROR,
               title: 'Erreur Système',
-              message: 'Une erreur inattendu c\'est produit! Veuillez contacter l\'administrateur'
+              message: 'Une erreur inattendue s\'est produite! Veuillez contacter l\'administrateur'
             });
             return;
           }
@@ -161,7 +162,7 @@ router.route('/auth/register')
         res.json({
           status: constants.JSON_STATUS_SUCCESS,
           title: 'Connexion',
-          message: 'Un compte avec cette email existe déjà!'
+          message: 'Un compte avec cet email existe déjà!'
         });
       }
     });
@@ -182,7 +183,7 @@ router.route('/save')
         res.status(404);
         res.json({ status: constants.JSON_STATUS_ERROR,
           title: 'Erreur Système',
-          message: 'Une erreur inattendu c\'est produit! Veuillez contacter l\'administrateur'});
+          message: 'Une erreur inattendue s\'est produite! Veuillez contacter l\'administrateur'});
         return;
       }
 
@@ -197,7 +198,7 @@ router.route('/save')
         res.status(201);
         res.json({ status: constants.JSON_STATUS_SUCCESS,
           title: 'Connexion',
-          message: 'Un compte avec cette email existe déjà!'});
+          message: 'Un compte avec cet email existe déjà!'});
       }
     });
   });
@@ -211,7 +212,7 @@ router.route('/upload')
         res.status(404);
         res.json({ status: constants.JSON_STATUS_ERROR,
           title: 'Erreur Système',
-          message: 'Une erreur inattendu c\'est produit! Veuillez contacter l\'administrateur'});
+          message: 'Une erreur inattendue s\'est produite! Veuillez contacter l\'administrateur'});
         return;
       }
 
@@ -240,7 +241,7 @@ router.route('/download')
         res.status(404);
         res.json({ status: constants.JSON_STATUS_ERROR,
           title: 'Erreur Système',
-          message: 'Une erreur inattendu c\'est produit! Veuillez contacter l\'administrateur'});
+          message: 'Une erreur inattendue s\'est produite! Veuillez contacter l\'administrateur'});
         return;
       }
 
@@ -255,7 +256,7 @@ router.route('/download')
         res.status(201);
         res.json({ status: constants.JSON_STATUS_SUCCESS,
           title: 'Connexion',
-          message: 'Un compte avec cette email existe déjà!'});
+          message: 'Un compte avec cet email existe déjà!'});
       }
     });
   });
@@ -317,7 +318,7 @@ router.route('/mixed')
         res.status(404);
         res.json({ status: constants.JSON_STATUS_ERROR,
           title: 'Erreur Système',
-          message: 'Une erreur inattendu c\'est produit! Veuillez contacter l\'administrateur'});
+          message: 'Une erreur inattendue s\'est produite ! Veuillez contacter l\'administrateur'});
         return;
       }
 
@@ -332,7 +333,7 @@ router.route('/mixed')
         res.status(201);
         res.json({ status: constants.JSON_STATUS_SUCCESS,
           title: 'Connexion',
-          message: 'Un compte avec cette email existe déjà!'});
+          message: 'Un compte avec cet email existe déjà!'});
       }
     });
   });
@@ -340,28 +341,61 @@ router.route('/mixed')
 
 router.route('/savemixed')
   .post(function(req, res) {
+      req.body.mixed.created_at = new Date().getTime();
     songsRepository.savemixedjson(req.db, req.body.mixed, function (err, result) {
       if(err) {
         console.log(err);
         res.status(404);
         res.json({ status: constants.JSON_STATUS_ERROR,
           title: 'Erreur Système',
-          message: 'Une erreur inattendu c\'est produit! Veuillez contacter l\'administrateur'});
+          message: 'Une erreur inattendue s\'est produite! Veuillez contacter l\'administrateur'});
         return;
       }
+      else{
+        req.body.mixed._id = ObjectId(result.insertedId);
+        var idUser = ObjectId(req.body.mixed.author._id);
+        usersRepository.addSong(req.db,idUser,req.body.mixed,
+            function(msg){
 
-      // verify if correct password thank to BCrypt Hash
-      // resCompare = true if same password else false
-      if(utils.isEmpty(result)) {
-        res.status(201);
-        res.json({ status: constants.JSON_STATUS_ERROR,
-          title: 'Erreur connexion',
-          message: 'L\'utilisateur n\'existe pas! Email incorrect!'});
-      } else {
+              usersRepository.findUserById(req.db,idUser,function(data){
+                var event = {
+                  type: 'music',
+                  name: "You",
+                  action: " created a new mix",
+                  author: data.full_name,
+                  music: req.body.mixed.name_new,
+                  created_at: req.body.mixed.created_at
+                };
 
+                usersRepository.writeEvent(req.db,idUser,event,function(){
+                  event.name = data.full_name;
+                  usersRepository.notifyFollowers(req.db,idUser,event,function(){
+                    res.status(200);
+                    res.json({ status: constants.JSON_STATUS_SUCCESS,
+                      title: 'Sauvegarde',
+                      message: 'Votre mix a été sauvegardé'});
+                  },function(code,msg){
+                    res.status(404);
+                    res.json({ status: constants.JSON_STATUS_ERROR,
+                      title: 'Erreur Système',
+                      message: 'Une erreur inattendue s\'est produite ! Veuillez contacter l\'administrateur'});
+                  });
+                });
+              },function(code,msg){
+                res.status(404);
+                res.json({ status: constants.JSON_STATUS_ERROR,
+                  title: 'Erreur Système',
+                  message: 'Une erreur inattendue s\'est produite ! Veuillez contacter l\'administrateur'});
+              });
+            },
+        function(code,msg){
+          res.status(404);
+          res.json({ status: constants.JSON_STATUS_ERROR,
+            title: 'Erreur Système',
+            message: 'Une erreur inattendue s\'est produite ! Veuillez contacter l\'administrateur'});
+        })
       }
     });
-    res.render('index', { title: 'Express' });
 
   });
 
