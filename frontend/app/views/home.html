@@ -197,7 +197,7 @@
             <!-- A COMMENTER<span>
               Je pense que ce titre est a prendre avec des pincettes :D
             </span> A COMMENTER-->
-            <form name="comment" ng-submit="addComment(myComment)" novalidate style="margin-top: 10px;">
+            <form name="comment" ng-submit="addComment(currentSong.myComment)" novalidate style="margin-top: 10px;">
               <input type="text" placeholder="No comment already!" ng-model="currentSong.myComment" style="float: left; float: left; bottom: -75px; position: absolute; width: 90%;     border: 3px solid #F57362;" required/>
               <!--<button type="submit" class="button button-link button-player" ng-disabled="comment.$invalid"><span class="glyphicon glyphicon-send button-icon" style="font-size: 25px !important;"></span>Add
               </button>-->

@@ -166,10 +166,13 @@ angular.module('frontendApp')
     };*/
 
   $scope.addComment = function(comment){
-    console.log(data.data);
-    feedbackService.addComment($scope.currentSong._id, comment).then(function(data){
+    feedbackService.addComment($scope.currentSong._id, comment).then(function(data){  
+      $scope.currentSong.comment.splice($scope.currentSong.comment.indexOf($scope.currentSong.myCommentOld), 1);
+      
       $scope.currentSong.comment.push(comment);
+   
       $scope.currentSong.myComment = comment;
+      $scope.currentSong.myCommentOld = comment;
 
     },function(msg){
       console.log('erreur promesses : ' + msg);
@@ -210,6 +213,7 @@ angular.module('frontendApp')
       } else {
         $scope.currentSong.myMark = data.data.feedbacks[element].mark;
         $scope.currentSong.myComment = data.data.feedbacks[element].comment;
+        $scope.currentSong.myCommentOld = data.data.feedbacks[element].comment;
       }
 
       $scope.play('http://localhost:3000/' + data.data.path);
