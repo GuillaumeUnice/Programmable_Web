@@ -121,6 +121,16 @@ angular.module('frontendApp')
       alert("seeProfil : " + userId);
     };
 
+    $scope.date = function(time){
+      var d = new Date(time);
+      return d.getDate() + '/' + (d.getMonth()+1) + '/' + d.getFullYear();
+    };
+
+    $scope.hour = function(time){
+      var d = new Date(time);
+      return d.getHours()+':'+ d.getMinutes();
+    };
+
     /*
     $scope.chosenMusic = null;
 
@@ -166,11 +176,11 @@ angular.module('frontendApp')
     };*/
 
   $scope.addComment = function(comment){
-    feedbackService.addComment($scope.currentSong._id, comment).then(function(data){  
+    feedbackService.addComment($scope.currentSong._id, comment).then(function(data){
       $scope.currentSong.comment.splice($scope.currentSong.comment.indexOf($scope.currentSong.myCommentOld), 1);
-      
+
       $scope.currentSong.comment.push(comment);
-   
+
       $scope.currentSong.myComment = comment;
       $scope.currentSong.myCommentOld = comment;
 

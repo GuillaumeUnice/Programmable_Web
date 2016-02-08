@@ -83,7 +83,7 @@ function UsersRepository () {
 
   this.addSong = function(db,idUser,song,successCB,errorCB){
     db.collection('users').updateOne({_id: idUser},{$push: {songs:
-    {_id: song._id, name: song.name, created_at : song.created_at}}},function(err,result){
+    {_id: song._id, name: song.name_new, created_at : song.created_at}}},function(err,result){
       if(err){
         errorCB(500,"Error!");
       }
