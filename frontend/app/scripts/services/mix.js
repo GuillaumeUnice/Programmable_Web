@@ -349,10 +349,10 @@ angular.module('frontendApp')
       var deferred = $q.defer();
       $http.post(CONFIG.baseUrlApi + '/savemixed', {mixed: mixedInfo})
         .success(function (data) {
-          //notification.writeNotification(data);
+          notification.writeNotification(data);
           deferred.resolve(data);
         }).error(function (data) {
-          //notification.writeNotification(data);
+          notification.writeNotification(data);
           deferred.reject(false);
         });
       return deferred.promise;

@@ -69,12 +69,12 @@ angular.module('frontendApp')
       console.log('erreur promesses : ' + msg);
     });
 */
-    user.myMix(auth.id).then(function(data){
+    /*user.myMix(auth.id).then(function(data){
       console.log(data);
       $scope.myMix = data;
     },function(msg){
       console.log('erreur promesses : ' + msg);
-    });
+    });*/
 
     $scope.searchQuery = "";
     $scope.searchResults = {};

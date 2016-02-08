@@ -26,7 +26,7 @@ exports.getMix = function(req, res) {
 		  res.status(500);
 		  res.json({ status: constants.JSON_STATUS_ERROR,
 		  title: 'Error System',
-		  message: 'An error has been occured! Please try later or contact the administrator'});
+		  message: 'An error has occured! Please try later or contact the administrator'});
 		  return;	
 		}
 	
@@ -37,7 +37,7 @@ exports.getMix = function(req, res) {
 			  res.status(500);
 			  res.json({ status: constants.JSON_STATUS_ERROR,
 			  title: 'Error System',
-			  message: 'An error has been occured! Please try later or contact the administrator'});
+			  message: 'An error has occured! Please try later or contact the administrator'});
 			  return;	
 			}
 

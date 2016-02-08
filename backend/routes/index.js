@@ -370,17 +370,29 @@ router.route('/savemixed')
                 usersRepository.writeEvent(req.db,idUser,event,function(){
                   event.name = data.full_name;
                   usersRepository.notifyFollowers(req.db,idUser,event,function(){
-                    res.send("Mix saved");
+                    res.status(200);
+                    res.json({ status: constants.JSON_STATUS_SUCCESS,
+                      title: 'Sauvegarde',
+                      message: 'Votre mix a été sauvegardé'});
                   },function(code,msg){
-                    res.send(code,msg);
+                    res.status(404);
+                    res.json({ status: constants.JSON_STATUS_ERROR,
+                      title: 'Erreur Système',
+                      message: 'Une erreur inattendue s\'est produite ! Veuillez contacter l\'administrateur'});
                   });
                 });
               },function(code,msg){
-                res.send(code,msg)
+                res.status(404);
+                res.json({ status: constants.JSON_STATUS_ERROR,
+                  title: 'Erreur Système',
+                  message: 'Une erreur inattendue s\'est produite ! Veuillez contacter l\'administrateur'});
               });
             },
         function(code,msg){
-              res.send(code,msg);
+          res.status(404);
+          res.json({ status: constants.JSON_STATUS_ERROR,
+            title: 'Erreur Système',
+            message: 'Une erreur inattendue s\'est produite ! Veuillez contacter l\'administrateur'});
         })
       }
     });
