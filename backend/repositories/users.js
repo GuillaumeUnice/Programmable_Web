@@ -50,7 +50,6 @@ function UsersRepository () {
             events: [],
             songs: []},
           function(err, result) {
-            console.log(result);
             callback(null, result);
           });
     }

@@ -343,7 +343,7 @@ function SongsRepository () {
           path: "", //A modifier d'urgence
           feedbacks: [],
            author: input.author,
-           created_at: new Date().getTime(),
+           created_at: input.created_at,
            isPublic: true
           },
         function(err, result) {

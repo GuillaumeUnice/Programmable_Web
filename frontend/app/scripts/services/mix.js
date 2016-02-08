@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('frontendApp')
-  .factory('mix', function (CONFIG,$window, $http, $q, notification) {
+  .factory('mix', function (CONFIG,$window, $http, $q, notification,auth) {
 
     var context, tracks = [], buffers = [], samples = [];
     var lastTime = 0, currentTime, elapsedTimeSinceStart = 0, paused = true;
@@ -21,6 +21,10 @@ angular.module('frontendApp')
       'name' : '',
       'info' : {
 
+      },
+      'author': {
+        _id: auth.id,
+        full_name: auth.full_name
       }
     };
     //================================================================================

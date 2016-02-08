@@ -15,6 +15,7 @@ angular.module('frontendApp')
         isLogged: false,
         username: null,
         id: null,
+        full_name: null,
        registerObserverCallback: function(callback){
          observerCallbacks.push(callback);
        },
