@@ -44,7 +44,6 @@ angular.module('frontendApp')
         $scope.getMixedSongInfo($routeParams.id)
           .then(function (data) {
             $scope.getAllTracks2(data.message[0].name, data.message);
-            //console.log("data"+data.message[0].name);
           }, function (msg) {
           });
       }
@@ -83,7 +82,6 @@ angular.module('frontendApp')
     /** TRACK TIME **/
 
     $scope.changerangeslide = function (num) {
-      console.log('changerangeslide');
       mix.changeRS(num);
     };
 
@@ -120,25 +118,6 @@ angular.module('frontendApp')
     $scope.setFrequence = function (i, val) {
       mix.setFilterFrequency(i, val);
     };
-
-    /**
-     $scope.setCompressor = function (i) {
-      var a = !$scope.data[i].compressor;
-      $scope.data[i].compressor = !a;
-    };
-
-     $scope.setDetune = function (i,val) {
-      mix.setFilterDetune(i,val);
-    };
-
-     $scope.setQuality = function (i,val) {
-      mix.setFilterQuality(i,val);
-    };
-
-     $scope.setType = function (val) {
-      mix.setFilterType(val);
-    };
-     **/
 
 
     /** GET MIX INFO **/
@@ -198,7 +177,6 @@ angular.module('frontendApp')
         $scope.displayLoading = false;
         $scope.mixTable = true;
         $scope.$apply();
-        console.log("Finis de charger");
         return conf[0];
       });
     };
