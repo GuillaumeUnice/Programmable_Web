@@ -2,10 +2,10 @@
 
 ### Membres
 
-- Salah Bennour 
+- Salah Bennour <bennour@polytech.unice.fr>
 - Guillaume Borg <guillaume.unice@gmail.com>
-- Youssef Salim 
-- Yuqi Wang 
+- Youssef Salim <salim@polytech.unice.fr>
+- Yuqi Wang <wang@polytech.unice.fr>
 
 ## Features
 
@@ -88,10 +88,19 @@ password : azerty<br />
 ## Some UI
 
 ### Login page
-![alt tag](https://raw.github.com/GuillaumeUnice/Programmable_Web/master/readme_img/login.png)
+![alt tag](readme_img/login.png)
 
 ### Home page
-![alt tag](https://raw.github.com/GuillaumeUnice/Programmable_Web/master/readme_img/home.png)
+![alt tag](readme_img/home.png)
 
 ### Search page
-![alt tag](https://raw.github.com/GuillaumeUnice/Programmable_Web/master/readme_img/morphsearch.png)
+![alt tag](readme_img/morphsearch.png)
+
+### Mix table
+![alt tag](readme_img/mixTable.png)
+
+### Upload tracks
+![alt tag](readme_img/uploadFiles.png)
+
+### Songs selection
+![alt tag](readme_img/songsSelection.png)
