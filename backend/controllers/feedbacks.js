@@ -18,7 +18,6 @@ exports.getFeedbacks = function(req, res) {
 
 
 exports.getMix = function(req, res) {
-	console.log(req.params.idMix);
 	var mixId = req.params.idMix;
     songsRepository.getSongsById(req.db, mixId, function(err, result1){
 		if(err) {
@@ -41,12 +40,9 @@ exports.getMix = function(req, res) {
 			  return;	
 			}
 
-			var element = result2.map(function(x) { return x._id.toString(); }).indexOf(mixId);
-			console.log(mixId);
-			console.log(element);
 			var data = result1;
-			data.markAvg = result2[element].markAvg;
-			console.log(result2);
+			data.markAvg = result2.markAvg;
+
 			res.status(200);
 			res.json({ status: constants.JSON_STATUS_SUCCESS,
 			data : data,
@@ -131,11 +127,27 @@ exports.postMark = function(req, res) {
 				  message: 'An error has occured! Please try later or contact the administrator'});
 				  return;	
 				}
-			    res.status(200);
-			    res.json({ status: constants.JSON_STATUS_SUCCESS,
-			    title: 'Add Mark',
-			    message: 'Your mark has been registred!'});
-			  return;
+
+
+				songsRepository.getAverageMark(req.db, req.body.songId, function(err, result) {
+
+					if(err) {
+						res.status(500);
+					    res.json({ status: constants.JSON_STATUS_WARNING,
+					    title: 'Post Mark',
+					    message: 'Your mark has been post but it\'s not possible to display the new average mark!'});
+					    return;
+					}
+
+					res.status(200);
+				    res.json({
+				    	status: constants.JSON_STATUS_SUCCESS,
+				    	title: 'Add Mark',
+				    	message: 'Your mark has been registred!',
+				    	data: result.markAvg
+				    });
+				  	return;
+				})
 			});
 
 		} else {
@@ -151,6 +163,7 @@ exports.postMark = function(req, res) {
 				}
 
 				songsRepository.getAverageMark(req.db, req.body.songId, function(err, result) {
+
 					if(err) {
 						res.status(500);
 					    res.json({ status: constants.JSON_STATUS_WARNING,
@@ -164,7 +177,7 @@ exports.postMark = function(req, res) {
 				    	status: constants.JSON_STATUS_SUCCESS,
 				    	title: 'Update Mark',
 				    	message: 'Your mark has been updated!',
-						data: result[0].markAvg
+						data: result.markAvg
 					});
 				})
 			});

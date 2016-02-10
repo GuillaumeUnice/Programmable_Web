@@ -65,11 +65,6 @@ routess.account = require('./controllers/account.js');
 app.use(function(req, res, next) {
   console.log('Middleware called.');
   // allows requests fromt angularJS frontend applications
- /* res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  next(); // go to the next route*/
-
   res.header("Access-Control-Allow-Origin", "*");
   res.header('Access-Control-Allow-Credentials', true);
   res.header('Access-Control-Allow-Methods', 'GET, POST, DELETE, PUT');
@@ -91,7 +86,7 @@ app.get('/feedbacks/:idSong', routess.feedbacks.getFeedbacks);
 function ensureAuthorized(req, res, next) {
     var bearerToken;
     var bearerHeader = req.headers["authorization"];
-    //console.log(jwt.decode(bearerHeader));
+
     if (typeof bearerHeader !== 'undefined') {
         var bearer = bearerHeader.split(" ");
         bearerToken = bearer[1];
@@ -101,7 +96,7 @@ function ensureAuthorized(req, res, next) {
             return;
           }
           req.token = decoded;
-          console.log(req.token);
+
           next();
         });
     } else {

@@ -12,10 +12,8 @@ function SongsRepository () {
 
 //{'secteur':'amy','name':'guitare','songname':'meistersinger.mp3'}
   this.insertDocument = function(db, input, callback) {
-    console.log('insertDocument');
     db.collection('songs').insertOne(input,
         function(err, result) {
-            //assert.equal(err, null);
             console.log("Inserted a document into the songs collection.");
             callback(null, result);
         });
@@ -275,8 +273,8 @@ function SongsRepository () {
           }
         ]
       ).toArray(function(err, result) {
-        console.log(result);
-        callback(null, result);
+        var element = result.map(function(x) { return x._id.toString(); }).indexOf(songId);
+        callback(null, result[element]);
       });
     };
 
@@ -288,13 +286,12 @@ function SongsRepository () {
             errorCB(400,"The message format is wrong");
         }
         else{*/
-          //console.log("oldMark : " + oldMark + " newMark : " + newMark);
-            db.collection('songs').updateOne(
-                    {"_id" : ObjectID(songId), "feedbacks._id": ObjectID(userId) },
-                    {
-                        $set: { "feedbacks.$.mark" : +mark }
-                    }
-                );
+        db.collection('songs').updateOne(
+                {"_id" : ObjectID(songId), "feedbacks._id": ObjectID(userId) },
+                {
+                    $set: { "feedbacks.$.mark" : +mark }
+                }
+            );
 
         callback(null,"Mark added!");
 
@@ -335,8 +332,6 @@ function SongsRepository () {
 
 
     this.savemixedjson = function(db, input, callback) {
-      console.log('insertDocument');
-      console.log(input);
       db.collection('songs').insertOne(
           {name: input.name_new,
           info: input.info,
@@ -348,7 +343,6 @@ function SongsRepository () {
               sumMarks: 0
           },
         function(err, result) {
-          //assert.equal(err, null);
           console.log("Inserted a document into the songs collection.");
           callback(null, result);
         });
