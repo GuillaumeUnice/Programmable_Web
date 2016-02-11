@@ -11,8 +11,8 @@ exports.ensureAuthorized = function(req, res, next) {
         bearerToken = bearer[1];
         jwt.verify(bearerToken, constants.JWT_SECRET, function(err, decoded) {
           if(err) {
-            res.send(401);
-            res.json({ status: constants.JSON_STATUS_SUCCESS,
+            res.status(401);
+            res.json({ status: constants.JSON_STATUS_WARNING,
               title: 'Connexion',
               message: 'You must be connected to make this operation !'
             });
@@ -22,8 +22,8 @@ exports.ensureAuthorized = function(req, res, next) {
           next();
         });
     } else {
-        res.send(401);
-        res.json({ status: constants.JSON_STATUS_SUCCESS,
+        res.status(401);
+        res.json({ status: constants.JSON_STATUS_WARNING,
             title: 'Connexion',
             message: 'You must be connected to make this operation !'
         });
