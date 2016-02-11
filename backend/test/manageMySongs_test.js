@@ -65,7 +65,6 @@ describe("Unit test for manageMySongs routes", function() {
 				server.get("/mix/56b4e07045b766bd49eb5d62")
 					.expect(200)
 					.end( function(err, res) {
-						console.log(res);
 						expect(res.status).to.be.equal(200)
 						//expect(res.body.status).to.be.equal(constants.JSON_STATUS_SUCCESS);
 						

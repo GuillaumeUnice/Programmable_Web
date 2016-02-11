@@ -104,3 +104,16 @@ password : azerty<br />
 
 ### Songs selection
 ![alt tag](readme_img/songsSelection.png)
+
+## Contact
+
+Feel free to contact us :
+
+* [Salah Bennour](mailto:bennour@polytech.unice.fr)
+* [Guillaume Borg](mailto:guillaume.unice@gmail.com)
+* [Youssef Salim](mailto:salim@polytech.unice.fr)
+* [Yuqi Wang](mailto:wang@polytech.unice.fr)
+
+---
+
+![Polytech Nice Sophia](http://users.polytech.unice.fr/~bennour/logos.png)
