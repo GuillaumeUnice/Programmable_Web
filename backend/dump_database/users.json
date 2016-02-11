@@ -1,28 +1,6 @@
-{"_id":{"$oid":"56b4e07045b766bd49eb5d63"},
-  "email":"test@gmail.com",
-  "password":"$2a$10$7fs2/7Q.N2AeP6/oq1aB7OQj7890YMyKbo9kZH00TshHyzhjQLnkG",
-  "full_name":"Echyzen Ryoama",
-  "first_name":"Echyzen",
-  "name":"Ryoama",
-  "avatar":"avatars/echyzen.png",
-  "following":
-  [{"_id":{"$oid":"56b4fb43e7c99b95540a9a1e"},"full_name":"Jhon Doe","created_at":1.45462e+09},
-    {"_id":{"$oid":"56b4fb54e7c99b95540a9a1f"},"full_name":"Youssef Salim","created_at":1.45462e+09},
-    {"_id":{"$oid":"56b4fb64e7c99b95540a9a20"},"full_name":"Test Name"},
-    {"_id":{"$oid":"56b86a15353177230edb1e89"},"full_name":"JeanPetit"}],
-  "followers":[{"_id":{"$oid":"56b4fb54e7c99b95540a9a1f"},
-    "full_name":"Youssef Salim","created_at":1.45462e+09}],
-  "events":[{"type":"social","name":"You","action":" are now following Test Name","created_at":1.454944285254e+12},
-    {"type":"social","name":"You","action":" are now following JeanPetit","created_at":1.454944492579e+12},
-    {"type":"social","name":"You","action":" are now following JeanGras","created_at":1.454947739454e+12}],
-  "songs":[]
-}
-
-
+{"_id":{"$oid":"56b4e07045b766bd49eb5d63"},"email":"test@gmail.com","password":"$2a$10$7fs2/7Q.N2AeP6/oq1aB7OQj7890YMyKbo9kZH00TshHyzhjQLnkG","full_name":"Echyzen Ryoama","first_name":"Echyzen","name":"Ryoama","avatar":"avatars/echyzen.png","following":[{"_id":{"$oid":"56b4fb43e7c99b95540a9a1e"},"full_name":"Jhon Doe","created_at":1.45462e+09},{"_id":{"$oid":"56b4fb54e7c99b95540a9a1f"},"full_name":"Youssef Salim","created_at":1.45462e+09},{"_id":{"$oid":"56b4fb64e7c99b95540a9a20"},"full_name":"Test Name"},{"_id":{"$oid":"56b86a15353177230edb1e89"},"full_name":"JeanPetit"}],"followers":[{"_id":{"$oid":"56b4fb54e7c99b95540a9a1f"},"full_name":"Youssef Salim","created_at":1.45462e+09}],"events":[{"type":"social","name":"You","action":" are now following Test Name","created_at":1.454944285254e+12},{"type":"social","name":"You","action":" are now following JeanPetit","created_at":1.454944492579e+12},{"type":"social","name":"You","action":" are now following JeanGras","created_at":1.454947739454e+12}]}
 {"_id":{"$oid":"56b4fb43e7c99b95540a9a1e"},"email":"test1@gmail.com","password":"$2a$10$BPTE7fAHazf3/MtkAxOX0eCi9BCRN2Hn6i17.3gSS99wg3R97FQbO","full_name":"Jhon Doe","first_name":"Jhon","name":"Doe","avatar":"avatars/default.png","following":[],"followers":[],"events":[]}
-{"_id":{"$oid":"56b4fb54e7c99b95540a9a1f"},"email":"test2@gmail.com","password":"$2a$10$BPTE7fAHazf3/MtkAxOX0eCi9BCRN2Hn6i17.3gSS99wg3R97FQbO","full_name":"Youssef Salim","first_name":"Youssef","name":"Salim","avatar":"avatars/default.png","following":[{"_id":{"$oid":"56b4fb43e7c99b95540a9a1e"},"full_name":"Jhon Doe","created_at":1.45462e+09}],"followers":[],"events":[{"describ":"Echyzen Ryoama is now following Test Name","created_at":1.454777467339e+12},{"describ":"Echyzen Ryoama is now following Test Name","created_at":1.454778405901e+12},{"describ":"Echyzen Ryoama is now following Test Name","created_at":1.454862679808e+12},{"type":"social","name":"Echyzen Ryoama","action":" are now following Test Name","created_at":1.454880452112e+12},{"type":"social","name":"Echyzen Ryoama","action":" is now following Test Name","created_at":1.454944285254e+12},{"type":"social","name":"Echyzen Ryoama","action":" is now following JeanPetit","created_at":1.454944492579e+12},{"type":"social","name":"Echyzen Ryoama","action":" is now following JeanGras","created_at":1.454945055301e+12},{"type":"social","name":"Echyzen Ryoama","action":" is now following JeanGras","created_at":1.454947739454e+12}],  "songs":[]
-}
-{"_id":{"$oid":"56b4fb64e7c99b95540a9a20"},"email":"test3@gmail.com","password":"$2a$10$BPTE7fAHazf3/MtkAxOX0eCi9BCRN2Hn6i17.3gSS99wg3R97FQbO","full_name":"Test Name","first_name":"Test","name":"Name","avatar":"avatars/default.png","following":[],"followers":[{"_id":{"$oid":"56b4e07045b766bd49eb5d63"},"full_name":"Echyzen Ryoama"}],"events":[],  "songs":[]
-}
+{"_id":{"$oid":"56b4fb54e7c99b95540a9a1f"},"email":"test2@gmail.com","password":"$2a$10$BPTE7fAHazf3/MtkAxOX0eCi9BCRN2Hn6i17.3gSS99wg3R97FQbO","full_name":"Youssef Salim","first_name":"Youssef","name":"Salim","avatar":"avatars/default.png","following":[{"_id":{"$oid":"56b4fb43e7c99b95540a9a1e"},"full_name":"Jhon Doe","created_at":1.45462e+09}],"followers":[],"events":[{"describ":"Echyzen Ryoama is now following Test Name","created_at":1.454777467339e+12},{"describ":"Echyzen Ryoama is now following Test Name","created_at":1.454778405901e+12},{"describ":"Echyzen Ryoama is now following Test Name","created_at":1.454862679808e+12},{"type":"social","name":"Echyzen Ryoama","action":" are now following Test Name","created_at":1.454880452112e+12},{"type":"social","name":"Echyzen Ryoama","action":" is now following Test Name","created_at":1.454944285254e+12},{"type":"social","name":"Echyzen Ryoama","action":" is now following JeanPetit","created_at":1.454944492579e+12},{"type":"social","name":"Echyzen Ryoama","action":" is now following JeanGras","created_at":1.454945055301e+12},{"type":"social","name":"Echyzen Ryoama","action":" is now following JeanGras","created_at":1.454947739454e+12}]}
+{"_id":{"$oid":"56b4fb64e7c99b95540a9a20"},"email":"test3@gmail.com","password":"$2a$10$BPTE7fAHazf3/MtkAxOX0eCi9BCRN2Hn6i17.3gSS99wg3R97FQbO","full_name":"Test Name","first_name":"Test","name":"Name","avatar":"avatars/default.png","following":[],"followers":[{"_id":{"$oid":"56b4e07045b766bd49eb5d63"},"full_name":"Echyzen Ryoama"}],"events":[]}
 {"_id":{"$oid":"56b86a15353177230edb1e89"},"email":"lol2@gmail.com","password":"$2a$10$nmtU/5XyVPGzCpBt5pQ4POZLCdxkrZQK6wIusKCovF3dPlWXPxr92","first_name":"Jean","name":"Petit","full_name":"JeanPetit","avatar":"avatars/default.png","following":[],"followers":[{"_id":{"$oid":"56b4e07045b766bd49eb5d63"},"full_name":"Echyzen Ryoama"}],"events":[],"songs":[]}
 {"_id":{"$oid":"56b86a71fb7ebf1114a363fd"},"email":"aaaaaaaaaaa@gmail.com","password":"$2a$10$d4lAb5XSF16pSgsmSLuXg.yO/hx0gr6ElnOIRz0LLr3r3/GI4dBiq","first_name":"Jean","name":"Gras","full_name":"JeanGras","avatar":"avatars/default.png","following":[],"followers":[],"events":[],"songs":[]}

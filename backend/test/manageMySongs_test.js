@@ -98,7 +98,7 @@ describe("Unit test for manageMySongs routes", function() {
 				expect(res.status).to.be.equal(404);
 				expect(res.body.status).to.be.equal(constants.JSON_STATUS_ERROR);
 				expect(res.body.title).to.be.equal('Erreur Système');
-				expect(res.body.message).to.be.equal('Une erreur inattendue s\'est produite! Veuillez contacter l\'administrateur');
+				expect(res.body.message).to.be.equal('Une erreur inattendue s\'est produite ! Veuillez contacter l\'administrateur');
 				done();
 			});
 	});
@@ -122,7 +122,7 @@ describe("Unit test for manageMySongs routes", function() {
 				expect(res.status).to.be.equal(404);
 				expect(res.body.status).to.be.equal(constants.JSON_STATUS_ERROR);
 				expect(res.body.title).to.be.equal('Erreur Système');
-				expect(res.body.message).to.be.equal('Une erreur inattendue s\'est produite! Veuillez contacter l\'administrateur');
+				expect(res.body.message).to.be.equal('Une erreur inattendue s\'est produite ! Veuillez contacter l\'administrateur');
 				done();
 			});
 	});
@@ -149,7 +149,7 @@ describe("Unit test for manageMySongs routes", function() {
 				expect(res.status).to.be.equal(404);
 				expect(res.body.status).to.be.equal(constants.JSON_STATUS_ERROR);
 				expect(res.body.title).to.be.equal('Erreur Système');
-				expect(res.body.message).to.be.equal("Une erreur inattendue s\'est produite! Veuillez contacter l\'administrateur");
+				expect(res.body.message).to.be.equal("Une erreur inattendue s\'est produite ! Veuillez contacter l\'administrateur");
 				done();
 			});
 	});
