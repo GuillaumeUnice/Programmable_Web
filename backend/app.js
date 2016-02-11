@@ -7,16 +7,14 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var busboy = require('connect-busboy');
 
+var utils = require('./config/utils');
+
 var jwt = require('jsonwebtoken');
 var authMiddelware = require('./config/authMiddleware');
 
-/** TODO REMOVE **/
-//var session = require('express-session');
-
-var routes = require('./routes/index');
-//var users = require('./routes/users');
-//var feedbacks = require('./routes/feedbacks');
-//var search = require('./routes/search');
+var jwtMid = require('express-jwt');
+var bcrypt = require('bcryptjs');
+var salt = bcrypt.genSaltSync(10);
 
 var app = express();app.use(busboy());
 
@@ -52,13 +50,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 
 //Routes
-var routess = {};
-routess.auth = require('./controllers/auth.js');
-routess.search = require('./controllers/search.js');
-routess.feedbacks = require('./controllers/feedbacks.js');
-routess.follow = require('./controllers/follow.js');
-routess.manageMySongs = require('./controllers/manageMySongs.js');
-routess.account = require('./controllers/account.js');
+var routes = require('./routes/index.js');
 
 
 app.use(function(req, res, next) {
@@ -99,9 +91,6 @@ app.get('/account/:idUser',authMiddelware.ensureAuthorized,routess.account.getAc
 
 
 app.use('/', routes);
-//app.use('/users', users);
-//app.use('/feedbacks', feedbacks);
-//app.use('/search', search);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

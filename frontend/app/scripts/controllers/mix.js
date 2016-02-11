@@ -43,7 +43,7 @@ angular.module('frontendApp')
         $scope.song = $routeParams.id;
         $scope.getMixedSongInfo($routeParams.id)
           .then(function (data) {
-            $scope.getAllTracks2(data.message[0].name, data.message);
+            $scope.getAllTracks2(data.message[0].path, data.message);
           }, function (msg) {
           });
       }
