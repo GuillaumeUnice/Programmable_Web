@@ -101,10 +101,12 @@ describe("Unit test for UserRepository", function() {
 		});
 
 
-		it("should add an user", function() {
+		it("should add an user", function(done) {
 			usersRepository.addUser(db, {email : "test@gmail.com", password : "random", name : "Echyzen", first_name : "Ryoama"}, function(err, result) {
 				expect(result).to.exist;
-				expect(result.email).to.be.equal("test@gmail.com");
+				console.log(result);
+				expect(result.ops[0].email).to.be.equal("test@gmail.com");
+				done();
 			});
 		});
 
