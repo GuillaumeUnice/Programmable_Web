@@ -68,7 +68,7 @@ describe("Unit test for feedbacks routes", function() {
 
 
 
-  it("add a mix", function(done) {
+  /*it("add a mix", function(done) {
 
     var myMix =
     {
@@ -113,7 +113,7 @@ describe("Unit test for feedbacks routes", function() {
         expect(res.body.message).to.be.equal('Votre mix a été sauvegardé');
         done();
       });
-  });
+  });*/
 
   it("should return all user songs", function(done) {
     server.post("/login")

@@ -28,7 +28,6 @@ router.get('/follow/following/:idUser',routes.follow.getFollowing);
 router.post('/unfollow',authMiddelware.ensureAuthorized,routes.follow.unfollow);
 
 router.get('/manageMySongs/:idUser',authMiddelware.ensureAuthorized,routes.manageMySongs.getMySongs);
-router.get('/manageMySongs/:idUser',authMiddelware.ensureAuthorized,routes.manageMySongs.getMySongs2);
 
 router.get('/account/:idUser',authMiddelware.ensureAuthorized,routes.account.getAccountInfo);
 

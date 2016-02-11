@@ -182,7 +182,7 @@ exports.savemixed = function(req, res) {
             res.status(404);
             res.json({ status: constants.JSON_STATUS_ERROR,
                 title: 'Erreur Système',
-                message: 'Une erreur inattendue s\'est produite! Veuillez contacter l\'administrateur'});
+                message: 'E Une erreur inattendue s\'est produite! Veuillez contacter l\'administrateur'});
             return;
         }
         else{
@@ -212,21 +212,21 @@ exports.savemixed = function(req, res) {
                                 res.status(404);
                                 res.json({ status: constants.JSON_STATUS_ERROR,
                                     title: 'Erreur Système',
-                                    message: 'Une erreur inattendue s\'est produite ! Veuillez contacter l\'administrateur'});
+                                    message: 'A Une erreur inattendue s\'est produite ! Veuillez contacter l\'administrateur'});
                             });
                         });
                     },function(code,msg){
                         res.status(404);
                         res.json({ status: constants.JSON_STATUS_ERROR,
                             title: 'Erreur Système',
-                            message: 'Une erreur inattendue s\'est produite ! Veuillez contacter l\'administrateur'});
+                            message: 'B Une erreur inattendue s\'est produite ! Veuillez contacter l\'administrateur'});
                     });
                 },
                 function(code,msg){
                     res.status(404);
                     res.json({ status: constants.JSON_STATUS_ERROR,
                         title: 'Erreur Système',
-                        message: 'Une erreur inattendue s\'est produite ! Veuillez contacter l\'administrateur'});
+                        message: 'C Une erreur inattendue s\'est produite ! Veuillez contacter l\'administrateur'});
                 })
         }
     });

@@ -7,6 +7,10 @@ var usersRepository = new usersRepositoryModule.UsersRepository();
 var songsRepositoryModule = require('../repositories/songs');
 var songsRepository = new songsRepositoryModule.SongsRepository();
 
+/**
+ * search elements, either user or song, which names are composed of at least one of the keywords
+ * This is an insensitive case search
+ */
 exports.searchSongAndUser = function(req, res) {
 
 	var result = {users:[],songs:[]};
