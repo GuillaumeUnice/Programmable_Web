@@ -81,7 +81,7 @@ function SongsRepository () {
   };
 
   this.findMixedSong = function(db, findby, content, callback) {
-    var cursor = db.collection('mixed').find({ name_new : content } );
+    var cursor = db.collection('songs').find({ name : content } );
     var i =0;
     var ms =[];
     cursor.each(function(err, doc) {
@@ -93,7 +93,7 @@ function SongsRepository () {
         //callback(null,doc);
       } else {
         console.log("not found in the DB");
-        console.log("mixed ms "+ms[0].name);
+        console.log("mixed ms "+ms[0].path);
         callback(null,ms);
       }
     });
@@ -340,7 +340,7 @@ function SongsRepository () {
       db.collection('songs').insertOne(
           {name: input.name_new,
           info: input.info,
-          path: "", //A modifier d'urgence
+          path: input.name, //A modifier d'urgence
           feedbacks: [],
            author: input.author,
            created_at: input.created_at,

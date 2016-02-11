@@ -70,6 +70,7 @@ function UsersRepository () {
             password: user.password,
             first_name: user.first_name,
             name: user.name,
+            avatar: "avatars/default.png",
             full_name : user.first_name +" "+ user.name,
             following: [],
             followers: [],
@@ -81,6 +82,12 @@ function UsersRepository () {
     }
   };
 
+  /**
+   * Add a reference to a song in the user document
+   * @param {Object}   db       database
+   * @param {Object}   user     Object who represente user's data
+   * @param {Function} callback Callback return err and result who contains the user data
+   */
   this.addSong = function(db,idUser,song,successCB,errorCB){
     db.collection('users').updateOne({_id: idUser},{$push: {songs:
     {_id: song._id, name: song.name_new, created_at : song.created_at}}},function(err,result){

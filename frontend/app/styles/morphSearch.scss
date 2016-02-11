@@ -102,8 +102,8 @@
 }
 
 input[type="search"] { /* reset normalize */
-	-webkit-box-sizing: border-box; 
-	box-sizing: border-box;	
+	-webkit-box-sizing: border-box;
+	box-sizing: border-box;
 }
 
 .morphsearch-input:focus,
@@ -295,7 +295,7 @@ input[type="search"] { /* reset normalize */
 }
 /* a supprimer
 .dummy-column p {
-	
+
 	text-align : center;
 	padding : 2em;
 }*/
@@ -319,7 +319,7 @@ input[type="search"] { /* reset normalize */
 
 .dummy-media-object img {
 	display: inline-block;
-	width: 50px;	
+	width: 50px;
 	margin: 0 10px 0 0;
 	vertical-align: middle;
 }
@@ -408,7 +408,7 @@ input[type="search"] { /* reset normalize */
 	margin-left : 10px;
 	margin-right : 10px;
 	font-size: 20px !important;
-	height: 50vh;
+	height: 35vh;
 	overflow-y:scroll;
 	overflow-x:hidden;
 }

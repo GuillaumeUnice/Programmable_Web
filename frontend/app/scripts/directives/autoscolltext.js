@@ -33,7 +33,7 @@ angular.module('frontendApp')
 	        		scope.comment = scope.comments[rang];
 	        	}
 			}
-    	}, 10000);
+    	}, 3000);
 
       }
     };
