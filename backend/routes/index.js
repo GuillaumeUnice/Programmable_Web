@@ -1,445 +1,52 @@
 var express = require('express');
 var router = express.Router();
-var path = require('path');
-var constants = require('../config/constants');
-var utils = require('../config/utils');
 
-var songsRepositoryModule = require('../repositories/songs');
-var songsRepository = new songsRepositoryModule.SongsRepository();
+var authMiddelware = require('../config/authMiddleware');
 
-var usersRepositoryModule = require('../repositories/users');
-var usersRepository = new usersRepositoryModule.UsersRepository();
+var routes = {};
+routes.auth = require('../controllers/auth.js');
+routes.search = require('../controllers/search.js');
+routes.feedbacks = require('../controllers/feedbacks.js');
+routes.follow = require('../controllers/follow.js');
+routes.manageMySongs = require('../controllers/manageMySongs.js');
+routes.account = require('../controllers/account.js');
 
-// module authentification
-var jwt = require('jsonwebtoken');
-var jwtMid = require('express-jwt');
-var bcrypt = require('bcryptjs');
-var salt = bcrypt.genSaltSync(10); // salage
+router.post('/register', routes.auth.register);
+router.post('/login', routes.auth.login);
+router.post('/logout', routes.auth.logout);
 
-var ObjectId = require("bson-objectid");
+router.get('/feedbacks/:idSong', routes.feedbacks.getFeedbacks);
 
-/**********************************************************************************
- * 					  Middleware ➜ to use for all requests
- **********************************************************************************/
-router.use(function(req, res, next) {
-  console.log('Middleware called.');
-  // allows requests fromt angularJS frontend applications
-  /*res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  next(); // go to the next route*/
+router.get('/mix/:idMix', authMiddelware.ensureAuthorized, routes.feedbacks.getMix);
+router.post('/comment', authMiddelware.ensureAuthorized, routes.feedbacks.postFeedback);
+router.post('/mark', authMiddelware.ensureAuthorized, routes.feedbacks.postMark);
+router.post('/search', authMiddelware.ensureAuthorized, routes.search.searchSongAndUser);
 
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header('Access-Control-Allow-Credentials', true);
-  res.header('Access-Control-Allow-Methods', 'GET, POST, DELETE, PUT');
-  res.header('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Authorization');
-  if ('OPTIONS' == req.method) return res.send(200);
-  next();
-});
+router.post('/follow',authMiddelware.ensureAuthorized,routes.follow.followSomeone);
+router.get('/follow/followers/:idUser',routes.follow.getFollowers);
+router.get('/follow/following/:idUser',routes.follow.getFollowing);
+router.post('/unfollow',authMiddelware.ensureAuthorized,routes.follow.unfollow);
 
+router.get('/manageMySongs/:idUser',authMiddelware.ensureAuthorized,routes.manageMySongs.getMySongs);
+router.get('/manageMySongs/:idUser',authMiddelware.ensureAuthorized,routes.manageMySongs.getMySongs2);
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
+router.get('/account/:idUser',authMiddelware.ensureAuthorized,routes.account.getAccountInfo);
 
-  /*songsRepository.downloadSong(req.db, 'meistersinger2.mp3', function(err, result) {
-    console.log("OKKKK");
-  });*/
-  songsRepository.insertDocument(req.db, {name :req.body.name}, function(err, result) {
-    if(err) {
-      console.log(err);
-      res.status(404);
-      res.json({ status: constants.JSON_STATUS_ERROR,
-        title: 'Erreur Système',
-        message: 'Une erreur inattendue s\'est produite! Veuillez contacter l\'administrateur'});
-      return;
-    }
-
-    // verify if correct password thank to BCrypt Hash
-    // resCompare = true if same password else false
-    if(utils.isEmpty(result)) {
-      res.status(201);
-      res.json({ status: constants.JSON_STATUS_ERROR,
-        title: 'Erreur connexion',
-        message: 'L\'utilisateur n\'existe pas! Email incorrect!'});
-    } else {
-
-    }
-  });
-
-});
-
-
-
-
-router.route('/login')
-
-    .post(function(req, res) {
-      console.log(req.body);
-      usersRepository.findUserByPseudo(req.db, req.body.email, function(err, result) {
-        if(err) {
-          console.log(err);
-          res.status(404);
-          res.json({ status: constants.JSON_STATUS_ERROR,
-            title: 'Erreur Système',
-            message: 'Une erreur inattendue s\'est produite! Veuillez contacter l\'administrateur'});
-          return;
-        }
-
-        // verify if correct password thanks to BCrypt Hash
-        // resCompare = true if same password else false
-        if(utils.isEmpty(result)) {
-          res.status(201);
-          res.json({ status: constants.JSON_STATUS_ERROR,
-            title: 'Erreur connexion',
-            message: 'L\'utilisateur n\'existe pas! Email incorrect!'});
-        } else {
-
-          bcrypt.compare(req.body.password, result.password, function(err, resCompare) {
-            if(err) {
-              console.log(err);
-              res.status(404);
-              return;
-            }
-
-            if(resCompare) {
-              var token = jwt.sign(result, constants.JWT_SECRET, { expiresInMinutes: 1/*60*5*/ });
-              req.session.idUser = result._id;
-              req.session.emailUser = result.email;
-              //console.log(req.session);
-              res.status(201);
-              res.json({ status: constants.JSON_STATUS_SUCCESS,
-                title: 'Connexion',
-                message: 'Vous êtes à présent connecté!',
-                token: token
-              });
-            } else {
-              res.status(201);
-              res.json({ status : constants.JSON_STATUS_ERROR,
-                title: 'Erreur connexion',
-                message: 'Le mot de passe est incorrect!'});
-            }
-
-          });
-        }
-      });
-    });
-router.route('/auth/register')
-  .post(function(req, res) {
-    usersRepository.findUserByPseudo(req.db, req.body.email, function (err, result) {
-      if (err) {
-        console.log(err);
-        res.status(404);
-        res.json({
-          status: constants.JSON_STATUS_ERROR,
-          title: 'Erreur Système',
-          message: 'Une erreur inattendue s\'est produite! Veuillez contacter l\'administrateur'
-        });
-        return;
-      }
-      console.log(result);
-      if (utils.isEmpty(result)) {
-        req.body.password = bcrypt.hashSync(req.body.password, salt);
-        usersRepository.addUser(req.db, req.body, function (err, result) {
-          if (err) {
-            console.log(err);
-            res.status(404);
-            res.json({
-              status: constants.JSON_STATUS_ERROR,
-              title: 'Erreur Système',
-              message: 'Une erreur inattendue s\'est produite! Veuillez contacter l\'administrateur'
-            });
-            return;
-          }
-          res.status(201);
-          res.json({
-            status: constants.JSON_STATUS_SUCCESS,
-            title: 'Connexion',
-            message: 'Vous êtes à présent inscris!'
-          });
-        });
-      } else {
-        res.status(201);
-        res.json({
-          status: constants.JSON_STATUS_SUCCESS,
-          title: 'Connexion',
-          message: 'Un compte avec cet email existe déjà!'
-        });
-      }
-    });
-  });
-router.post('/test', jwtMid({secret: constants.JWT_SECRET}), function(req, res) {
-  console.log("test");
-  res.json({ status: constants.JSON_STATUS_SUCCESS,
-    title: 'Connexion',
-    message: 'Vous êtes déconnecté!'});
-});
-
-
-router.route('/save')
-  .post(function(req, res) {
-    songsRepository.insertDocument(req.db, {name :req.body.name}, function(err, result) {
-      if(err) {
-        console.log(err);
-        res.status(404);
-        res.json({ status: constants.JSON_STATUS_ERROR,
-          title: 'Erreur Système',
-          message: 'Une erreur inattendue s\'est produite! Veuillez contacter l\'administrateur'});
-        return;
-      }
-
-      // verify if correct password thank to BCrypt Hash
-      // resCompare = true if same password else false
-      if(utils.isEmpty(result)) {
-        res.status(201);
-        res.json({ status: constants.JSON_STATUS_ERROR,
-          title: 'Erreur connexion',
-          message: 'L\'utilisateur n\'existe pas! Email incorrect!'});
-      } else {
-        res.status(201);
-        res.json({ status: constants.JSON_STATUS_SUCCESS,
-          title: 'Connexion',
-          message: 'Un compte avec cet email existe déjà!'});
-      }
-    });
-  });
-//app.post('/upload',songsRepository.uploadSong);
-router.route('/upload')
-  .post(function(req, res) {
-    //console.log( req.files.file.name);
-    songsRepository.uploadSong(req,res, function(err, result) {
-      if(err) {
-        console.log(err);
-        res.status(404);
-        res.json({ status: constants.JSON_STATUS_ERROR,
-          title: 'Erreur Système',
-          message: 'Une erreur inattendue s\'est produite! Veuillez contacter l\'administrateur'});
-        return;
-      }
-
-      // verify if correct password thank to BCrypt Hash
-      // resCompare = true if same password else false
-      if(utils.isEmpty(result)) {
-        res.status(201);
-        res.json({ status: constants.JSON_STATUS_ERROR,
-          title: 'Erreur connexion',
-          message: 'L\'utilisateur n\'existe pas! Email incorrect!'});
-      } else {
-        res.status(201);
-        res.json({ status: constants.JSON_STATUS_SUCCESS,
-          title: 'Connexion',
-          message: 'Un compte avec cette email existe déjà!'});
-      }
-    });
-  });
-
-router.route('/download')
-  .post(function(req, res) {
-
-    songsRepository.downloadSong(req.db, req.body.name, function(err, result) {
-      if(err) {
-        console.log(err);
-        res.status(404);
-        res.json({ status: constants.JSON_STATUS_ERROR,
-          title: 'Erreur Système',
-          message: 'Une erreur inattendue s\'est produite! Veuillez contacter l\'administrateur'});
-        return;
-      }
-
-      // verify if correct password thank to BCrypt Hash
-      // resCompare = true if same password else false
-      if(utils.isEmpty(result)) {
-        res.status(201);
-        res.json({ status: constants.JSON_STATUS_ERROR,
-          title: 'Erreur connexion',
-          message: 'L\'utilisateur n\'existe pas! Email incorrect!'});
-      } else {
-        res.status(201);
-        res.json({ status: constants.JSON_STATUS_SUCCESS,
-          title: 'Connexion',
-          message: 'Un compte avec cet email existe déjà!'});
-      }
-    });
-  });
-
-router.route('/get')
-  .get(function(req, res) {
-    console.log('find'+req.query.name_find);
-    songsRepository.findSongs_by_field(req.db, 'name' ,req.query.name_find, function(err, result) {
-      //console.log(req.session.emailUser);
-      res.json({ status: constants.JSON_STATUS_SUCCESS,
-        title: 'Connexion',
-        message: result});
-    });
-  });
+//Functions previously used in index
+router.post('/save',routes.manageMySongs.save);
+router.post('/upload',routes.manageMySongs.upload);
+router.post('/download',routes.manageMySongs.download);
+router.get('/track',routes.manageMySongs.getTracks);
+router.get('/track/:id',routes.manageMySongs.getTrackById);
+router.post('/mixed',routes.manageMySongs.uploadMixed);
+router.post('/savemixed',routes.manageMySongs.savemixed);
+router.get('/getmixed',routes.manageMySongs.getMixed);
+router.get('/getMixedSongInfo',routes.manageMySongs.getMixedSongInfo);
+router.get('/folderName',routes.manageMySongs.getFolderName);
+router.get('/get',routes.manageMySongs.getSongsByName);
 
 var parth = /\/track\/(\w+)\/(?:sound|visualisation)\/((\w|.)+)/;
+router.get(parth,routes.manageMySongs.uploadSongs);
 
-router.route(parth)
-  .get(function(req, res) {
-    var id = req.params[0];
-    console.log('send songs');
-    console.log('kk'+req.params[0] + '/' + req.params[1]);
-    console.log(__dirname + '/../Musics/' + req.params[0] + '/' + req.params[1]);
-    res.sendfile(path.resolve(__dirname + '/../Musics/' + req.params[0] + '/' + req.params[1]));
-  });
-
-
-router.route('/track')
-  .get(function(req, res) {
-    songsRepository.getTracks(function(trackList) {
-      if (!trackList)
-        return res.send(404, 'No track found');
-      res.writeHead(200, { 'Content-Type': 'application/json' });
-      res.write(JSON.stringify(trackList));
-      res.end();
-    });
-    //res.sendfile(__dirname + '/../Musics/'  + req.params[0] + '/' + req.params[1]);
-  });
-
-router.route('/track/:id')
-  .get(function(req, res) {
-    var id = req.params.id;
-    songsRepository.getTrack(id,function(track) {
-      if (!track)
-        return res.send(404, 'Track not found with id "' + id + '"');
-      res.writeHead(200, { 'Content-Type': 'application/json' });
-      res.write(JSON.stringify(track));
-      res.end();
-    });
-    //res.sendfile(__dirname + '/../Musics/'  + req.params[0] + '/' + req.params[1]);
-  });
-
-router.route('/mixed')
-  .post(function(req, res) {
-    //console.log( req.files.file.name);
-    songsRepository.uploadMixed(req,res, function(err, result) {
-      if(err) {
-        console.log(err);
-        res.status(404);
-        res.json({ status: constants.JSON_STATUS_ERROR,
-          title: 'Erreur Système',
-          message: 'Une erreur inattendue s\'est produite ! Veuillez contacter l\'administrateur'});
-        return;
-      }
-
-      // verify if correct password thank to BCrypt Hash
-      // resCompare = true if same password else false
-      if(utils.isEmpty(result)) {
-        res.status(201);
-        res.json({ status: constants.JSON_STATUS_ERROR,
-          title: 'Erreur connexion',
-          message: 'L\'utilisateur n\'existe pas! Email incorrect!'});
-      } else {
-        res.status(201);
-        res.json({ status: constants.JSON_STATUS_SUCCESS,
-          title: 'Connexion',
-          message: 'Un compte avec cet email existe déjà!'});
-      }
-    });
-  });
-
-
-router.route('/savemixed')
-  .post(function(req, res) {
-      req.body.mixed.created_at = new Date().getTime();
-      songsRepository.savemixedjson(req.db, req.body.mixed, function (err, result) {
-      if(err) {
-        console.log(err);
-        res.status(404);
-        res.json({ status: constants.JSON_STATUS_ERROR,
-          title: 'Erreur Système',
-          message: 'A Une erreur inattendue s\'est produite! Veuillez contacter l\'administrateur'});
-        return;
-      }
-      else{
-        req.body.mixed._id = ObjectId(result.insertedId);
-        var idMix = req.body.mixed._id;
-        var idUser = ObjectId(req.body.mixed.author._id);
-        usersRepository.addSong(req.db,idUser,req.body.mixed,
-            function(msg){
-
-              usersRepository.findUserById(req.db,idUser,function(data){
-                var event = {
-                  type: 'music',
-                  name: "You",
-                  action: " created a new mix",
-                  author: data.full_name,
-                  music: req.body.mixed.name_new,
-                  created_at: req.body.mixed.created_at
-                };
-
-                usersRepository.writeEvent(req.db,idUser,event,function(){
-                  event.name = data.full_name;
-                  usersRepository.notifyFollowers(req.db,idUser,event,function(){
-                    res.status(200);
-                    res.json({ status: constants.JSON_STATUS_SUCCESS,
-                      title: 'Sauvegarde',
-                      data : idMix,
-                      message: 'Votre mix a été sauvegardé'});
-                  },function(code,msg){
-                    res.status(404);
-                    res.json({ status: constants.JSON_STATUS_ERROR,
-                      title: 'Erreur Système',
-                      message: 'B Une erreur inattendue s\'est produite ! Veuillez contacter l\'administrateur'});
-                  });
-                });
-              },function(code,msg){
-                res.status(404);
-                res.json({ status: constants.JSON_STATUS_ERROR,
-                  title: 'Erreur Système',
-                  message: 'C Une erreur inattendue s\'est produite ! Veuillez contacter l\'administrateur'});
-              });
-            },
-        function(code,msg){
-          res.status(404);
-          res.json({ status: constants.JSON_STATUS_ERROR,
-            title: 'Erreur Système',
-            message: 'D Une erreur inattendue s\'est produite ! Veuillez contacter l\'administrateur'});
-        })
-      }
-    });
-
-  });
-
-router.route('/getmixed')
-  .get(function(req, res) {
-    //console.log('find'+req.query.name_find);
-    //var mixed = {names:[]};
-    songsRepository.findAllMixedSongs(req.db, function(err, result) {
-      //console.log(req.session.emailUser);
-      //mixed.names.push(result);
-      res.json({ status: constants.JSON_STATUS_SUCCESS,
-        title: 'Connexion',
-        message: result});
-    });
-  });
-
-
-router.route('/getMixedSongInfo')
-  .get(function(req, res) {
-    //console.log('find'+req.query.name_find);
-    //var mixed = {names:[]};
-    songsRepository.findMixedSong(req.db,'name' ,req.query.name_find, function(err, result) {
-      //console.log(req.session.emailUser);
-      //mixed.names.push(result);
-      res.json({ status: constants.JSON_STATUS_SUCCESS,
-        title: 'Connexion',
-        message: result});
-    });
-  });
-
-
-router.route('/folderName')
-    .get(function(req, res) {
-      //console.log('find'+req.query.name_find);
-      //var mixed = {names:[]};
-      songsRepository.folderName(req.query.f, function(err, result) {
-        //console.log(req.session.emailUser);
-        //mixed.names.push(result);
-        res.json({ status: constants.JSON_STATUS_SUCCESS,
-          title: 'Connexion',
-          message: result});
-      });
-    });
 
 module.exports = router;

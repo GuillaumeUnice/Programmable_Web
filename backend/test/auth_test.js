@@ -35,7 +35,7 @@ describe("Unit test for auth routes", function() {
 
 	after(function (done) {
 		dbs.dropDatabase();
-		dbs.createCollection('users');
+		//dbs.createCollection('users');
 
         done();
     });

@@ -39,6 +39,7 @@ describe("Unit test for feedbacks routes", function() {
                 .send({email: "test@gmail.com", password: "azerty"})
                 .end(function (err, res) {
                     userID = res.body.data._id;
+                    mongoose.connection.close();
                     done();
                 });
         });

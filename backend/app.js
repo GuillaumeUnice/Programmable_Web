@@ -7,16 +7,14 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var busboy = require('connect-busboy');
 
+var utils = require('./config/utils');
+
 var jwt = require('jsonwebtoken');
 var authMiddelware = require('./config/authMiddleware');
 
-/** TODO REMOVE **/
-//var session = require('express-session');
-
-var routes = require('./routes/index');
-//var users = require('./routes/users');
-//var feedbacks = require('./routes/feedbacks');
-//var search = require('./routes/search');
+var jwtMid = require('express-jwt');
+var bcrypt = require('bcryptjs');
+var salt = bcrypt.genSaltSync(10);
 
 var app = express();app.use(busboy());
 
@@ -52,13 +50,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 
 //Routes
-var routess = {};
-routess.auth = require('./controllers/auth.js');
-routess.search = require('./controllers/search.js');
-routess.feedbacks = require('./controllers/feedbacks.js');
-routess.follow = require('./controllers/follow.js');
-routess.manageMySongs = require('./controllers/manageMySongs.js');
-routess.account = require('./controllers/account.js');
+var routes = require('./routes/index.js');
 
 
 app.use(function(req, res, next) {
@@ -73,35 +65,7 @@ app.use(function(req, res, next) {
 });
 
 
-/**********************************************************************************
- *                Route for auth API
- **********************************************************************************/
-app.post('/register', routess.auth.register);
-app.post('/login', routess.auth.login);
-app.post('/logout', routess.auth.logout);
-
-app.get('/feedbacks/:idSong', routess.feedbacks.getFeedbacks);
-
-app.get('/mix/:idMix', authMiddelware.ensureAuthorized, routess.feedbacks.getMix);
-app.post('/comment', authMiddelware.ensureAuthorized, routess.feedbacks.postFeedback);
-app.post('/mark', authMiddelware.ensureAuthorized, routess.feedbacks.postMark);
-app.post('/search', authMiddelware.ensureAuthorized, routess.search.searchSongAndUser);
-
-app.post('/follow',authMiddelware.ensureAuthorized,routess.follow.followSomeone);
-app.get('/follow/followers/:idUser',routess.follow.getFollowers);
-app.get('/follow/following/:idUser',routess.follow.getFollowing);
-app.post('/unfollow',authMiddelware.ensureAuthorized,routess.follow.unfollow);
-
-app.get('/manageMySongs/:idUser',authMiddelware.ensureAuthorized,routess.manageMySongs.getMySongs);
-app.get('/manageMySongs/:idUser',authMiddelware.ensureAuthorized,routess.manageMySongs.getMySongs2);
-
-app.get('/account/:idUser',authMiddelware.ensureAuthorized,routess.account.getAccountInfo);
-
-
 app.use('/', routes);
-//app.use('/users', users);
-//app.use('/feedbacks', feedbacks);
-//app.use('/search', search);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
