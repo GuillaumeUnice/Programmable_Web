@@ -28,7 +28,6 @@ describe("Unit test for auth routes", function() {
 			{ 'email': 'test@gmail.com',
 				'password' : "$2a$10$vGVaf40wcE/DqZqp2FkUtepyq.CxsRehgk./Z37LzRQ.YizXdclfO"
 			},   function(err, result) {
-	        expect(result.email).to.be.equal("test@gmail.com");  
 	    });
 		mongoose.connection.close();
 	    done();
@@ -49,7 +48,7 @@ describe("Unit test for auth routes", function() {
 				expect(res.status).to.be.equal(401)
 				expect(res.body.status).to.be.equal(constants.JSON_STATUS_ERROR);
 				expect(res.body.title).to.be.equal('Erreur connexion');
-				expect(res.body.message).to.be.equal('L\'utilisateur n\'existe pas! Email incorrect!');
+				expect(res.body.message).to.be.equal('L\'utilisateur n\'existe pas ! Email incorrect !');
 				done();
 			});
 	});
@@ -63,7 +62,7 @@ describe("Unit test for auth routes", function() {
 				expect(res.status).to.be.equal(401)
 				expect(res.body.status).to.be.equal(constants.JSON_STATUS_ERROR);
 				expect(res.body.title).to.be.equal('Erreur connexion');
-				expect(res.body.message).to.be.equal('Le mot de passe est incorrect!');
+				expect(res.body.message).to.be.equal('Le mot de passe est incorrect !');
 				done();
 			});
 	});

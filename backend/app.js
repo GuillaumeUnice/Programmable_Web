@@ -8,10 +8,9 @@ var bodyParser = require('body-parser');
 var busboy = require('connect-busboy');
 
 var jwt = require('jsonwebtoken');
-var constants = require('./config/constants');
 var authMiddelware = require('./config/authMiddleware');
 
-/** TODO ADD **/
+/** TODO REMOVE **/
 //var session = require('express-session');
 
 var routes = require('./routes/index');
@@ -65,11 +64,6 @@ routess.account = require('./controllers/account.js');
 app.use(function(req, res, next) {
   console.log('Middleware called.');
   // allows requests fromt angularJS frontend applications
- /* res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  next(); // go to the next route*/
-
   res.header("Access-Control-Allow-Origin", "*");
   res.header('Access-Control-Allow-Credentials', true);
   res.header('Access-Control-Allow-Methods', 'GET, POST, DELETE, PUT');
@@ -88,41 +82,20 @@ app.post('/logout', routess.auth.logout);
 
 app.get('/feedbacks/:idSong', routess.feedbacks.getFeedbacks);
 
-function ensureAuthorized(req, res, next) {
-    var bearerToken;
-    var bearerHeader = req.headers["authorization"];
-    //console.log(jwt.decode(bearerHeader));
-    if (typeof bearerHeader !== 'undefined') {
-        var bearer = bearerHeader.split(" ");
-        bearerToken = bearer[1];
-        jwt.verify(bearerToken, constants.JWT_SECRET, function(err, decoded) {
-          if(err) {
-            res.send(401);
-            return;
-          }
-          req.token = decoded;
-          console.log(req.token);
-          next();
-        });
-    } else {
-        res.send(401);
-    }
-}
+app.get('/mix/:idMix', authMiddelware.ensureAuthorized, routess.feedbacks.getMix);
+app.post('/comment', authMiddelware.ensureAuthorized, routess.feedbacks.postFeedback);
+app.post('/mark', authMiddelware.ensureAuthorized, routess.feedbacks.postMark);
+app.post('/search', authMiddelware.ensureAuthorized, routess.search.searchSongAndUser);
 
-app.get('/mix/:idMix', ensureAuthorized, routess.feedbacks.getMix);
-app.post('/comment', ensureAuthorized, routess.feedbacks.postFeedback);
-app.post('/mark', ensureAuthorized, routess.feedbacks.postMark);
-app.post('/search', ensureAuthorized, routess.search.searchSongAndUser);
-
-app.post('/follow',ensureAuthorized,routess.follow.followSomeone);
+app.post('/follow',authMiddelware.ensureAuthorized,routess.follow.followSomeone);
 app.get('/follow/followers/:idUser',routess.follow.getFollowers);
 app.get('/follow/following/:idUser',routess.follow.getFollowing);
-app.post('/unfollow',ensureAuthorized,routess.follow.unfollow);
+app.post('/unfollow',authMiddelware.ensureAuthorized,routess.follow.unfollow);
 
-app.get('/manageMySongs/:idUser',ensureAuthorized,routess.manageMySongs.getMySongs);
-app.get('/manageMySongs/:idUser',ensureAuthorized,routess.manageMySongs.getMySongs2);
+app.get('/manageMySongs/:idUser',authMiddelware.ensureAuthorized,routess.manageMySongs.getMySongs);
+app.get('/manageMySongs/:idUser',authMiddelware.ensureAuthorized,routess.manageMySongs.getMySongs2);
 
-app.get('/account/:idUser',ensureAuthorized,routess.account.getAccountInfo);
+app.get('/account/:idUser',authMiddelware.ensureAuthorized,routess.account.getAccountInfo);
 
 
 app.use('/', routes);
