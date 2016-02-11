@@ -5,7 +5,7 @@ angular.module('frontendApp')
                                     searchService,currentMix, currentMusicService, feedbackService,auth, follow,$http,$q,$rootScope,user) {
 
     // initialisation
-    
+
     //User Info:
     $scope.following = [];
     $scope.myMix = [];
@@ -49,12 +49,12 @@ angular.module('frontendApp')
 
     $scope.isTabMenuNewsSelected = true;
 
-    user.myMix(auth.id).then(function(data){
+   /* user.myMix(auth.id).then(function(data){
       console.log(data);
       $scope.myMix = data;
     },function(msg){
       console.log('erreur promesses : ' + msg);
-    });
+    });*/
 
     $scope.searchQuery = "";
     $scope.searchResults = {};

@@ -7,13 +7,19 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var busboy = require('connect-busboy');
 
+var utils = require('./config/utils');
+
 var jwt = require('jsonwebtoken');
 var authMiddelware = require('./config/authMiddleware');
+
+var jwtMid = require('express-jwt');
+var bcrypt = require('bcryptjs');
+var salt = bcrypt.genSaltSync(10);
 
 /** TODO REMOVE **/
 //var session = require('express-session');
 
-var routes = require('./routes/index');
+//var routes = require('./routes/index');
 //var users = require('./routes/users');
 //var feedbacks = require('./routes/feedbacks');
 //var search = require('./routes/search');
@@ -97,8 +103,24 @@ app.get('/manageMySongs/:idUser',authMiddelware.ensureAuthorized,routess.manageM
 
 app.get('/account/:idUser',authMiddelware.ensureAuthorized,routess.account.getAccountInfo);
 
+//Functions previously used in index
+app.post('/save',routess.manageMySongs.save);
+app.post('/upload',routess.manageMySongs.upload);
+app.post('/download',routess.manageMySongs.download);
+app.get('/track',routess.manageMySongs.getTracks);
+app.get('/track/:id',routess.manageMySongs.getTrackById);
+app.post('/mixed',routess.manageMySongs.uploadMixed);
+app.post('/savemixed',routess.manageMySongs.savemixed);
+app.get('/getmixed',routess.manageMySongs.getMixed);
+app.get('/getMixedSongInfo',routess.manageMySongs.getMixedSongInfo);
+app.get('/folderName',routess.manageMySongs.getFolderName);
+app.get('/get',routess.manageMySongs.getSongsByName);
 
-app.use('/', routes);
+var parth = /\/track\/(\w+)\/(?:sound|visualisation)\/((\w|.)+)/;
+app.get(parth,routess.manageMySongs.uploadSongs);
+
+
+//app.use('/', routes);
 //app.use('/users', users);
 //app.use('/feedbacks', feedbacks);
 //app.use('/search', search);
