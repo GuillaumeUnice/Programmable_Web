@@ -65,31 +65,6 @@ app.use(function(req, res, next) {
 });
 
 
-/**********************************************************************************
- *                Route for auth API
- **********************************************************************************/
-app.post('/register', routess.auth.register);
-app.post('/login', routess.auth.login);
-app.post('/logout', routess.auth.logout);
-
-app.get('/feedbacks/:idSong', routess.feedbacks.getFeedbacks);
-
-app.get('/mix/:idMix'/*, authMiddelware.ensureAuthorized*/, routess.feedbacks.getMix);
-app.post('/comment', authMiddelware.ensureAuthorized, routess.feedbacks.postFeedback);
-app.post('/mark', authMiddelware.ensureAuthorized, routess.feedbacks.postMark);
-app.post('/search', authMiddelware.ensureAuthorized, routess.search.searchSongAndUser);
-
-app.post('/follow',authMiddelware.ensureAuthorized,routess.follow.followSomeone);
-app.get('/follow/followers/:idUser',routess.follow.getFollowers);
-app.get('/follow/following/:idUser',routess.follow.getFollowing);
-app.post('/unfollow',authMiddelware.ensureAuthorized,routess.follow.unfollow);
-
-app.get('/manageMySongs/:idUser',authMiddelware.ensureAuthorized,routess.manageMySongs.getMySongs);
-app.get('/manageMySongs/:idUser',authMiddelware.ensureAuthorized,routess.manageMySongs.getMySongs2);
-
-app.get('/account/:idUser',authMiddelware.ensureAuthorized,routess.account.getAccountInfo);
-
-
 app.use('/', routes);
 
 // catch 404 and forward to error handler
