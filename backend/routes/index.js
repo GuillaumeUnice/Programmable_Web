@@ -342,17 +342,18 @@ router.route('/mixed')
 router.route('/savemixed')
   .post(function(req, res) {
       req.body.mixed.created_at = new Date().getTime();
-    songsRepository.savemixedjson(req.db, req.body.mixed, function (err, result) {
+      songsRepository.savemixedjson(req.db, req.body.mixed, function (err, result) {
       if(err) {
         console.log(err);
         res.status(404);
         res.json({ status: constants.JSON_STATUS_ERROR,
           title: 'Erreur Système',
-          message: 'Une erreur inattendue s\'est produite! Veuillez contacter l\'administrateur'});
+          message: 'A Une erreur inattendue s\'est produite! Veuillez contacter l\'administrateur'});
         return;
       }
       else{
         req.body.mixed._id = ObjectId(result.insertedId);
+        var idMix = req.body.mixed._id;
         var idUser = ObjectId(req.body.mixed.author._id);
         usersRepository.addSong(req.db,idUser,req.body.mixed,
             function(msg){
@@ -373,26 +374,27 @@ router.route('/savemixed')
                     res.status(200);
                     res.json({ status: constants.JSON_STATUS_SUCCESS,
                       title: 'Sauvegarde',
+                      data : idMix,
                       message: 'Votre mix a été sauvegardé'});
                   },function(code,msg){
                     res.status(404);
                     res.json({ status: constants.JSON_STATUS_ERROR,
                       title: 'Erreur Système',
-                      message: 'Une erreur inattendue s\'est produite ! Veuillez contacter l\'administrateur'});
+                      message: 'B Une erreur inattendue s\'est produite ! Veuillez contacter l\'administrateur'});
                   });
                 });
               },function(code,msg){
                 res.status(404);
                 res.json({ status: constants.JSON_STATUS_ERROR,
                   title: 'Erreur Système',
-                  message: 'Une erreur inattendue s\'est produite ! Veuillez contacter l\'administrateur'});
+                  message: 'C Une erreur inattendue s\'est produite ! Veuillez contacter l\'administrateur'});
               });
             },
         function(code,msg){
           res.status(404);
           res.json({ status: constants.JSON_STATUS_ERROR,
             title: 'Erreur Système',
-            message: 'Une erreur inattendue s\'est produite ! Veuillez contacter l\'administrateur'});
+            message: 'D Une erreur inattendue s\'est produite ! Veuillez contacter l\'administrateur'});
         })
       }
     });

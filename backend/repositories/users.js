@@ -133,12 +133,17 @@ function UsersRepository () {
       if(err){
         errorCB(500,"Error!");
       }else {
-        var results = doc.followers;
-
-        for(var i = 0; i<results.length;i++){
-          db.collection('users').updateOne({"_id" : results[i]._id},{ $push: { "events": event } });
+        if(doc != null){
+          var results = doc.followers;
+          if(results) {
+            for(var i = 0; i<results.length;i++){
+              db.collection('users').updateOne({"_id" : results[i]._id},{ $push: { "events": event } });
+            }
+          }
+          successCB("The followers are notified");
+        }else{
+          errorCB(400, "Error !!");
         }
-        successCB("The followers are notified");
       }
     });
   }

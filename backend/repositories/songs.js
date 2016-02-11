@@ -346,9 +346,10 @@ function SongsRepository () {
           },
         function(err, result) {
           console.log("Inserted a document into the songs collection.");
-          callback(null, result);
+          callback(err, result);
         });
     };
 };
+
 
 exports.SongsRepository = SongsRepository;
