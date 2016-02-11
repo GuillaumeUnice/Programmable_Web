@@ -49,9 +49,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 }));*/
 
 
-//Routes
-var routes = require('./routes/index.js');
-
 
 app.use(function(req, res, next) {
   console.log('Middleware called.');
@@ -65,7 +62,70 @@ app.use(function(req, res, next) {
 });
 
 
-app.use('/', routes);
+var routes = {};
+routes.auth = require('./controllers/auth.js');
+routes.search = require('./controllers/search.js');
+routes.feedbacks = require('./controllers/feedbacks.js');
+routes.follow = require('./controllers/follow.js');
+routes.manageMySongs = require('./controllers/manageMySongs.js');
+routes.account = require('./controllers/account.js');
+
+app.post('/register', routes.auth.register);
+app.post('/login', routes.auth.login);
+app.post('/logout', routes.auth.logout);
+
+app.get('/feedbacks/:idSong', routes.feedbacks.getFeedbacks);
+
+
+if (app.get('env') === 'development') {
+  app.get('/mix/:idMix', routes.feedbacks.getMix);
+  app.post('/comment', routes.feedbacks.postFeedback);
+  app.post('/mark', routes.feedbacks.postMark);
+  app.post('/search', routes.search.searchSongAndUser);
+
+  app.post('/follow',routes.follow.followSomeone);
+  app.get('/follow/followers/:idUser',routes.follow.getFollowers);
+  app.get('/follow/following/:idUser',routes.follow.getFollowing);
+  app.post('/unfollow',routes.follow.unfollow);
+
+  app.get('/manageMySongs/:idUser',routes.manageMySongs.getMySongs);
+
+  app.get('/account/:idUser',routes.account.getAccountInfo);
+
+} else {
+  app.get('/mix/:idMix', authMiddelware.ensureAuthorized, routes.feedbacks.getMix);
+  app.post('/comment', authMiddelware.ensureAuthorized, routes.feedbacks.postFeedback);
+  app.post('/mark', authMiddelware.ensureAuthorized, routes.feedbacks.postMark);
+  app.post('/search', authMiddelware.ensureAuthorized, routes.search.searchSongAndUser);
+
+  app.post('/follow',authMiddelware.ensureAuthorized,routes.follow.followSomeone);
+  app.get('/follow/followers/:idUser',routes.follow.getFollowers);
+  app.get('/follow/following/:idUser',routes.follow.getFollowing);
+  app.post('/unfollow',authMiddelware.ensureAuthorized,routes.follow.unfollow);
+
+  app.get('/manageMySongs/:idUser',authMiddelware.ensureAuthorized,routes.manageMySongs.getMySongs);
+
+  app.get('/account/:idUser',authMiddelware.ensureAuthorized,routes.account.getAccountInfo);
+
+}
+
+//Functions previously used in index
+app.post('/save',routes.manageMySongs.save);
+app.post('/upload',routes.manageMySongs.upload);
+app.post('/download',routes.manageMySongs.download);
+app.get('/track',routes.manageMySongs.getTracks);
+app.get('/track/:id',routes.manageMySongs.getTrackById);
+app.post('/mixed',routes.manageMySongs.uploadMixed);
+app.post('/savemixed',routes.manageMySongs.savemixed);
+app.get('/getmixed',routes.manageMySongs.getMixed);
+app.get('/getMixedSongInfo',routes.manageMySongs.getMixedSongInfo);
+app.get('/folderName',routes.manageMySongs.getFolderName);
+app.get('/get',routes.manageMySongs.getSongsByName);
+
+var parth = /\/track\/(\w+)\/(?:sound|visualisation)\/((\w|.)+)/;
+app.get(parth,routes.manageMySongs.uploadSongs);
+
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

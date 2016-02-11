@@ -1,4 +1,4 @@
-'use strict';
+/*'use strict';
 
 var expect = require("expect.js");
 var assert = require("assert");
@@ -31,10 +31,10 @@ describe("Unit test for SongsRepository", function() {
     dbs.dropDatabase();
     dbs.createCollection('songs');
 
-    /*//dbs.close(done);
+    //dbs.close(done);
      //dbs.close();
      dbs.dropDatabase();
-     dbs.createCollection('users');*/
+     dbs.createCollection('users');
     //mongoose.connection.close();
     done();
   });
@@ -149,4 +149,4 @@ describe("Unit test for SongsRepository", function() {
 
   });*/
 
-});
+});*/
