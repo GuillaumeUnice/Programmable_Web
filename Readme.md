@@ -125,7 +125,7 @@ password : azerty<br />
 Feel free to contact us :
 
 * [Salah Bennour](mailto:bennour@polytech.unice.fr)
-* [Guillaume Borg](mailto:guillaume.unice@gmail.com)
+* [Guillaume Unice](mailto:guillaume.unice@gmail.com)
 * [Youssef Salim](mailto:salim@polytech.unice.fr)
 * [Yuqi Wang](mailto:wang@polytech.unice.fr)
 
