@@ -6,7 +6,7 @@ var request = require("supertest");
 var constants = require('../config/constants');
 
 var feedBackController = require('../controllers/feedbacks');
-var usersRepository = new usersRepositoryModule.UsersRepository();
+//var usersRepository = new usersRepositoryModule.UsersRepository();
 
 var mongoose = require('mongoose');
 //mongoose.connect(constants.MONGO_URL_TEST_DB);
@@ -39,7 +39,7 @@ describe("Unit test for UserRepository", function() {
         done();
     });
 
-    describe("Unit test for function findUserByPseudo", function() {
+  /*  describe("Unit test for function findUserByPseudo", function() {
         it("should find a user", function(done) {
 
             db.collection('users').insertOne( { 'email': 'test@gmail.com' },   function(err, result) {
@@ -63,10 +63,10 @@ describe("Unit test for UserRepository", function() {
             });
         });
 
-    });
+    });*/
 
 
-    describe("Unit test for function addUser", function() {
+    /*describe("Unit test for function addUser", function() {
 
         it("should not add an incompleted user without email", function() {
             usersRepository.addUser(db, {password : "random", name : "Echyzen", first_name : "Ryoama"}, function(err, result) {
@@ -109,5 +109,5 @@ describe("Unit test for UserRepository", function() {
         });
 
     });
-
+*/
 });
