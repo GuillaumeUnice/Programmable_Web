@@ -1,6 +1,5 @@
 'use strict';
 
-//var should = require("should");
 var expect = require("expect.js");
 var assert = require("assert");
 var request = require("supertest");
@@ -34,16 +33,6 @@ describe("Unit test for manageMySongs routes", function() {
 			}, function(err, result) {
   		});
 
-        /*server.post("/login")
-            .send({email : "test@gmail.com", password : "azerty"})
-            .end( function(err, res) {
-
-            	console.log("SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS");
-		    	console.log(res.body.data._id);
-				console.log("SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS");
-                userID = res.body.data._id;
-        });*/
-
    		dbs.createCollection('songs');
 
 		db.collection('songs').insertOne(
@@ -56,16 +45,13 @@ describe("Unit test for manageMySongs routes", function() {
 			}, function(err, res) {
 
   		});
-
-		mongoose.connection.close();
 	    done();
+		mongoose.connection.close();
+
     });
 
 	after(function (done) {
 		dbs.dropDatabase();
-		//dbs.createCollection('users');
-		//dbs.createCollection('songs');
-
         done();
     });
 
@@ -75,22 +61,19 @@ describe("Unit test for manageMySongs routes", function() {
             .send({email : "test@gmail.com", password : "azerty"})
             .end( function(err, res) {
 
-			server.get("/mix/" + userID)
+			server.get("/manageMySongs/" + userID)
 				.expect(200)
 				.end( function(err, res) {
-	
+					console.log(res);
 					expect(res.status).to.be.equal(200);
 					console.log(res.body);
-					expect(res.body.status).to.be.equal(constants.JSON_STATUS_SUCCESS);
+					/*expect(res.body.status).to.be.equal(constants.JSON_STATUS_SUCCESS);
 					expect(res.body.title).to.be.equal("Add Mix to player");
-					expect(res.body.message).to.be.equal("The mix is now in the player!");
+					expect(res.body.message).to.be.equal("The mix is now in the player!");*/
 					
 					done();
 			});
-        });
-
-				
-		
+        });		
 	});
 
 });
