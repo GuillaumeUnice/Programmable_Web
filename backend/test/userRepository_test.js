@@ -69,7 +69,7 @@ describe("Unit test for UserRepository", function() {
     describe("Unit test for function addUser", function() {
 
 		it("should not add an incompleted user without email", function() {
-			usersRepository.addUser(db, {password : "random"}, function(err, result) {
+			usersRepository.addUser(db, {password : "random", name : "Echyzen", first_name : "Ryoama"}, function(err, result) {
 				expect(result).to.exist;
 				expect(result).to.be.empty;
 				expect(err).to.be.equal('Value is not true!');
@@ -77,18 +77,34 @@ describe("Unit test for UserRepository", function() {
 		});
 
 		it("should not add an incompleted user without password", function() {
-			usersRepository.addUser(db, {email : "tesdt@gmail.com"}, function(err, result) {
+			usersRepository.addUser(db, {email : "tesdt@gmail.com", name : "Echyzen", first_name : "Ryoama"}, function(err, result) {
 				expect(result).to.exist;
 				expect(result).to.be.empty;
 				expect(err).to.be.equal('Value is not true!');
 			});
 		});
 
+		it("should not add an incompleted user without first_name", function() {
+			usersRepository.addUser(db, {email : "tesdt@gmail.com", name : "Echyzen", password : "random"}, function(err, result) {
+				expect(result).to.exist;
+				expect(result).to.be.empty;
+				expect(err).to.be.equal('Value is not true!');
+			});
+		});
+
+		it("should not add an incompleted user without name", function() {
+			usersRepository.addUser(db, {email : "tesdt@gmail.com", password : "random", first_name : "Ryoama"}, function(err, result) {
+				expect(result).to.exist;
+				expect(result).to.be.empty;
+				expect(err).to.be.equal('Value is not true!');
+			});
+		});
+
+
 		it("should add an user", function() {
-			usersRepository.addUser(db, {email : "test@gmail.com", password : "random"}, function(err, result) {
+			usersRepository.addUser(db, {email : "test@gmail.com", password : "random", name : "Echyzen", first_name : "Ryoama"}, function(err, result) {
 				expect(result).to.exist;
 				expect(result.email).to.be.equal("test@gmail.com");
-				expect(result.password).to.be.equal("random");
 			});
 		});
 
