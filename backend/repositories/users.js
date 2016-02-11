@@ -92,6 +92,13 @@ function UsersRepository () {
     });
   };
 
+  /**
+   * remove following in database so delete in the user's document this following data
+   * @param  {Object}   db          database
+   * @param  {String}   idUser      user's _id wich represent the user who want to remove his follow
+   * @param  {[type]}   idFollowing users's _id wich was follow by the user
+   * @param  {Function} callback    Callback return err and result who contains the user data
+   */
   this.removeFollowing = function(db,idUser,idFollowing,callback){
     db.collection('users').updateOne({"_id" : idUser },{ $pull: { following : {_id: idFollowing} } },callback);
   };
