@@ -68,7 +68,7 @@ exports.login = function(req, res) {
 		  res.status(401);
 		  res.json({ status: constants.JSON_STATUS_ERROR,
 		    title: 'Erreur connexion',
-		    message: 'L\'utilisateur n\'existe pas ! Email incorrect !'});
+		    message: 'This user don\'t exist ! Incorrect Email !'});
 		} else {
 
 		  bcrypt.compare(req.body.password, result.password, function(err, resCompare) { 
@@ -93,7 +93,7 @@ exports.login = function(req, res) {
 		      res.status(200);
 		      res.json({ status: constants.JSON_STATUS_SUCCESS,
 		        title: 'Connexion',
-		        message: 'Vous êtes à présent connecté !',
+		        message: 'You are connected !',
 		        data: result,
 		        token: token
 		      });
@@ -101,7 +101,7 @@ exports.login = function(req, res) {
 		      res.status(401);
 		      res.json({ status : constants.JSON_STATUS_ERROR,
 		        title: 'Erreur connexion',
-		        message: 'Le mot de passe est incorrect !'});
+		        message: 'Incorrect password !'});
 		    }
 		    
 		  });

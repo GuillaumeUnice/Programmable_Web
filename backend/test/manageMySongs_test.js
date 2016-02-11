@@ -13,7 +13,7 @@ var dbs;
 // On set notre adresse serveur
 var server = request.agent("http://localhost:3000");
 
-describe("Unit test for auth routes", function() {
+describe("Unit test for manageMySongs routes", function() {
 
 	before(function (done) {
 
@@ -25,10 +25,23 @@ describe("Unit test for auth routes", function() {
 		dbs.createCollection('users');
 
 		db.collection('users').insertOne(
-			{ 'email': 'test@gmail.com',
+			{ 	"$_id" : '56b4e07045b766bd49eb5d63',
+				'email': 'test@gmail.com',
 				'password' : "$2a$10$vGVaf40wcE/DqZqp2FkUtepyq.CxsRehgk./Z37LzRQ.YizXdclfO"
 			},   function(err, result) {
-	    });
+	    }, function(err, result) {
+		    console.log(result);
+  		});
+
+  		dbs.createCollection('songs');
+
+		db.collection('songs').insertOne(
+			{"$_id" : '56b4e07045b766bd49eb5d62',
+			"author":{"full_name":"Echyzen Ryoama", "$_id":"56b4e07045b766bd49eb5d63"}},   function(err, result) {
+	    }, function(err, result) {
+		    console.log(result);
+  		});
+
 		mongoose.connection.close();
 	    done();
     });
@@ -40,34 +53,8 @@ describe("Unit test for auth routes", function() {
         done();
     });
 
-	it("should not login an non existing user", function(done) {
-		server.post("/login")
-			.send({email : "random@gmail.com", password : "azerty"})
-			.expect(401)
-			.end( function(err, res) {
-				expect(res.status).to.be.equal(401)
-				expect(res.body.status).to.be.equal(constants.JSON_STATUS_ERROR);
-				expect(res.body.title).to.be.equal('Erreur connexion');
-				expect(res.body.message).to.be.equal('This user don\'t exist ! Incorrect Email !');
-				done();
-			});
-	});
-
-
-	it("should not login with a wrong password but a correct user", function(done) {
-		server.post("/login")
-			.send({email : "test@gmail.com", password : "lolsefkh"})
-			.expect(401)
-			.end( function(err, res) {
-				expect(res.status).to.be.equal(401)
-				expect(res.body.status).to.be.equal(constants.JSON_STATUS_ERROR);
-				expect(res.body.title).to.be.equal('Erreur connexion');
-				expect(res.body.message).to.be.equal('Incorrect password !');
-				done();
-			});
-	});
-
-	it("should login user", function(done) {
+	
+	it("should return all user songs", function(done) {
 		server.post("/login")
 			.send({email : "test@gmail.com", password : "azerty"})
 			.expect(200)
@@ -75,6 +62,15 @@ describe("Unit test for auth routes", function() {
 				expect(res.status).to.be.equal(200)
 				expect(res.body.status).to.be.equal(constants.JSON_STATUS_SUCCESS);
 				done();
+				server.get("/mix/56b4e07045b766bd49eb5d62")
+					.expect(200)
+					.end( function(err, res) {
+						console.log(res);
+						expect(res.status).to.be.equal(200)
+						//expect(res.body.status).to.be.equal(constants.JSON_STATUS_SUCCESS);
+						
+					});
+				
 			});
 	});
 
