@@ -134,7 +134,7 @@ function UsersRepository () {
         errorCB(500,"Error!");
       }else {
         var results = doc.followers;
-
+        if(results)
         for(var i = 0; i<results.length;i++){
           db.collection('users').updateOne({"_id" : results[i]._id},{ $push: { "events": event } });
         }
