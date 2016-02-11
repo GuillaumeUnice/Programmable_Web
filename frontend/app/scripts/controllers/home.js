@@ -186,7 +186,7 @@ angular.module('frontendApp')
     currentMix.getMix(mix).then(function(data){
       $scope.currentSong = data.data;
       console.log(auth.id);
-      console.log(data.data.feedbacks[0]._id);
+      //console.log(data.data.feedbacks[0]._id);
 
 
       $scope.currentSong.comment = data.data.feedbacks.map(function(currentValue, index, array) {
