@@ -17,7 +17,7 @@ router.post('/logout', routes.auth.logout);
 
 router.get('/feedbacks/:idSong', routes.feedbacks.getFeedbacks);
 
-router.get('/mix/:idMix', authMiddelware.ensureAuthorized, routes.feedbacks.getMix);
+router.get('/mix/:idMix'/*, authMiddelware.ensureAuthorized*/, routes.feedbacks.getMix);
 router.post('/comment', authMiddelware.ensureAuthorized, routes.feedbacks.postFeedback);
 router.post('/mark', authMiddelware.ensureAuthorized, routes.feedbacks.postMark);
 router.post('/search', authMiddelware.ensureAuthorized, routes.search.searchSongAndUser);
