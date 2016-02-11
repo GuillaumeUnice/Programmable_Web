@@ -49,6 +49,7 @@ angular.module('frontendApp')
             .then(function(data){
                 auth.isLogged = false;
                 auth.isAuthenticated = false;
+                auth.id = null;
                 delete $window.sessionStorage.token;
                 $location.path("/login");
             }, function(msg){
