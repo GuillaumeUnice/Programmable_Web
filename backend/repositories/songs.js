@@ -340,7 +340,7 @@ function SongsRepository () {
 
     // add a data of mixed information in the collection of 'songs'
     this.savemixedjson = function(db, input, callback) {
-      if((input.name === undefined) || (input.path === undefined) || (input.info === undefined) || (input.created_at === undefined)) {
+      if((input.name_new === undefined) || (input.name === undefined) || (input.info === undefined) || (input.created_at === undefined)) {
         callback('Value is not true!', null);
       }
       else {

@@ -41,7 +41,7 @@ describe("Unit test for SongsRepository", function() {
 
   describe("Unit test for function findMixedSong", function() {
     var id;
-    it("save information of mixed json", function(done) {
+   /* it("save information of mixed json", function(done) {
       db.collection('songs').insertOne( {"_id":"56b4ee3845b766bd49eb5d00","path":"images/test.wav","name":"basse","feedbacks":[{"_id":"56b4e07045b766bd49eb5d00","mark":1,"comment":"Ceci est un commentaire"}],"author":{"full_name":"Echyzen","_id":"56b4e07045b766bd49eb5d00"}},   function(err,result) {
         //console.log("feed"+result.feedbacks);
         //expect(result.feedbacks[0]).to.be.equal(1);
@@ -57,11 +57,11 @@ describe("Unit test for SongsRepository", function() {
         expect(result[0].path).to.be.equal("images/test.wav");
       });
 
-    });
+    });*/
 
   });
 
-  describe("Unit test for function updateComment", function() {
+/*  describe("Unit test for function updateComment", function() {
     var id;
     it("save information of updateComment", function(done) {
       db.collection('songs').insertOne( {"_id":"56b4ee3845b766bd49eb5d00","path":"images/test.wav","name":"basse","feedbacks":[{"_id":"56b4e07045b766bd49eb5d00","mark":1,"comment":"Ceci est un commentaire"}],"author":{"full_name":"Echyzen","_id":"56b4e07045b766bd49eb5d00"}},   function(err,result) {
@@ -147,6 +147,6 @@ describe("Unit test for SongsRepository", function() {
       });
     });
 
-  });
+  });*/
 
 });*/
