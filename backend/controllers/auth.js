@@ -81,9 +81,8 @@ exports.login = function(req, res) {
 		    if(resCompare) {
 		      delete result.password;
 		      var token = jwt.sign(result, constants.JWT_SECRET, { expiresInMinutes: 60 });
-		      //console.log(token);
 
-		      // TODO ADD
+		      // TODO REMOVE
 		      /*req.session.idUser = result._id;
 		      req.session.emailUser = result.email;
 		      */

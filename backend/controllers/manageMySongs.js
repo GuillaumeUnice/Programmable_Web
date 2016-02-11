@@ -24,6 +24,7 @@ var ObjectId = require("bson-objectid");
  * @return {Array}     Return Array of songs document register in 'songs collection'
  */
 exports.getMySongs = function(req,res){
+    console.log("kjnfsje");
     songsRepository.findSongs_by_user(req.db,ObjectId(req.params.idUser),function(data){
         res.send(data);
     },function(code,msg){

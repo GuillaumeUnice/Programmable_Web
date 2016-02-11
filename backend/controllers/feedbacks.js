@@ -41,7 +41,10 @@ exports.getMix = function(req, res) {
 			}
 
 			var data = result1;
-			data.markAvg = result2.markAvg;
+			if(result2.markAvg) {
+				data.markAvg = result2.markAvg;
+			}
+			
 
 			res.status(200);
 			res.json({ status: constants.JSON_STATUS_SUCCESS,

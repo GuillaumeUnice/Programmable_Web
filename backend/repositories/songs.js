@@ -276,7 +276,13 @@ function SongsRepository () {
         ]
       ).toArray(function(err, result) {
         var element = result.map(function(x) { return x._id.toString(); }).indexOf(songId);
-        callback(null, result[element]);
+        if(element !== -1) {
+          callback(null, result[element]);  
+        } else {
+          result.markAvg = 0;
+          callback(null, result);  
+        }
+        
       });
     };
     // update a data in the collection 'songs'
