@@ -60,6 +60,7 @@ angular.module('frontendApp')
         else {
           mixedInfo.name_new = s;
           var deferred = $q.defer();
+          console.log(mixedInfo.author._id);
           $http.post(CONFIG.baseUrlApi + '/savemixed', {mixed: mixedInfo})
             .success(function (data) {
               notification.writeNotification(data);

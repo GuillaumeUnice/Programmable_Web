@@ -20,6 +20,7 @@ var server = request.agent("http://localhost:3000");
 
 describe("Unit test for feedbacks routes", function() {
 
+
     before(function (done) {
 
         mongoose.connect(constants.MONGO_URL_TEST_DB);
@@ -51,66 +52,96 @@ describe("Unit test for feedbacks routes", function() {
         dbs.createCollection('users');
 
         done();
+
     });
+  });
+
+
+  after(function (done) {
+    dbs.dropDatabase();
+    dbs.createCollection('users');
+
+    done();
+  });
 
 
 
-    it("add a mix", function(done) {
+  it("add a mix", function(done) {
 
-        var myMix =
-        {
-            name_new: "Test new name 1",
-            info: "Its just a test",
-            name: "Test name 1",
-            author: {_id : userID, full_name : "Echyzen"},
-            created_at: "Today"
-        };
-
-        server.post("/savemixed")
-            .send({mixed : myMix})
-            .expect(200)
-            .end( function(err, res) {
-                expect(res.status).to.be.equal(200);
-                expect(res.body.status).to.be.equal(constants.JSON_STATUS_SUCCESS);
-                expect(res.body.title).to.be.equal('Sauvegarde');
-                expect(res.body.message).to.be.equal('Votre mix a été sauvegardé');
-                done();
-            });
-    });
+    var myMix =
+    {
+      name_new: "Test new name 1",
+      info: "Its just a test",
+      name: "Test name 1",
+      author: {_id : userID, full_name : "Echyzen"},
+      created_at: "Today"
+    };
 
 
-    it("add a mix", function(done) {
+    server.post("/savemixed")
+      .send({mixed : myMix})
+      .expect(200)
+      .end( function(err, res) {
+        expect(res.status).to.be.equal(200);
+        expect(res.body.status).to.be.equal(constants.JSON_STATUS_SUCCESS);
+        expect(res.body.title).to.be.equal('Sauvegarde');
+        expect(res.body.message).to.be.equal('Votre mix a été sauvegardé');
+        done();
+      });
+  });
 
-        var myMix =
-        {
-            name_new: "Test new name 1",
-            info: "Its just a test",
-            name: "Test name 1",
-            author: {_id : userID, full_name : "Echyzen"},
-            created_at: "Today"
-        };
 
-        server.post("/savemixed")
-            .send({mixed : myMix})
-            .expect(200)
-            .end( function(err, res) {
-                expect(res.status).to.be.equal(200);
-                expect(res.body.status).to.be.equal(constants.JSON_STATUS_SUCCESS);
-                expect(res.body.title).to.be.equal('Sauvegarde');
-                expect(res.body.message).to.be.equal('Votre mix a été sauvegardé');
-                done();
-            });
-    });
+  it("add a mix", function(done) {
 
-    /**
-     server.post("/mix/")
-     .send({params : 1})
-     .expect(401)
-     .end( function(err, res) {
+    var myMix =
+    {
+      name_new: "Test new name 1",
+      info: "Its just a test",
+      name: "Test name 1",
+      author: {_id : userID, full_name : "Echyzen"},
+      created_at: "Today"
+    };
+
+    server.post("/savemixed")
+      .send({mixed : myMix})
+      .expect(200)
+      .end( function(err, res) {
+        expect(res.status).to.be.equal(200);
+        expect(res.body.status).to.be.equal(constants.JSON_STATUS_SUCCESS);
+        expect(res.body.title).to.be.equal('Sauvegarde');
+        expect(res.body.message).to.be.equal('Votre mix a été sauvegardé');
+        done();
+      });
+  });
+
+  it("should return all user songs", function(done) {
+    server.post("/login")
+      .send({email : "test@gmail.com", password : "azerty"})
+      .end( function(err, res) {
+
+        server.get("/mix/" + userID)
+          .expect(200)
+          .end( function(err, res) {
+            console.log(res);
+            expect(res.status).to.be.equal(200);
+            console.log(res.body);
+            expect(res.body.status).to.be.equal(constants.JSON_STATUS_SUCCESS);
+            expect(res.body.title).to.be.equal("Add Mix to player");
+            expect(res.body.message).to.be.equal("The mix is now in the player!");
+
+            done();
+          });
+      });
+  });
+  /**
+   server.post("/mix/")
+   .send({params : 1})
+   .expect(401)
+   .end( function(err, res) {
                 console.log("Entré");
                 console.log(res);
                 console.log("Fin");
                 done();
             });
-     **/
+   **/
 });

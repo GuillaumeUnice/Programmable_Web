@@ -93,7 +93,7 @@ function SongsRepository () {
         //callback(null,doc);
       } else {
         console.log("not found in the DB");
-        console.log("mixed ms "+ms[0].path);
+        //console.log("mixed ms "+ms[0].path);
         callback(null,ms);
       }
     });
@@ -277,12 +277,12 @@ function SongsRepository () {
       ).toArray(function(err, result) {
         var element = result.map(function(x) { return x._id.toString(); }).indexOf(songId);
         if(element !== -1) {
-          callback(null, result[element]);  
+          callback(null, result[element]);
         } else {
           result.markAvg = 0;
-          callback(null, result);  
+          callback(null, result);
         }
-        
+
       });
     };
     // update a data in the collection 'songs'
@@ -340,20 +340,26 @@ function SongsRepository () {
 
     // add a data of mixed information in the collection of 'songs'
     this.savemixedjson = function(db, input, callback) {
-      db.collection('songs').insertOne(
-          {name: input.name_new,
-          info: input.info,
-          path: input.name, //A modifier d'urgence
-          feedbacks: [],
-           author: input.author,
-           created_at: input.created_at,
-           isPublic: true,
-              sumMarks: 0
+      if((input.name === undefined) || (input.path === undefined) || (input.info === undefined) || (input.created_at === undefined)) {
+        callback('Value is not true!', null);
+      }
+      else {
+        db.collection('songs').insertOne(
+          {
+            name: input.name_new,
+            info: input.info,
+            path: input.name, //A modifier d'urgence
+            feedbacks: [],
+            author: input.author,
+            created_at: input.created_at,
+            isPublic: true,
+            sumMarks: 0
           },
-        function(err, result) {
-          console.log("Inserted a document into the songs collection.");
-          callback(err, result);
-        });
+          function (err, result) {
+            console.log("Inserted a document into the songs collection.");
+            callback(null, result);
+          });
+      }
     };
 };
 
