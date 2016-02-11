@@ -19,15 +19,9 @@
           <div class="dummy-column_contContent">
           <p>Users</p>
             <div class="contentSearch">
-              <!--<span class="borderTop">
-                  <i  class="iconList glyphicon glyphicon-user pull-left button-icon-link"></i>
-                  <span>Mylo Vs Miami Sound Machine - Drop The Pressure</span>
-                  <i class="iconList glyphicon glyphicon-play pull-right button-icon-link"></i>
-              </span>-->
               <div class="borderTop border" ng-repeat="user in searchResults.users">
                 <img style="width : 40px !important;" class="avatar avatarList" src="images/logo.png" alt="avatar" />
                 <span>{{ user.full_name }}</span>
-                <!--<i title="look profile" class="iconList glyphicon glyphicon-user pull-right button-icon-link"></i>-->
                 <i ng-if="(user._id | follow:following)" title="unfollow" class="iconList glyphicon glyphicon-star pull-right button-icon-link button-icon-unfollow" ng-click="unfollow(user)"></i>
                 <i ng-if="!(user._id | follow:following)" title="follow" class="iconList glyphicon glyphicon-star pull-right button-icon-link" ng-click="follow(user)"></i>
               </div>
@@ -111,7 +105,6 @@
           <div class="borderTop" ng-repeat="followed in following | orderBy:'created_at':true | filter:{ full_name:filterFollower }">
             <img style="width : 40px !important;" class="avatar avatarList" src="images/logo.png" alt="avatar" />
             <span>{{ followed.full_name }}</span>
-            <!--<i title="look profile" class="iconList glyphicon glyphicon-user pull-right button-icon-link" ng-click="follow(followed)"></i>-->
             <i title="unfollow" class="iconList glyphicon glyphicon-star pull-right button-icon-link button-icon-unfollow" ng-click="unfollow(followed)"></i>
           </div>
         </div>
@@ -160,10 +153,7 @@
       <div class="panel-heading">
         <h3 class="panel-title pull-left" style="margin-left: 10px;">
           My mix
-        </h3><!--
-        <button class="btn btn-default pull-right">
-          <a ng-href="#/mix"><i class="glyphicon glyphicon-plus"></i> Add mix</a>
-        </button>-->
+        </h3>
         <a ng-href="#/mix">
           <button style="margin-top: 5px !important;" type="submit" class="button button-link glyphicon-plus"><span class="glyphicon glyphicon-plus button-icon-link"></span>Add mix
           </button>
@@ -174,14 +164,10 @@
         <form>
           <input type="text" placeholder="filter..." ng-model="filterMyMix"/>
         </form>
-        <!--<button style="margin-top: 5px !important;" type="submit" class="button button-link glyphicon-plus"  ng-click="getMixedSongs()">
-          getmixed
-        </button>-->
         <div class="borderTop" ng-repeat="mix in myMix | orderBy:'created_at':true | filter:{ name:filterMyMix}">
           <i style="cursor : initial !important;" class="iconList glyphicon glyphicon-headphones pull-left button-icon-link"></i>
           <span>{{ mix.name }}</span>
-          <!--<i title="play" class="iconList glyphicon glyphicon-play pull-right button-icon-link" ng-href="#/mix"></i>-->
-          <i ng-click="test(mix)" class="iconList glyphicon glyphicon-play pull-right button-icon-link" >
+          <i ng-click="getAndPlayMix(mix)" class="iconList glyphicon glyphicon-play pull-right button-icon-link" >
           </i>
           <a ng-href="#/mix/{{mix.name}}">
           <button type="submit" class="iconList glyphicon glyphicon-edit pull-right button-icon-link" >Edit
@@ -197,13 +183,8 @@
     <div ng-if="currentSong.name" class="row" style="background-color: gray; position: absolute; bottom: 0; left: 0; right: 0; margin: auto; border: none; z-index : 99; min-height: 120px !important;">
         <div class="col-sm-4">
           <auto-scoll-text comments="currentSong.comment"></auto-scoll-text>
-            <!-- A COMMENTER<span>
-              Je pense que ce titre est a prendre avec des pincettes :D
-            </span> A COMMENTER-->
             <form name="comment" ng-submit="addComment(currentSong.myComment)" novalidate style="margin-top: 10px;">
               <input type="text" placeholder="No comment already!" ng-model="currentSong.myComment" style="float: left; float: left; bottom: -75px; position: absolute; width: 90%;     border: 3px solid #F57362;" required/>
-              <!--<button type="submit" class="button button-link button-player" ng-disabled="comment.$invalid"><span class="glyphicon glyphicon-send button-icon" style="font-size: 25px !important;"></span>Add
-              </button>-->
             </form>
         </div>
         <div class="col-sm-2" style="text-align: right;">
@@ -224,7 +205,6 @@
               <span ng-class="{'marked' : currentSong.myMark >= 2}" ng-click="addMark(2);">☆</span>
               <span ng-class="{'marked' : currentSong.myMark >= 1}" ng-click="addMark(1);">☆</span>
             </span>
-            <!--<span ng-repeat="n in [].constructor(5) track by $index">{{$index}}</span> -->
         </div>
         <div class="col-sm-4">
             <ng-wavesurfer url="./media/lol.wav" wave-color="#337ab7" progress-color="#23527c" height="64">
@@ -236,53 +216,13 @@
             </span>
         </div>
         <div class="col-sm-2">
-            <!--<button class="btn btn-success btn-block" ng-click="wavesurfer.playPause()">
-                <span id="play" ng-show="paused">
-                    <i class="glyphicon glyphicon-play"></i>
-                    Play
-                </span>
-
-                <span id="pause" ng-show="!paused">
-                    <i class="glyphicon glyphicon-pause"></i>
-                    Pause
-                </span>
-            </button>-->
             <button class="button button-link button-player" ng-click="wavesurfer.playPause()">
               <span ng-if="paused" class="glyphicon glyphicon-play button-icon" style="font-size: 25px !important;"></span>
               <span ng-if="!paused" class="glyphicon glyphicon-pause button-icon" style="font-size: 25px !important;"></span>
               <span>Play</span>
             </button>
-            <!--<button class="button button-link button-player">
-              <span class="glyphicon glyphicon-send button-icon" style="font-size: 25px !important;"></span>
-              Queue
-            </button>-->
-            <!--<button class="btn btn-success btn-block" ng-click="wavesurfer.playPause()">
-              Queue
-            </button>
-            <button class="btn btn-success btn-block" ng-click="addComment()">
-            Comment
-            </button>-->
         </div>
     </div>
-    <!-- A COMMENTER
-    <div class="list-group" id="playlist">
-      <a href=""
-         ng-class="{ 'list-group-item': true, active: isPlaying('./media/demo.wav') }"
-         ng-click="play('./media/demo.wav')">
-          <i class="glyphicon glyphicon-play"></i>
-          czskamaarù – Trou
-          <span class="badge">0:21</span>
-      </a>
-
-      <a href=""
-         ng-class="{ 'list-group-item': true, active: isPlaying('./media/test.wav') }"
-         ng-click="play('./media/test.wav')">
-          <i class="glyphicon glyphicon-play"></i>
-          Looool
-          <span class="badge">1:04</span>
-      </a>
-    </div>
-      A COMMENTER -->
   </div>
 </div>
 
@@ -333,12 +273,6 @@
         toggleSearch(ev);
       }
     } );
-
-
-    /***** for demo purposes only: don't allow to submit the form *****/
-    /*morphSearch.querySelector( 'button[type="submit"]' ).addEventListener( 'click', function(ev) { alert("lancement de la recherche"); ev.preventDefault();
-    });*/
-
 
   });
 </script>
