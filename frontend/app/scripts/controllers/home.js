@@ -5,7 +5,7 @@ angular.module('frontendApp')
                                     searchService,currentMix, currentMusicService, feedbackService,auth, follow,$http,$q,$rootScope,user) {
 
     // initialisation
-    
+
     //User Info:
     $scope.following = [];
     $scope.myMix = [];
@@ -49,12 +49,12 @@ angular.module('frontendApp')
 
     $scope.isTabMenuNewsSelected = true;
 
-    user.myMix(auth.id).then(function(data){
+   /* user.myMix(auth.id).then(function(data){
       console.log(data);
       $scope.myMix = data;
     },function(msg){
       console.log('erreur promesses : ' + msg);
-    });
+    });*/
 
     $scope.searchQuery = "";
     $scope.searchResults = {};
@@ -186,7 +186,7 @@ angular.module('frontendApp')
     currentMix.getMix(mix).then(function(data){
       $scope.currentSong = data.data;
       console.log(auth.id);
-      console.log(data.data.feedbacks[0]._id);
+      //console.log(data.data.feedbacks[0]._id);
 
 
       $scope.currentSong.comment = data.data.feedbacks.map(function(currentValue, index, array) {
