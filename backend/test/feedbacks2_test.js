@@ -60,7 +60,7 @@ describe("Unit test for manageMySongs routes", function() {
     });
 
 	
-	it("should return all user songs", function(done) {
+	it("should return specific user mix", function(done) {
 		server.post("/login")
             .send({email : "test@gmail.com", password : "azerty"})
             .end( function(err, res) {
