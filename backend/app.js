@@ -41,7 +41,7 @@ app.use(bodyParser.urlencoded({ extended: true })); // TODO change tot true
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-/** TODO ADD **/
+/** TODO REMOVE **/
 /*app.use(session({
   secret: 'ceciestunsercretesfefefeffe',  // session secret
   duration: 30 * 60 * 1000,

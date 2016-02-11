@@ -17,23 +17,6 @@ angular.module('frontendApp')
     $scope.currentSong.myComment = "";
     $scope.currentSong.myMark = null;
 
-  /*  $scope.getMixedSongs = function(){
-      var deferred = $q.defer();
-      $http.get(CONFIG.baseUrlApi + '/getmixed')
-        .success(function (data) {
-          //notification.writeNotification(data);
-          deferred.resolve(data);
-          for(var i =0; i<data.message.length;i++) {
-            $scope.myMix.push({_id :i,name_new : data.message[i].name_new, name: data.message[i].name,created_at: 1454616846});
-          }
-            console.log(data.message);
-        }).error(function (data) {
-          //notification.writeNotification(data);
-          deferred.reject(false);
-        });
-      return deferred.promise;
-    };*/
-
     user.getUserById(auth.id).then(function(data){
           $scope.news = data.events;
           $scope.followers = data.followers;
@@ -49,12 +32,12 @@ angular.module('frontendApp')
 
     $scope.isTabMenuNewsSelected = true;
 
-   /* user.myMix(auth.id).then(function(data){
+    user.myMix(auth.id).then(function(data){
       console.log(data);
       $scope.myMix = data;
     },function(msg){
       console.log('erreur promesses : ' + msg);
-    });*/
+    });
 
     $scope.searchQuery = "";
     $scope.searchResults = {};
@@ -111,50 +94,6 @@ angular.module('frontendApp')
       return d.getHours()+':'+ d.getMinutes();
     };
 
-    /*
-    $scope.chosenMusic = null;
-
-    $scope.startListening = function(result){
-      $scope.chosenMusic = result;
-    };
-
-    $scope.$watch('chosenMusic', function (newValue, oldValue) {
-      if (newValue !== oldValue){
-        if(oldValue===null){
-          currentMusicService.setTitle(newValue.name);
-        }
-        var mixFeedback = [];
-        for(var i= 0; i<newValue.feedbacks.length; i++){
-          mixFeedback.push(newValue.feedbacks[i].comment);
-        }
-        console.log(mixFeedback);
-        currentMusicService.setFeedbacks(mixFeedback);
-      }
-    });
-
-    $scope.addComment = function(){
-      ModalService.showModal({
-          templateUrl: "views/addComment.html",
-          controller: function($scope,close,id){
-            $scope.myComment = null;
-            $scope.myMark = null;
-            $scope.valider = function(){
-              feedbackService.sendComment(id,{user:auth.username, mark: $scope.myMark, comment:$scope.myComment});
-              close(null,500);
-            };
-            $scope.annuler = function(){
-              close(null,500);
-            }
-          },
-        inputs: {
-          id: $scope.chosenMusic.id
-        }
-        }).then(function(modal) {
-          modal.element.modal();
-          modal.close.then(function(){});
-        });
-    };*/
-
   $scope.addComment = function(comment){
     feedbackService.addComment($scope.currentSong._id, comment).then(function(data){
       $scope.currentSong.comment.splice($scope.currentSong.comment.indexOf($scope.currentSong.myCommentOld), 1);
@@ -181,7 +120,7 @@ angular.module('frontendApp')
   };
 
   // play a music call .wav it's just for example
-  $scope.test = function (mix) {
+  $scope.getAndPlayMix = function (mix) {
 
     currentMix.getMix(mix).then(function(data){
       $scope.currentSong = data.data;

@@ -20,41 +20,39 @@ var server = request.agent("http://localhost:3000");
 
 describe("Unit test for feedbacks routes", function() {
 
-  before(function (done) {
 
-    mongoose.connect(constants.MONGO_URL_TEST_DB);
-    db = mongoose.connection;
-    dbs = mongoose.connection.db;
+    before(function (done) {
 
-    dbs.dropDatabase();
-    dbs.createCollection('users');
+        mongoose.connect(constants.MONGO_URL_TEST_DB);
+        db = mongoose.connection;
+        dbs = mongoose.connection.db;
 
-    dbs.createCollection('songs');
+        dbs.dropDatabase();
+        dbs.createCollection('users');
 
-    db.collection('songs').insertOne(
-      {
-        "_id" : "56bc9b6846f1be7a164358c3",
-        "author": {
-          "full_name":"Echyzen Ryoama",
-          "_id":userID
-        }
-      }, function(err, res) {
-
-      });
-
-    usersRepository.addUser(db, {
-      email: "test@gmail.com",
-      password: "azerty",
-      name: "Echyzen",
-      first_name: "Ryoama"
-    }, function (err, result) {
-      server.post("/login")
-        .send({email: "test@gmail.com", password: "azerty"})
-        .end(function (err, res) {
-          userID = res.body.data._id;
-          mongoose.connection.close();
-          done();
+        usersRepository.addUser(db, {
+            email: "test@gmail.com",
+            password: "azerty",
+            name: "Echyzen",
+            first_name: "Ryoama"
+        }, function (err, result) {
+            server.post("/login")
+                .send({email: "test@gmail.com", password: "azerty"})
+                .end(function (err, res) {
+                    userID = res.body.data._id;
+                    mongoose.connection.close();
+                    done();
+                });
         });
+    });
+
+
+    after(function (done) {
+        dbs.dropDatabase();
+        dbs.createCollection('users');
+
+        done();
+
     });
   });
 
@@ -78,6 +76,7 @@ describe("Unit test for feedbacks routes", function() {
       author: {_id : userID, full_name : "Echyzen"},
       created_at: "Today"
     };
+
 
     server.post("/savemixed")
       .send({mixed : myMix})
