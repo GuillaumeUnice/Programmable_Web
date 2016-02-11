@@ -41,8 +41,8 @@ Then, import in your Mongo Database : /backend/dump_database/users.json and /bac
 /backend/dump_database
 
 ```
-mongoimport -d test -c songs -o songs.json
-mongoimport -d test -c users -o users.json
+mongoimport -d prod -c songs songs.json
+mongoimport -d prod -c users users.json
 ```
 
 #### Downloading the Dependencies
@@ -66,10 +66,21 @@ bower install
 After downloading all the dependencies, you can run the server with the following command in /backend:
 
 ```
-npm start
+NODE_ENV=production npm start
 ```
 
 The server's api will then be accessible at `http://localhost:3000`.
+
+
+#### Running the test Server
+After downloading all the dependencies, you can run the server in test "env" with the following command in /backend:
+```
+NODE_ENV=development npm start
+```
+And then run the test in an other terminal with the following command in /backend :
+```
+npm test
+```
 
 #### Running frontend App
 After downloading all the dependencies, you can run the following command in :<br />
@@ -104,6 +115,10 @@ password : azerty<br />
 
 ### Songs selection
 ![alt tag](readme_img/songsSelection.png)
+
+## Video Presentation
+
+[Avaiable here!](https://www.youtube.com/watch?v=N36MCbnS43c)
 
 ## Contact
 
