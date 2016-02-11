@@ -82,7 +82,7 @@ app.post('/logout', routess.auth.logout);
 
 app.get('/feedbacks/:idSong', routess.feedbacks.getFeedbacks);
 
-app.get('/mix/:idMix', authMiddelware.ensureAuthorized, routess.feedbacks.getMix);
+app.get('/mix/:idMix'/*, authMiddelware.ensureAuthorized*/, routess.feedbacks.getMix);
 app.post('/comment', authMiddelware.ensureAuthorized, routess.feedbacks.postFeedback);
 app.post('/mark', authMiddelware.ensureAuthorized, routess.feedbacks.postMark);
 app.post('/search', authMiddelware.ensureAuthorized, routess.search.searchSongAndUser);
