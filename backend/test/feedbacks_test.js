@@ -122,17 +122,14 @@ describe("Unit test for feedbacks routes", function() {
         server.get("/mix/" + userID)
           .expect(200)
           .end( function(err, res) {
-            console.log(res);
             expect(res.status).to.be.equal(200);
-            console.log(res.body);
             expect(res.body.status).to.be.equal(constants.JSON_STATUS_SUCCESS);
             expect(res.body.title).to.be.equal("Add Mix to player");
             expect(res.body.message).to.be.equal("The mix is now in the player!");
 
             done();
           });
-      });
-  });
+   });
   /**
    server.post("/mix/")
    .send({params : 1})
