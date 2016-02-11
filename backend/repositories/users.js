@@ -60,7 +60,7 @@ function UsersRepository () {
    * @param {Function} callback Callback return err and result who contains the user data
    */
   this.addUser = function(db, user, callback) {
-    
+
     if((user.password === undefined) || (user.email === undefined) || (user.name === undefined) || (user.first_name === undefined)) {
       callback('Value is not true!', null);
     }
@@ -108,26 +108,26 @@ function UsersRepository () {
   this.removeFollowing = function(db,idUser,idFollowing,callback){
     db.collection('users').updateOne({"_id" : idUser },{ $pull: { following : {_id: idFollowing} } },callback);
   };
-
+  //remove following in database so delete in the user's document this follower data
   this.removeFollower = function(db,idUser,idFollower,callback){
     db.collection('users').updateOne({"_id" : idUser },{ $pull: { followers : {_id: idFollower} } },callback);
   };
-
+  //add following in database so delete in the user's document this following data
   this.addFollowing = function(db,idUser,following,callback){
     db.collection('users').updateOne({_id : idUser},{ $push: { following: {_id: following._id,
       full_name: following.full_name} } },callback);
   };
-
+  //add following in database so delete in the user's document this follower data
   this.addFollower = function(db,idUser,follower,callback){
     db.collection('users').updateOne({_id : idUser},{ $push: { followers: {_id: follower._id,
       full_name: follower.full_name} } },callback);
   };
-
+  //radd following in database so delete in the user's document this events data
   this.writeEvent = function(db,idUser,event,callback){
     db.collection('users').updateOne({"_id" : idUser },{ $push: { "events": event } },callback);
   };
 
-
+  //notifier the change of to the followers
   this.notifyFollowers = function(db,idUser,event,successCB,errorCB){
     db.collection('users').findOne({"_id" : idUser },function(err,doc){
       if(err){

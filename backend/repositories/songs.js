@@ -11,6 +11,8 @@ var ObjectID = require("bson-objectid");
 function SongsRepository () {
 
 //{'secteur':'amy','name':'guitare','songname':'meistersinger.mp3'}
+
+  //add a data in the collection 'songs'
   this.insertDocument = function(db, input, callback) {
     db.collection('songs').insertOne(input,
         function(err, result) {
@@ -42,7 +44,7 @@ function SongsRepository () {
         } );
 
     };
-
+   //  find data in the collection 'songs' by the name
   this.findSongs_by_field = function(db, findby, content, callback) {
     var cursor = db.collection('songs').find( { name : content } );
     var i =0;
@@ -57,7 +59,7 @@ function SongsRepository () {
        }
     });
  };
-
+  // find all data in the collection 'mixed'
   this.findAllMixedSongs = function(db,  callback) {
     var cursor = db.collection('mixed').find( );
     var i =0;
@@ -77,7 +79,7 @@ function SongsRepository () {
     });
 
   };
-
+  //find a data in the collection 'mixed' by 'name_new'
   this.findMixedSong = function(db, findby, content, callback) {
     var cursor = db.collection('songs').find({ name : content } );
     var i =0;
@@ -115,7 +117,7 @@ function SongsRepository () {
             }
         });
     };
-
+  // find a data in the collection 'songs' by  findby
   this.update_AddInDocument = function(db, findby, input, callback) {
     console.log('updateDocument');
     db.collection('songs').update(findby,{$pushAll:input},
@@ -125,7 +127,7 @@ function SongsRepository () {
         callback(null, result);
       });
   };
-
+  // edit data  in the collection 'songs'
   this.update_ChangeInDocument = function(db, findby, change, callback) {
     console.log('updateDocument');
     db.collection('songs').update(findby,{$set:change},
@@ -135,7 +137,7 @@ function SongsRepository () {
         callback(null, result);
       });
   };
-
+  // remove a part of data in the the collection 'songs'
   this.update_RemoveInDocument = function(db, findby, remove, callback) {
     console.log('updateDocument');
     db.collection('songs').update(findby,{$unset:remove},
@@ -145,7 +147,7 @@ function SongsRepository () {
         callback(null, result);
       });
   };
-
+  // add a songs from client side
   this.uploadSong = function(req,res,callback) {
     var fstream;
     req.pipe(req.busboy);
@@ -168,7 +170,7 @@ function SongsRepository () {
 
   };
 
-
+  // add song file in the database
   this.downloadSong = function(db, song_name, callback) {
     var bucket = new mongodb.GridFSBucket(db);
     console.log("1");
@@ -183,7 +185,7 @@ function SongsRepository () {
     });console.log("2");
     callback(null,'ok');
   };
-
+  // search names of folders in the folder 'Music'
   this.getTracks = function (callback) {
     getFiles(__dirname + '/../Musics/', callback);
   };
@@ -206,13 +208,13 @@ function SongsRepository () {
       callback(track);
     })
   };
-
+  // get names of songs in the folder
   function getFiles(dirName, callback) {
     fs.readdir(dirName, function(error, directoryObject) {
       callback(directoryObject);
     });
   };
-
+  // create a new folder with the filename in 'Music' and stock song file in it from the client side
   this.uploadMixed = function(req,res,callback) {
     var fstream;
     console.log('0');
@@ -244,7 +246,7 @@ function SongsRepository () {
     });
 
   };
-
+    // get data in the collection 'songs' by '_id'
     this.getSongsById = function(db, idSong, callback){
         db.collection('songs').findOne({"_id" : ObjectID(idSong) },function(err,result){
           /*if(err){
@@ -253,7 +255,7 @@ function SongsRepository () {
           callback(null, result);
         });
     };
-
+    // get 'feedbacks' in the collection 'songs' search by '_id'
     this.getFeedbacks = function(db,idSong,successCB,errorCB){
         db.collection('songs').findOne({"_id" : idSong },function(err,result){
             if(result==null){
@@ -277,7 +279,7 @@ function SongsRepository () {
         callback(null, result[element]);
       });
     };
-
+    // update a data in the collection 'songs'
     this.updateMark = function(db,songId, userId, mark, callback){
         /*if(newFeedback.user==undefined || newFeedback.newMark==undefined ||newFeedback.comment==undefined){
             callback(404,null);
@@ -296,7 +298,7 @@ function SongsRepository () {
         callback(null,"Mark added!");
 
     };
-
+    // add a 'mark' in the column 'feedbacks'
     this.postMark = function(db, songId, userId, mark, callback){
       db.collection('songs').updateOne(
         {"_id" : ObjectID(songId) },
@@ -307,18 +309,18 @@ function SongsRepository () {
 
       callback(null,"Mark added!");
     };
-
+    // edit a 'comment' in the column 'feedbacks'
     this.updateComment = function(db,songId, userId, comment, callback){
       db.collection('songs').updateOne(
         {"_id" : ObjectID(songId), "feedbacks._id": ObjectID(userId) },
-        { 
+        {
           $set: { "feedbacks.$.comment" : comment }
         }
       );
-        
+
       callback(null,"Comment added!");
     };
-
+  // add a 'comment' in the column 'feedbacks'
     this.postComment = function(db, songId, userId, comment, callback){
       db.collection('songs').updateOne(
         {"_id" : ObjectID(songId) },
@@ -330,7 +332,7 @@ function SongsRepository () {
       callback(null,"Comment added!");
     };
 
-
+    // add a data of mixed information in the collection of 'songs'
     this.savemixedjson = function(db, input, callback) {
       db.collection('songs').insertOne(
           {name: input.name_new,
